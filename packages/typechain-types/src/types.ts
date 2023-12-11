@@ -19,23 +19,30 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import BN from 'bn.js';
+import BN from "bn.js";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import type { ContractExecResultErr } from '@polkadot/types/interfaces/contracts/types';
-import type {AnyJson} from "@polkadot/types-codec/types";
+import type { ContractExecResultErr } from "@polkadot/types/interfaces/contracts/types";
+import type { AnyJson } from "@polkadot/types-codec/types";
 import fs from "fs";
-import {WeightV2} from "@polkadot/types/interfaces";
+import { WeightV2 } from "@polkadot/types/interfaces";
 
-export type RequestArgumentType = number | string | boolean | bigint
+export type RequestArgumentType =
+	| number
+	| string
+	| boolean
+	| bigint
 	| (string | number)[]
-	| BN | null | AnyJson | Object;
+	| BN
+	| null
+	| AnyJson
+	| Object;
 
 export interface GasLimit {
 	/**
 	 * Defaults to `-1`
 	 */
-	gasLimit ? : WeightV2 | null;
+	gasLimit?: WeightV2 | null;
 }
 
 export interface GasLimitAndValue extends GasLimit {
@@ -43,55 +50,63 @@ export interface GasLimitAndValue extends GasLimit {
 	 * Only required for 'payable' methods
 	 * Defaults to `0`
 	 */
-	value ? : bigint | BN | string | number;
-};
+	value?: bigint | BN | string | number;
+}
 
 export interface GasLimitAndRequiredValue extends GasLimit {
 	/**
 	 * Only required for 'payable' methods
 	 * Defaults to `0`
 	 */
-	value : bigint | BN | string | number;
+	value: bigint | BN | string | number;
 }
 
 export interface ConstructorOptions extends GasLimitAndValue {
-	storageDepositLimit ? : bigint | BN | string | number;
+	storageDepositLimit?: bigint | BN | string | number;
 }
 
 //
 
 export interface ErrorWithTexts {
-	texts ? : string[];
-};
+	texts?: string[];
+}
 
 export type MethodDoesntExistError = ErrorWithTexts & {
-	issue : 'METHOD_DOESNT_EXIST',
+	issue: "METHOD_DOESNT_EXIST";
 };
 
+export type QueryCallError =
+	| MethodDoesntExistError
+	| (ErrorWithTexts &
+			(
+				| {
+						issue: "FAIL_AT_CALL";
+						caughtError: unknown;
+				  }
+				| {
+						issue: "FAIL_AFTER_CALL::IS_ERROR";
+						_resultIsOk: boolean;
+						_asError?: ContractExecResultErr;
+				  }
+				| {
+						issue: "FAIL_AFTER_CALL::RESULT_NOT_OK";
+						_asError?: ContractExecResultErr;
+				  }
+				| {
+						issue: "OUTPUT_IS_NULL";
+				  }
+			));
 
-export type QueryCallError = MethodDoesntExistError | ErrorWithTexts & (
-	{
-		issue : 'FAIL_AT_CALL';
-		caughtError : unknown;
-	} | {
-		issue : 'FAIL_AFTER_CALL::IS_ERROR';
-		_resultIsOk : boolean;
-		_asError ? : ContractExecResultErr;
-	} | {
-		issue : 'FAIL_AFTER_CALL::RESULT_NOT_OK';
-		_asError ? : ContractExecResultErr;
-	} | {
-		issue : 'OUTPUT_IS_NULL',
-	}
-);
-
-export type QueryOkCallError = QueryCallError | {
-	issue : 'READ_ERR_IN_BODY',
-	_err : any;
-} | {
-	issue : 'BODY_ISNT_OKERR',
-	value : any;
-};
+export type QueryOkCallError =
+	| QueryCallError
+	| {
+			issue: "READ_ERR_IN_BODY";
+			_err: any;
+	  }
+	| {
+			issue: "BODY_ISNT_OKERR";
+			value: any;
+	  };
 
 export class Result<T, E> {
 	constructor(ok?: T, err?: E) {
@@ -99,8 +114,8 @@ export class Result<T, E> {
 		this.err = err;
 	}
 
-	ok ?: T;
-	err ?: E;
+	ok?: T;
+	err?: E;
 
 	unwrap(): T {
 		if (this.ok) {
@@ -119,7 +134,7 @@ export class Result<T, E> {
 			return this.ok;
 		}
 
-		if(this.err) throw this.err;
+		if (this.err) throw this.err;
 
 		return this.ok;
 	}
@@ -133,11 +148,11 @@ export class Result<T, E> {
 	}
 }
 
-export class ResultBuilder{
-	static Ok<T, E>(value : T) : Result<T, E> {
+export class ResultBuilder {
+	static Ok<T, E>(value: T): Result<T, E> {
 		return new Result<T, E>(value, undefined);
 	}
-	static Err<T, E>(error : E) : Result<T, E> {
+	static Err<T, E>(error: E): Result<T, E> {
 		return new Result<T, E>(undefined, error);
 	}
 }
@@ -145,10 +160,8 @@ export class ResultBuilder{
 export class ReturnNumber {
 	readonly rawNumber: BN;
 
-	constructor(
-		value: number | string | BN,
-	) {
-		if (typeof value == "string") {
+	constructor(value: number | string | BN) {
+		if (typeof value == "string" && value.startsWith("0x")) {
 			this.rawNumber = new BN(value.substring(2), 16);
 		} else {
 			this.rawNumber = new BN(value);
