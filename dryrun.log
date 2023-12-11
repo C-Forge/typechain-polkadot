@@ -1,0 +1,122 @@
+
+> publish:dry-run
+> npm --workspaces publish --dry-run
+
+npm WARN publish npm auto-corrected some errors in your package.json when publishing.  Please run "npm pkg fix" to address these errors.
+npm WARN publish errors corrected:
+npm WARN publish "bin" was converted to an object
+npm notice 
+npm notice 📦  wookashwackomytest-typechain-compiler@0.0.1
+npm notice === Tarball Contents === 
+npm notice 1.8kB README.md    
+npm notice 108B  bin/index.js 
+npm notice 5.9kB index.ts     
+npm notice 1.2kB package.json 
+npm notice 91B   src/logger.ts
+npm notice 654B  src/types.ts 
+npm notice 846B  src/utils.ts 
+npm notice 593B  tsconfig.json
+npm notice === Tarball Details === 
+npm notice name:          wookashwackomytest-typechain-compiler          
+npm notice version:       0.0.1                                      
+npm notice filename:      wookashwackomytest-typechain-compiler-0.0.1.tgz
+npm notice package size:  3.7 kB                                     
+npm notice unpacked size: 11.2 kB                                    
+npm notice shasum:        c0b9369c800482a1e255d0bd5a4dc530608e80a7   
+npm notice integrity:     sha512-GqbbYBruiDsg9[...]mY+P/UHW7cgWw==   
+npm notice total files:   8                                          
+npm notice 
+npm notice Publishing to https://registry.npmjs.org/ with tag latest and public access (dry-run)
++ wookashwackomytest-typechain-compiler@0.0.1
+npm WARN publish npm auto-corrected some errors in your package.json when publishing.  Please run "npm pkg fix" to address these errors.
+npm WARN publish errors corrected:
+npm WARN publish "bin" was converted to an object
+npm notice 
+npm notice 📦  wookashwackomytest-typechain-polkadot@0.0.1
+npm notice === Tarball Contents === 
+npm notice 1.1kB LICENSE                           
+npm notice 7.2kB README.md                         
+npm notice 109B  bin/index.js                      
+npm notice 3.2kB index.ts                          
+npm notice 1.8kB package.json                      
+npm notice 4.1kB src/generators/build-extrinsic.ts 
+npm notice 4.2kB src/generators/constructors.ts    
+npm notice 2.7kB src/generators/contract-info.ts   
+npm notice 2.9kB src/generators/contract.ts        
+npm notice 2.4kB src/generators/data.ts            
+npm notice 2.4kB src/generators/event-data.ts      
+npm notice 2.5kB src/generators/events-types.ts    
+npm notice 2.4kB src/generators/events.ts          
+npm notice 4.8kB src/generators/mixed-methods.ts   
+npm notice 4.4kB src/generators/query.ts           
+npm notice 4.1kB src/generators/tx-sign-and-send.ts
+npm notice 2.5kB src/generators/types-arguments.ts 
+npm notice 2.4kB src/generators/types-returns.ts   
+npm notice 1.4kB src/templates/build-extrinsic.hbs 
+npm notice 1.9kB src/templates/constructors.hbs    
+npm notice 93B   src/templates/contract-info.hbs   
+npm notice 3.3kB src/templates/contract.hbs        
+npm notice 138B  src/templates/data.hbs            
+npm notice 156B  src/templates/event-data.hbs      
+npm notice 217B  src/templates/event-types.hbs     
+npm notice 1.9kB src/templates/events.hbs          
+npm notice 2.6kB src/templates/mixed-methods.hbs   
+npm notice 2.0kB src/templates/query.hbs           
+npm notice 1.2kB src/templates/raw/shared/utils.ts 
+npm notice 1.9kB src/templates/tx-sign-and-send.hbs
+npm notice 277B  src/templates/types-arguments.hbs 
+npm notice 358B  src/templates/types-returns.hbs   
+npm notice 1.7kB src/types/index.ts                
+npm notice 325B  src/types/interfaces/index.ts     
+npm notice 2.9kB src/types/typechain.ts            
+npm notice 2.5kB src/utils/abi.ts                  
+npm notice 2.4kB src/utils/directories.ts          
+npm notice 4.0kB src/utils/handlebars-helpers.ts   
+npm notice 196B  src/utils/json.ts                 
+npm notice 609B  tsconfig.json                     
+npm notice === Tarball Details === 
+npm notice name:          wookashwackomytest-typechain-polkadot          
+npm notice version:       0.0.1                                      
+npm notice filename:      wookashwackomytest-typechain-polkadot-0.0.1.tgz
+npm notice package size:  15.7 kB                                    
+npm notice unpacked size: 87.2 kB                                    
+npm notice shasum:        6c9d5c02fb059020bd1780fcb43d2d74b22ac35b   
+npm notice integrity:     sha512-aXfE3jjWqhgNe[...]ZCwQoPCV+Yv+A==   
+npm notice total files:   40                                         
+npm notice 
+npm notice Publishing to https://registry.npmjs.org/ with tag latest and public access (dry-run)
++ wookashwackomytest-typechain-polkadot@0.0.1
+npm notice 
+npm notice 📦  wookashwackomytest-typechain-polkadot-parser@0.0.1
+npm notice === Tarball Contents === 
+npm notice 1.1kB   LICENSE              
+npm notice 1.0kB   README.md            
+npm notice 109B    bin/index.js         
+npm notice 16.3kB  index.ts             
+npm notice 903B    package.json         
+npm notice 2.0kB   src/consts.ts        
+npm notice 3.4kB   src/types/TypeInfo.ts
+npm notice 5.3kB   src/utils.ts         
+npm notice 609B    tsconfig.json        
+npm notice 123B    tsconfig.ref.json    
+npm notice 204.9kB tsconfig.tsbuildinfo 
+npm notice === Tarball Details === 
+npm notice name:          wookashwackomytest-typechain-polkadot-parser          
+npm notice version:       0.0.1                                             
+npm notice filename:      wookashwackomytest-typechain-polkadot-parser-0.0.1.tgz
+npm notice package size:  69.9 kB                                           
+npm notice unpacked size: 235.7 kB                                          
+npm notice shasum:        a4ce106431ebf09ef08dd6d901d5c2d00f46a9c4          
+npm notice integrity:     sha512-PICv+ExgS9sLS[...]5lxTt8pSc5Vmw==          
+npm notice total files:   11                                                
+npm notice 
+npm notice Publishing to https://registry.npmjs.org/ with tag latest and public access (dry-run)
++ wookashwackomytest-typechain-polkadot-parser@0.0.1
+
+> wookashwackomytest-typechain-types@0.0.1 prepublishOnly
+> npm run build
+
+
+> wookashwackomytest-typechain-types@0.0.1 build
+> npx tsc
+

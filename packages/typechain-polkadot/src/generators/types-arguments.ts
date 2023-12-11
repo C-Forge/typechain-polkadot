@@ -19,18 +19,18 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import {Abi} from "@polkadot/api-contract";
-import {TypeParser} from "@prosopo/typechain-polkadot-parser";
-import Handlebars from "handlebars";
-import {TypeInfo} from "@prosopo/typechain-polkadot-parser/src/types/TypeInfo";
-import {Import} from "../types";
-import {readTemplate} from "../utils/handlebars-helpers";
-import {writeFileSync} from "../utils/directories";
-import {TypechainPlugin} from "../types/interfaces";
+import { Abi } from '@polkadot/api-contract';
+import { TypeParser } from 'wookashwackomytest-typechain-polkadot-parser';
+import Handlebars from 'handlebars';
+import { TypeInfo } from 'wookashwackomytest-typechain-polkadot-parser/src/types/TypeInfo';
+import { Import } from '../types';
+import { readTemplate } from '../utils/handlebars-helpers';
+import { writeFileSync } from '../utils/directories';
+import { TypechainPlugin } from '../types/interfaces';
 
-const generateForMetaTemplate = Handlebars.compile(readTemplate("types-arguments"));
+const generateForMetaTemplate = Handlebars.compile(readTemplate('types-arguments'));
 
-export const FILE = (tsTypes : TypeInfo[], additionalImports: Import[]) => generateForMetaTemplate({tsTypes, additionalImports});
+export const FILE = (tsTypes: TypeInfo[], additionalImports: Import[]) => generateForMetaTemplate({ tsTypes, additionalImports });
 /**
  * generates a types-arguments file
  *
@@ -39,19 +39,15 @@ export const FILE = (tsTypes : TypeInfo[], additionalImports: Import[]) => gener
  * @param absPathToOutput - The absolute path to the output directory
  */
 function generate(abi: Abi, fileName: string, absPathToOutput: string) {
-	const parser = new TypeParser(abi);
-	writeFileSync(
-		absPathToOutput,
-		`types-arguments/${fileName}.ts`,
-		FILE(parser.tsTypes, [])
-	);
+  const parser = new TypeParser(abi);
+  writeFileSync(absPathToOutput, `types-arguments/${fileName}.ts`, FILE(parser.tsTypes, []));
 }
 
 export default class TypesArgumentsPlugin implements TypechainPlugin {
-	generate(abi: Abi, fileName: string, absPathToABIs: string, absPathToOutput: string): void {
-		generate(abi, fileName, absPathToOutput);
-	}
+  generate(abi: Abi, fileName: string, absPathToABIs: string, absPathToOutput: string): void {
+    generate(abi, fileName, absPathToOutput);
+  }
 
-	name: string = "TypesArgumentsPlugin";
-	outputDir: string = "types-arguments";
+  name: string = 'TypesArgumentsPlugin';
+  outputDir: string = 'types-arguments';
 }

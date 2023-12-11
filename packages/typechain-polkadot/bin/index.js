@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
 require('ts-node').register({
-	projectSearchDir: __dirname,
+  projectSearchDir: __dirname,
 });
 require('../index.ts');

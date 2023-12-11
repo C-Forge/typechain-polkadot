@@ -11,7 +11,8 @@ Utility package for parsing ABIs of Polkadot smart contracts.
 - `class TypeParser` - Parser for ABIs of Polkadot smart contracts. It contains only one public method `getType` that takes type id as a parameter and returns a `TypeInfo` object. Also it has public field `tsTypes` that contains a map of all parsed types.
 
 - `class TypeInfo` - Contains information about a type.
-``` typescript
+
+```typescript
 	id: number; // - type id
 	tsArgType: string; // - TypeScript type for function arguments
 	tsReturnType: string; // - TypeScript type for function return value

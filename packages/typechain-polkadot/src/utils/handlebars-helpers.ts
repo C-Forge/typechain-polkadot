@@ -19,98 +19,97 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import path from "path";
-import fs from "fs";
-import Handlebars from "handlebars";
+import path from 'path';
+import fs from 'fs';
+import Handlebars from 'handlebars';
 import toCamelCase from 'camelcase';
-import {Method} from "../types";
-import {Abi} from "@polkadot/api-contract";
-import {TypeTS} from "@prosopo/typechain-polkadot-parser/src/types/TypeInfo";
-import {stringCamelCase} from "@polkadot/util";
+import { Method } from '../types';
+import { Abi } from '@polkadot/api-contract';
+import { TypeTS } from 'wookashwackomytest-typechain-polkadot-parser/src/types/TypeInfo';
+import { stringCamelCase } from '@polkadot/util';
 
 /**
  * Reads handlebars templates from the given template name from {@link src/templates}
  *
  * @param template - Template name
  */
-export function readTemplate (template: string): string {
-	// Inside the api repo itself, it will be 'auto'
-	const rootDir = __dirname + '/../templates';
+export function readTemplate(template: string): string {
+  // Inside the api repo itself, it will be 'auto'
+  const rootDir = __dirname + '/../templates';
 
-	// NOTE With cjs in a subdir, search one lower as well
-	const file = ['', '/raw/shared']
-		.map((p) => path.join(rootDir, p, `${template}.hbs`))
-		.find((p) => fs.existsSync(p));
+  // NOTE With cjs in a subdir, search one lower as well
+  const file = ['', '/raw/shared'].map((p) => path.join(rootDir, p, `${template}.hbs`)).find((p) => fs.existsSync(p));
 
-	if (!file) {
-		throw new Error(`Unable to locate ${template}.hbs from ${rootDir}`);
-	}
+  if (!file) {
+    throw new Error(`Unable to locate ${template}.hbs from ${rootDir}`);
+  }
 
-	return fs.readFileSync(file).toString();
+  return fs.readFileSync(file).toString();
 }
 
 Handlebars.registerHelper('toCamelCase', toCamelCase);
 
 Handlebars.registerHelper('toCamelCaseForFunctions', function (fn: string) {
-	return stringCamelCase(fn);
+  return stringCamelCase(fn);
 });
 
-Handlebars.registerHelper( 'buildReturn', function(fn: Method) {
-	if(fn.methodType == 'query') {
-		let res = '';
-		if (fn.resultQuery) {
-			res += 'queryOkJSON';
-		}
-		else {
-			res += 'queryJSON';
-			if(fn.returnType?.tsStr == 'ReturnNumber') {
-				res += '< ReturnNumber >';
-			}
-		}
+Handlebars.registerHelper('buildReturn', function (fn: Method) {
+  if (fn.methodType === 'query') {
+    let res = '';
+    if (fn.resultQuery) {
+      res += 'queryOkJSON';
+    } else {
+      res += 'queryJSON';
+      if (fn.returnType?.tsStr === 'ReturnNumber') {
+        res += '< ReturnNumber >';
+      }
+    }
 
-		res += '( this.__apiPromise, this.__nativeContract, this.__callerAddress,';
+    res += '( this.__apiPromise, this.__nativeContract, this.__callerAddress,';
 
-		return res;
-	}
-	else if(fn.methodType == 'tx') {
-		return `txSignAndSend( this.__apiPromise, this.__nativeContract, this.__keyringPair,`;
-	}
-	else if(fn.methodType == 'extrinsic') {
-		return `buildSubmittableExtrinsic( this.__apiPromise, this.__nativeContract,`;
-	}
-	else {
-		return '';
-	}
+    return res;
+  } else if (fn.methodType === 'tx') {
+    return `txSignAndSend( this.__apiPromise, this.__nativeContract, this.__keyringPair,`;
+  } else if (fn.methodType === 'extrinsic') {
+    return `buildSubmittableExtrinsic( this.__apiPromise, this.__nativeContract,`;
+  } else {
+    return '';
+  }
 });
 
-Handlebars.registerHelper( 'buildReturnType', function(fn: Method) {
-	if(fn.returnType) {
-		return `: Promise< QueryReturnType< ${fn.returnType.tsStr} > >`;
-	}
+Handlebars.registerHelper('buildReturnType', function (fn: Method) {
+  if (fn.returnType) {
+    return `: Promise< QueryReturnType< ${fn.returnType.tsStr} > >`;
+  }
 
-	return '';
+  return '';
 });
 
-Handlebars.registerHelper('buildWrapper', function(fn: Method) {
-	if(fn.methodType == 'query' && fn.returnType?.tsStr == 'ReturnNumber') {
-		return ', (result) => { return new ReturnNumber(result as (number | string)); }';
-	}
-	else if(fn.methodType == 'query' && fn.returnType && fn.returnType?.tsStr !== 'null' && fn.returnType?.tsStr !== 'number' && fn.returnType?.tsStr !== 'string' && fn.returnType?.tsStr !== 'boolean') {
-		return `, (result) => { return handleReturnType(result, getTypeDescription(${fn.returnType?.id}, DATA_TYPE_DESCRIPTIONS)); }`;
-	}
-	else {
-		return '';
-	}
+Handlebars.registerHelper('buildWrapper', function (fn: Method) {
+  if (fn.methodType === 'query' && fn.returnType?.tsStr === 'ReturnNumber') {
+    return ', (result) => { return new ReturnNumber(result as (number | string)); }';
+  } else if (
+    fn.methodType === 'query' &&
+    fn.returnType &&
+    fn.returnType?.tsStr !== 'null' &&
+    fn.returnType?.tsStr !== 'number' &&
+    fn.returnType?.tsStr !== 'string' &&
+    fn.returnType?.tsStr !== 'boolean'
+  ) {
+    return `, (result) => { return handleReturnType(result, getTypeDescription(${fn.returnType?.id}, DATA_TYPE_DESCRIPTIONS)); }`;
+  } else {
+    return '';
+  }
 });
 
-Handlebars.registerHelper('typeToString', function(description: TypeTS) {
-	return `export const ${description.name}TypeDescription = ${description.toString()};`;
+Handlebars.registerHelper('typeToString', function (description: TypeTS) {
+  return `export const ${description.name}TypeDescription = ${description.toString()};`;
 });
 
-Handlebars.registerHelper('ifTx', function(fn: Method, options: any) {
-	if(fn.methodType == 'tx') {
-		return options.fn(fn);
-	} else {
-		return '';
-	}
+Handlebars.registerHelper('ifTx', function (fn: Method, options: any) {
+  if (fn.methodType === 'tx') {
+    return options.fn(fn);
+  } else {
+    return '';
+  }
 });

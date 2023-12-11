@@ -33,8 +33,8 @@
  *  @example
  *  # Usage from CLI
  *  ```bash
- *     $ npm i @prosopo/typechain-polkadot
- *     $ npx @prosopo/typechain-polkadot --in path/to/abis --out path/to/output/folder
+ *     $ npm i wookashwackomytest-typechain-polkadot
+ *     $ npx wookashwackomytest-typechain-polkadot --in path/to/abis --out path/to/output/folder
  *  ```
  *
  *  @packageDocumentation
@@ -42,68 +42,62 @@
 
 import YARGS from 'yargs';
 
-import TypechainPolkadot from "./src/types/typechain";
-import PathAPI from "path";
-import FsAPI from "fs";
+import TypechainPolkadot from './src/types/typechain';
+import PathAPI from 'path';
+import FsAPI from 'fs';
 
-const _argv = YARGS
-	.option('input', {
-		alias: ['in'],
-		demandOption: "Please, specify, where to take ABIs",
-		description: 'Input relative path',
-		type: 'string',
-	})
-	.option('output', {
-		demandOption: "Please, specify, where to put generated files",
-		alias: ['out'],
-		description: 'Output relative path',
-		type: 'string',
-	})
-	.option('pluginsDir', {
-		alias: ['plugins'],
-		description: 'Plugins directory',
-		type: 'string',
-	})
-	.help().alias( 'h', 'help')
-	.argv;
+const _argv = YARGS.option('input', {
+  alias: ['in'],
+  demandOption: 'Please, specify, where to take ABIs',
+  description: 'Input relative path',
+  type: 'string',
+})
+  .option('output', {
+    demandOption: 'Please, specify, where to put generated files',
+    alias: ['out'],
+    description: 'Output relative path',
+    type: 'string',
+  })
+  .option('pluginsDir', {
+    alias: ['plugins'],
+    description: 'Plugins directory',
+    type: 'string',
+  })
+  .help()
+  .alias('h', 'help').argv;
 
 async function main() {
-	const argv = _argv as Awaited<typeof _argv>;
+  const argv = _argv as Awaited<typeof _argv>;
 
-	const cwdPath = process.cwd();
+  const cwdPath = process.cwd();
 
-	const typechain = new TypechainPolkadot();
+  const typechain = new TypechainPolkadot();
 
-	const pluginsDir = argv.pluginsDir ? PathAPI.resolve(cwdPath, argv.pluginsDir) : undefined;
+  const pluginsDir = argv.pluginsDir ? PathAPI.resolve(cwdPath, argv.pluginsDir) : undefined;
 
-	typechain.loadDefaultPlugins();
+  typechain.loadDefaultPlugins();
 
-	if (pluginsDir) {
-		// check all .plugin.ts files in pluginsDir
-		// and load them
+  if (pluginsDir) {
+    // check all .plugin.ts files in pluginsDir
+    // and load them
 
-		const pluginFiles = FsAPI.readdirSync(pluginsDir);
+    const pluginFiles = FsAPI.readdirSync(pluginsDir);
 
-		const pluginFileNames: string[] = [];
+    const pluginFileNames: string[] = [];
 
-		for (const file of pluginFiles) {
-			if (file.endsWith('.plugin.ts')) {
-				pluginFileNames.push(PathAPI.resolve(pluginsDir, file));
-			}
-		}
+    for (const file of pluginFiles) {
+      if (file.endsWith('.plugin.ts')) {
+        pluginFileNames.push(PathAPI.resolve(pluginsDir, file));
+      }
+    }
 
-		await typechain.loadPluginsFromFiles(pluginFileNames);
-	}
+    await typechain.loadPluginsFromFiles(pluginFileNames);
+  }
 
-	await typechain.run(
-		PathAPI.resolve(cwdPath, `./${argv.input}`),
-		PathAPI.resolve(cwdPath, `./${argv.output}`)
-	);
+  await typechain.run(PathAPI.resolve(cwdPath, `./${argv.input}`), PathAPI.resolve(cwdPath, `./${argv.output}`));
 }
 
 main().catch((e) => {
-	console.error(e);
-	process.exit(1);
+  console.error(e);
+  process.exit(1);
 });
-
-

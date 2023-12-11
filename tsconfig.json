@@ -1,17 +1,15 @@
 {
   "extends": "./base.tsconfig.json",
-  "files": [
-	"tests/**/*.ts"
-  ],
+  "files": ["tests/**/*.ts"],
   "references": [
-	{
-	  "path": "./packages/typechain-polkadot/tsconfig.ref.json"
-	},
-	{
-	  "path": "./packages/typechain-polkadot-parser/tsconfig.ref.json"
-	}
+    {
+      "path": "./packages/typechain-polkadot/tsconfig.ref.json"
+    },
+    {
+      "path": "./packages/typechain-polkadot-parser/tsconfig.ref.json"
+    }
   ],
   "compilerOptions": {
-	"esModuleInterop": true
+    "esModuleInterop": true
   }
 }

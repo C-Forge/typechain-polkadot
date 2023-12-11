@@ -1,29 +1,26 @@
-import FsAPI from "fs";
-import PathAPI from "path";
-import toml from "toml";
+import FsAPI from 'fs';
+import PathAPI from 'path';
+import toml from 'toml';
 
 /**
- * This package should compile your Rust projects, and generate TypeScript types with {@link @prosopo/typechain-polkadot}.
+ * This package should compile your Rust projects, and generate TypeScript types with {@link wookashwackomytest-typechain-polkadot}.
  *
  *
  * @packageInfo
  */
 
 export function getContractNameFromToml(tomlPath: string): string {
-	const tomlStr = FsAPI.readFileSync(tomlPath, "utf8");
-	const tomlParsed = toml.parse(tomlStr);
+  const tomlStr = FsAPI.readFileSync(tomlPath, 'utf8');
+  const tomlParsed = toml.parse(tomlStr);
 
-	return tomlParsed.package.name;
+  return tomlParsed.package.name;
 }
 
 export function __assureDirExists(absPathToBase: string, relPathToDir: string) {
-	const absPath = PathAPI.resolve(absPathToBase, `./${relPathToDir}`);
-	if (!FsAPI.existsSync(absPath)) FsAPI.mkdirSync(absPath);
+  const absPath = PathAPI.resolve(absPathToBase, `./${relPathToDir}`);
+  if (!FsAPI.existsSync(absPath)) FsAPI.mkdirSync(absPath);
 }
 
 export function __writeFileSync(absPathToBase: string, relFilePath: string, contents: string) {
-	FsAPI.writeFileSync(
-		PathAPI.resolve(absPathToBase, `./${relFilePath}`),
-		contents
-	);
+  FsAPI.writeFileSync(PathAPI.resolve(absPathToBase, `./${relFilePath}`), contents);
 }

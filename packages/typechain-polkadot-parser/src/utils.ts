@@ -19,80 +19,83 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import {INK_TYPES_TO_TS_ARGUMENTS, INK_TYPES_TO_TS_RETURNS} from "./consts";
-import assert from "assert";
-import {Abi} from "@polkadot/api-contract";
-import {TypeInfo, TypeTS} from "./types/TypeInfo";
-import camelcase from "camelcase";
+import { INK_PRIMITIVE_TYPES_TO_TS_ARGUMENTS, INK_PRIMITIVE_TYPES_TO_TS_RETURNS } from './consts';
+import assert from 'assert';
+import { Abi } from '@polkadot/api-contract';
+import { TypeInfo, TypeTS } from './types/TypeInfo';
+import camelcase from 'camelcase';
 
 function __getV3(abiJson: any) {
-	if (abiJson.V3) return abiJson.V3;
-	return abiJson;
+  if (abiJson.V3) return abiJson.V3;
+  return abiJson;
 }
 
-
 export const parsePrimitiveReturns = (primitive: string): string => {
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	return INK_TYPES_TO_TS_RETURNS[primitive];
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  return INK_PRIMITIVE_TYPES_TO_TS_RETURNS[primitive];
 };
 
 export const parsePrimitiveArgs = (primitive: string): string => {
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	return INK_TYPES_TO_TS_ARGUMENTS[primitive];
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  return INK_PRIMITIVE_TYPES_TO_TS_ARGUMENTS[primitive];
 };
 
 export const generateInterfaceReturns = (interfaceName: string, argumentNames: string[], argumentTypes: TypeInfo[]) => {
-	assert(argumentNames.length == argumentTypes.length);
+  assert(argumentNames.length === argumentTypes.length);
 
-	if (argumentNames.filter(a => a === '').length > 0) {
-		if (argumentNames.length === 1) {
-			return `export type ${interfaceName} = ${argumentTypes[0]!.tsReturnType};`;
-		} else {
-			return `export type ${interfaceName} = [${argumentTypes.map(a => a!.tsReturnType).join(', ')}];`;
-		}
-	}
+  if (argumentNames.filter((a) => a === '').length > 0) {
+    if (argumentNames.length === 1) {
+      return `export type ${interfaceName} = ${argumentTypes[0]!.tsReturnType};`;
+    } else {
+      return `export type ${interfaceName} = [${argumentTypes.map((a) => a!.tsReturnType).join(', ')}];`;
+    }
+  }
 
-	return `export type ${interfaceName} = {
+  return `export type ${interfaceName} = {
 \t${argumentNames.map((e, i) => `${camelcase(e)}: ${argumentTypes[i]!.tsReturnType}`).join(',\n\t')}
 }`;
 };
 
 export const generateInterfaceArgs = (interfaceName: string, argumentNames: string[], argumentTypes: TypeInfo[]) => {
-	assert(argumentNames.length == argumentTypes.length);
+  assert(argumentNames.length === argumentTypes.length);
 
-	if (argumentNames.filter(a => a === '').length > 0) {
-		if (argumentNames.length === 1) {
-			return `export type ${interfaceName} = ${argumentTypes[0]!.tsArgType};`;
-		} else {
-			return `export type ${interfaceName} = [${argumentTypes.map(a => a!.tsArgType).join(', ')}];`;
-		}
-	}
+  if (argumentNames.filter((a) => a === '').length > 0) {
+    if (argumentNames.length === 1) {
+      return `export type ${interfaceName} = ${argumentTypes[0]!.tsArgType};`;
+    } else {
+      return `export type ${interfaceName} = [${argumentTypes.map((a) => a!.tsArgType).join(', ')}];`;
+    }
+  }
 
-	return `export type ${interfaceName} = {
+  return `export type ${interfaceName} = {
 \t${argumentNames.map((e, i) => `${camelcase(e)}: ${argumentTypes[i]!.tsArgType}`).join(',\n\t')}
 }`;
 };
 
 export const generateEnum = (enumName: string, enumFields: string[]): string => {
-	return `export enum ${enumName} {
-	${enumFields.map(e => `${camelcase(e)} = '${e}'`).join(',\n\t')}
+  return `export enum ${enumName} {
+	${enumFields.map((e) => `${camelcase(e)} = '${e}'`).join(',\n\t')}
 }`;
 };
 
 export const generateClassEnum = (enumName: string, enumFields: string[], enumValues: string[]): string => {
-	assert(enumFields.length == enumValues.length);
-	return `export interface ${enumName} {
+  assert(enumFields.length === enumValues.length);
+  return `export interface ${enumName} {
 	${enumFields.map((e, i) => `${camelcase(e)} ? : ${enumValues[i]}`).join(',\n\t')}
 }
 
 export class ${enumName}Builder {
-	${enumFields.map((e, i) => `static ${e}(${enumValues[i] !== 'null' ? `value: ${enumValues[i]}` : ''}): ${enumName} {
+	${enumFields
+    .map(
+      (e, i) => `static ${e}(${enumValues[i] !== 'null' ? `value: ${enumValues[i]}` : ''}): ${enumName} {
 		return {
 		${enumValues[i] !== 'null' ? `\t${camelcase(e)}: value` : `\t${camelcase(e)}: null`},
 		};
-	}`).join('\n\t')}
+	}`,
+    )
+    .join('\n\t')}
 }`;
 };
 
@@ -103,46 +106,43 @@ export class ${enumName}Builder {
  * @returns The preprocessed ABI
  */
 export function preprocessABI(_abiStr: string): Abi {
-	const abiJson = JSON.parse(_abiStr);
+  const abiJson = JSON.parse(_abiStr);
 
-	for (const method of __getV3(abiJson).spec.messages) {
-		for (const arg of method.args) {
-			for (let i = 0; i < arg.type.displayName.length; i++) {
-				arg.type.displayName[i] = `_${arg.type.displayName[i]}`;
-			}
-		}
-	}
+  for (const method of __getV3(abiJson).spec.messages) {
+    for (const arg of method.args) {
+      for (let i = 0; i < arg.type.displayName.length; i++) {
+        arg.type.displayName[i] = `_${arg.type.displayName[i]}`;
+      }
+    }
+  }
 
-	const typeNamesCount = new Map<string, number>();
+  const typeNamesCount = new Map<string, number>();
 
-	for (const {type} of __getV3(abiJson).types) {
-		if (type.path === undefined) continue;
-		if (type.path[type.path.length - 1] == 'Mapping') continue;
+  for (const { type } of __getV3(abiJson).types) {
+    if (type.path === undefined) continue;
+    if (type.path[type.path.length - 1] === 'Mapping') continue;
 
-		if (type.path.length > 0) {
-			const value = typeNamesCount.get(type.path[type.path.length - 1]) || 0;
-			typeNamesCount.set(
-				type.path[type.path.length - 1],
-				value + 1
-			);
-		}
-	}
+    if (type.path.length > 0) {
+      const value = typeNamesCount.get(type.path[type.path.length - 1]) || 0;
+      typeNamesCount.set(type.path[type.path.length - 1], value + 1);
+    }
+  }
 
-	let __i = 0;
-	for (const {type} of __getV3(abiJson).types) {
-		__i++;
-		if (type.path === undefined) continue;
-		if (type.path[type.path.length - 1] == 'Mapping') continue;
+  let __i = 0;
+  for (const { type } of __getV3(abiJson).types) {
+    __i++;
+    if (type.path === undefined) continue;
+    if (type.path[type.path.length - 1] === 'Mapping') continue;
 
-		const count = typeNamesCount.get(type.path[type.path.length - 1]);
-		if (type.path.length > 0 && (count ? count : 0) > 1) {
-			if (type.path.length > 3) {
-				__getV3(abiJson).types[__i - 1].type.path[type.path.length - 1] = `${type.path[type.path.length - 2]}_${type.path[type.path.length - 1]}`;
-			}
-		}
-	}
+    const count = typeNamesCount.get(type.path[type.path.length - 1]);
+    if (type.path.length > 0 && (count ? count : 0) > 1) {
+      if (type.path.length > 3) {
+        __getV3(abiJson).types[__i - 1].type.path[type.path.length - 1] = `${type.path[type.path.length - 2]}_${type.path[type.path.length - 1]}`;
+      }
+    }
+  }
 
-	const _abiStrWithUnderscores = JSON.stringify(abiJson, null, 2);
+  const _abiStrWithUnderscores = JSON.stringify(abiJson, null, 2);
 
-	return new Abi(_abiStrWithUnderscores);
+  return new Abi(_abiStrWithUnderscores);
 }

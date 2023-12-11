@@ -19,16 +19,16 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import {Abi} from "@polkadot/api-contract";
-import {TypeParser} from "@prosopo/typechain-polkadot-parser";
-import {PolkadotEvent} from "../types";
-import Handlebars from "handlebars";
-import {writeFileSync} from "../utils/directories";
-import {readTemplate} from "../utils/handlebars-helpers";
+import { Abi } from '@polkadot/api-contract';
+import { TypeParser } from 'wookashwackomytest-typechain-polkadot-parser';
+import { PolkadotEvent } from '../types';
+import Handlebars from 'handlebars';
+import { writeFileSync } from '../utils/directories';
+import { readTemplate } from '../utils/handlebars-helpers';
 
-const generateForMetaTemplate = Handlebars.compile(readTemplate("events"));
+const generateForMetaTemplate = Handlebars.compile(readTemplate('events'));
 
-export const FILE = (fileName: string, events: PolkadotEvent[]) => generateForMetaTemplate({fileName, events});
+export const FILE = (fileName: string, events: PolkadotEvent[]) => generateForMetaTemplate({ fileName, events });
 
 /**
  * generates a mixed-methods file
@@ -38,22 +38,22 @@ export const FILE = (fileName: string, events: PolkadotEvent[]) => generateForMe
  * @param absPathToOutput - The absolute path to the output directory
  */
 function generate(abi: Abi, fileName: string, absPathToOutput: string) {
-	const parser = new TypeParser(abi);
+  const parser = new TypeParser(abi);
 
-	const events: PolkadotEvent[] = parser.tsEventTypes.map((event) => {
-		return {
-			name: event.tsReturnType,
-		};
-	});
+  const events: PolkadotEvent[] = parser.tsEventTypes.map((event) => {
+    return {
+      name: event.tsReturnType,
+    };
+  });
 
-	writeFileSync(absPathToOutput, `events/${fileName}.ts`, FILE(fileName, events));
+  writeFileSync(absPathToOutput, `events/${fileName}.ts`, FILE(fileName, events));
 }
 
 export default class EventsPlugin {
-	generate(abi: Abi, fileName: string, absPathToABIs: string, absPathToOutput: string): void {
-		generate(abi, fileName, absPathToOutput);
-	}
+  generate(abi: Abi, fileName: string, absPathToABIs: string, absPathToOutput: string): void {
+    generate(abi, fileName, absPathToOutput);
+  }
 
-	name: string = "EventsPlugin";
-	outputDir: string = "events";
+  name: string = 'EventsPlugin';
+  outputDir: string = 'events';
 }

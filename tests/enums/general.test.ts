@@ -1,54 +1,50 @@
-import * as PolkadotAPI from "@polkadot/api";
-import Contract from "../generated/contracts/contract_with_enums";
-import {AnotherEnumBuilder, EnumExampleBuilder} from "../generated/types-arguments/contract_with_enums";
-import Constructors from "../generated/constructors/contract_with_enums";
-import type {KeyringPair} from "@polkadot/keyring/types";
-import {GetAccounts} from "../config";
+import * as PolkadotAPI from '@polkadot/api';
+import Contract from '../generated/contracts/contract_with_enums';
+import { AnotherEnumBuilder, EnumExampleBuilder } from '../generated/types-arguments/contract_with_enums';
+import Constructors from '../generated/constructors/contract_with_enums';
+import type { KeyringPair } from '@polkadot/keyring/types';
+import { GetAccounts } from '../config';
 
 describe('MY_PSP34', () => {
-	let api: PolkadotAPI.ApiPromise;
-	let contract: Contract;
-	let UserAlice: KeyringPair, UserBob: KeyringPair, UserCharlie : KeyringPair;
+  let api: PolkadotAPI.ApiPromise;
+  let contract: Contract;
+  let UserAlice: KeyringPair, UserBob: KeyringPair, UserCharlie: KeyringPair;
 
-	beforeAll(async () => {
-		api = await PolkadotAPI.ApiPromise.create();
+  beforeAll(async () => {
+    api = await PolkadotAPI.ApiPromise.create();
 
-		const accounts = GetAccounts();
+    const accounts = GetAccounts();
 
-		UserAlice = accounts.UserAlice;
-		UserBob = accounts.UserBob;
-		UserCharlie = accounts.UserCharlie;
+    UserAlice = accounts.UserAlice;
+    UserBob = accounts.UserBob;
+    UserCharlie = accounts.UserCharlie;
 
-		const factory = new Constructors(api, UserAlice);
+    const factory = new Constructors(api, UserAlice);
 
-		const res = await factory.new();
+    const res = await factory.new();
 
-		contract = new Contract(res.address, UserAlice, api);
-	});
+    contract = new Contract(res.address, UserAlice, api);
+  });
 
-	afterAll(async () => {
-		await api.disconnect();
-	});
+  afterAll(async () => {
+    await api.disconnect();
+  });
 
-	jest.setTimeout(10000);
+  jest.setTimeout(10000);
 
-	test('Returns proper value', async () => {
-		const {
-			query,
-			tx,
-		} = contract;
+  test('Returns proper value', async () => {
+    const { query, tx } = contract;
 
-		const resultA = await query.getMessage(EnumExampleBuilder.A("Hello"));
-		expect(resultA.value).toEqual("Hello");
+    const resultA = await query.getMessage(EnumExampleBuilder.A('Hello'));
+    expect(resultA.value).toEqual('Hello');
 
-		const resultB = await query.getMessage(EnumExampleBuilder.B(42));
-		expect(resultB.value).toEqual("42");
+    const resultB = await query.getMessage(EnumExampleBuilder.B(42));
+    expect(resultB.value).toEqual('42');
 
-		const resultC = await query.getMessage(EnumExampleBuilder.C(AnotherEnumBuilder.A([42])));
-		expect(resultC.value).toEqual("[42]");
+    const resultC = await query.getMessage(EnumExampleBuilder.C(AnotherEnumBuilder.A([42])));
+    expect(resultC.value).toEqual('[42]');
 
-		const resultE = await query.getMessage(EnumExampleBuilder.E());
-		expect(resultE.value).toEqual("E");
-	});
-
+    const resultE = await query.getMessage(EnumExampleBuilder.E());
+    expect(resultE.value).toEqual('E');
+  });
 });

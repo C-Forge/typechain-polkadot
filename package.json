@@ -1,42 +1,47 @@
 {
-	"name": "typechain-workspace",
-	"workspaces": [
-		"packages/*",
-		"examples/*"
-	],
-	"files": [
-		"tests/**/*"
-	],
-	"private": true,
-	"scripts": {
-		"start-typechain": "npx @prosopo/typechain-polkadot --in ./artifacts --out ./out",
-		"build:all": "npm run --workspaces --if-present build",
-		"publish:dry-run": "npm --workspaces publish --dry-run",
-		"publish": "npm --workspaces publish --access=public",
-		"gen-test-ts": "npx @prosopo/typechain-polkadot --in tests/artifacts --out tests/generated",
-		"only-test": "npx jest --no-cache --maxWorkers 1",
-		"test": "npm run gen-test-ts && npm run only-test",
-		"lint": "eslint \"{packages, examples}/**/*.ts\"",
-		"lint:fix": "eslint --fix \"{packages, examples}/**/*.ts\""
-	},
-	"dependencies": {
-		"@prosopo/typechain-polkadot": "file:packages/typechain-polkadot",
-		"@prosopo/typechain-types": "file:packages/typechain-types",
-		"@types/bn.js": "^5.1.0",
-		"@types/eslint": "^8.4.3",
-		"@types/jest": "^27.5.2",
-		"@typescript-eslint/eslint-plugin": "^5.25.0",
-		"@typescript-eslint/parser": "^5.25.0",
-		"eslint": "^8.18.0",
-		"eslint-import-resolver-typescript": "^2.7.1",
-		"eslint-plugin-import": "^2.26.0",
-		"eslint-plugin-node": "^11.1.0",
-		"hjson": "^3.2.2",
-		"ts-jest": "^28.0.0",
-		"tslib": "^2.6.2"
-	},
-	"devDependencies": {
-		"@types/node": "^20.10.0",
-		"typescript": "^5.2.2"
-	}
+  "name": "typechain-workspace",
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
+  "files": [
+    "tests/**/*"
+  ],
+  "private": true,
+  "scripts": {
+    "start-typechain": "npx tsx packages/typechain-polkadot/index.ts --in ./artifacts --out ./out",
+    "build:all": "npm run --workspaces --if-present build",
+    "publish:dry-run": "npm --workspaces publish --dry-run",
+    "publish:all": "npm --workspaces publish --access=public",
+    "publish:packages": "npm --workspace packages publish --access=public",
+    "publish:examples": "npm --workspace packages publish --access=public",
+    "gen-test-ts": "npx tsx packages/typechain-polkadot/index.ts --in tests/artifacts --out tests/generated",
+    "only-test": "npx jest --no-cache --maxWorkers 1",
+    "test": "npm run gen-test-ts && npm run only-test",
+    "lint": "eslint \"{packages, examples}/**/*.ts\"",
+    "lint:fix": "eslint --fix \"{packages, examples}/**/*.ts\"",
+    "postinstall": "husky install"
+  },
+  "dependencies": {
+    "@types/bn.js": "^5.1.0",
+    "@types/eslint": "^8.4.3",
+    "@types/jest": "^27.5.2",
+    "@typescript-eslint/eslint-plugin": "^5.25.0",
+    "@typescript-eslint/parser": "^5.25.0",
+    "eslint": "^8.18.0",
+    "eslint-import-resolver-typescript": "^2.7.1",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-node": "^11.1.0",
+    "hjson": "^3.2.2",
+    "ts-jest": "^28.0.0",
+    "tslib": "^2.6.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.1.0",
+    "tsx": "^4.6.2",
+    "typescript": "^5.2.2"
+  }
 }

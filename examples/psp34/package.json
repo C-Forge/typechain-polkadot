@@ -1,15 +1,15 @@
 {
-  "name": "psp34",
+  "name": "psp34-test",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "generate": "npx typechain-polkadot --in ./artifacts --out ./out",
+    "generate": "npx wookashwackomytest-typechain-polkadot --in ./artifacts --out ./out",
     "start": "ts-node index.ts"
   },
   "dependencies": {
-	  "@prosopo/typechain-polkadot": "1.1.13",
-	  "@prosopo/typechain-types": "1.1.13",
+    "wookashwackomytest-typechain-polkadot": "../../packages/typechain-polkadot",
+    "wookashwackomytest-typechain-types": "../../packages/typechain-types",
     "@types/node": "^18.8.0",
     "ts-node": "^10.7.0",
     "typescript": "^5.2.2",

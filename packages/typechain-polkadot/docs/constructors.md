@@ -1,7 +1,9 @@
 # Constructors
+
 Used to deploy contracts, using different constructors.
 
 Let's deploy the following contract:
+
 ```rust
 #![cfg_attr(not(feature = "std"), no_std)]
 #![feature(min_specialization)]
@@ -33,8 +35,10 @@ pub mod my_psp22 {
     }
 }
 ```
+
 This contract has a constructor `new` with one argument `initial_supply`.
 To deploy this contract, you need to use the following code:
+
 ```typescript
 // Import here Constructors and Contract classes
 
@@ -43,7 +47,7 @@ To deploy this contract, you need to use the following code:
 const factory = new Constructors(api, UserAlice);
 
 // You can access to the different constructors using the name of the constructor, here we will use "new"
-const {result, address} = await factory.new('10', {});
+const { result, address } = await factory.new('10', {});
 
 // Here we are creating an instance of the Contract class, which is used to interact with the deployed contract
 contract = new Contract(address, UserAlice, api);

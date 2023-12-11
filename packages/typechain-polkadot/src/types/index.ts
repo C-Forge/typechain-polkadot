@@ -19,38 +19,41 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import BN from "bn.js";
+import BN from 'bn.js';
 
 export interface Method {
-	name: string;
-	originalName: string;
-	args : {
-		name : string;
-		type : {
-			id : number | string;
-		};
-	}[];
-	payable ? : boolean;
-	returnType ? : undefined | null | {
-		id : number | string;
-		tsStr : string,
-	};
-	resultQuery ?: boolean
-	mutating ? : boolean;
-	methodType ? : 'query' | 'tx' | 'extrinsic' | 'constructor';
-	pathToContractFile ? : string;
+  name: string;
+  originalName: string;
+  args: {
+    name: string;
+    type: {
+      id: number | string;
+    };
+  }[];
+  payable?: boolean;
+  returnType?:
+    | undefined
+    | null
+    | {
+        id: number | string;
+        tsStr: string;
+      };
+  resultQuery?: boolean;
+  mutating?: boolean;
+  methodType?: 'query' | 'tx' | 'extrinsic' | 'constructor';
+  pathToContractFile?: string;
 }
 
 export interface Type {
-	id: number | string;
-	tsStr: string;
+  id: number | string;
+  tsStr: string;
 }
 
 export interface Import {
-	values: string[];
-	path: string;
+  values: string[];
+  path: string;
 }
 
 export interface PolkadotEvent {
-	name: string;
+  name: string;
 }

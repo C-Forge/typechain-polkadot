@@ -10,19 +10,11 @@ To create a plugin you need to create a class that implements `Plugin` interface
 
 ```typescript
 export interface TypechainPlugin {
-	name: string;
-	outputDir: string;
-	overrides ?: boolean
-	generate: (
-		abi: Abi,
-		fileName: string,
-		absPathToABIs: string,
-		absPathToOutput: string
-	) => void;
-	beforeRun ?: (
-		absPathToABIs: string,
-		absPathToOutput: string
-	) => void;
+  name: string;
+  outputDir: string;
+  overrides?: boolean;
+  generate: (abi: Abi, fileName: string, absPathToABIs: string, absPathToOutput: string) => void;
+  beforeRun?: (absPathToABIs: string, absPathToOutput: string) => void;
 }
 ```
 

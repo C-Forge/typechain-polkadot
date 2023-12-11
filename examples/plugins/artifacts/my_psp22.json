@@ -16,9 +16,7 @@
   "contract": {
     "name": "my_psp22_mintable",
     "version": "2.4.0",
-    "authors": [
-      "Supercolony <m.konstantinovna@supercolony.net>"
-    ]
+    "authors": ["Supercolony <m.konstantinovna@supercolony.net>"]
   },
   "spec": {
     "constructors": [
@@ -27,9 +25,7 @@
           {
             "label": "total_supply",
             "type": {
-              "displayName": [
-                "Balance"
-              ],
+              "displayName": ["Balance"],
               "type": 0
             }
           }
@@ -38,10 +34,7 @@
         "label": "new",
         "payable": false,
         "returnType": {
-          "displayName": [
-            "ink_primitives",
-            "ConstructorResult"
-          ],
+          "displayName": ["ink_primitives", "ConstructorResult"],
           "type": 2
         },
         "selector": "0x9bae9d5e"
@@ -50,10 +43,7 @@
     "docs": [],
     "events": [],
     "lang_error": {
-      "displayName": [
-        "ink",
-        "LangError"
-      ],
+      "displayName": ["ink", "LangError"],
       "type": 3
     },
     "messages": [
@@ -62,18 +52,14 @@
           {
             "label": "account",
             "type": {
-              "displayName": [
-                "AccountId"
-              ],
+              "displayName": ["AccountId"],
               "type": 4
             }
           },
           {
             "label": "amount",
             "type": {
-              "displayName": [
-                "Balance"
-              ],
+              "displayName": ["Balance"],
               "type": 0
             }
           }
@@ -83,10 +69,7 @@
         "mutates": true,
         "payable": false,
         "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
+          "displayName": ["ink", "MessageResult"],
           "type": 7
         },
         "selector": "0x1d2f13c5"
@@ -96,40 +79,28 @@
           {
             "label": "from",
             "type": {
-              "displayName": [
-                "psp22_external",
-                "TransferFromInput1"
-              ],
+              "displayName": ["psp22_external", "TransferFromInput1"],
               "type": 4
             }
           },
           {
             "label": "to",
             "type": {
-              "displayName": [
-                "psp22_external",
-                "TransferFromInput2"
-              ],
+              "displayName": ["psp22_external", "TransferFromInput2"],
               "type": 4
             }
           },
           {
             "label": "value",
             "type": {
-              "displayName": [
-                "psp22_external",
-                "TransferFromInput3"
-              ],
+              "displayName": ["psp22_external", "TransferFromInput3"],
               "type": 0
             }
           },
           {
             "label": "data",
             "type": {
-              "displayName": [
-                "psp22_external",
-                "TransferFromInput4"
-              ],
+              "displayName": ["psp22_external", "TransferFromInput4"],
               "type": 10
             }
           }
@@ -159,10 +130,7 @@
         "mutates": true,
         "payable": false,
         "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
+          "displayName": ["ink", "MessageResult"],
           "type": 7
         },
         "selector": "0x54b3c76e"
@@ -172,20 +140,14 @@
           {
             "label": "spender",
             "type": {
-              "displayName": [
-                "psp22_external",
-                "DecreaseAllowanceInput1"
-              ],
+              "displayName": ["psp22_external", "DecreaseAllowanceInput1"],
               "type": 4
             }
           },
           {
             "label": "delta_value",
             "type": {
-              "displayName": [
-                "psp22_external",
-                "DecreaseAllowanceInput2"
-              ],
+              "displayName": ["psp22_external", "DecreaseAllowanceInput2"],
               "type": 0
             }
           }
@@ -208,10 +170,7 @@
         "mutates": true,
         "payable": false,
         "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
+          "displayName": ["ink", "MessageResult"],
           "type": 7
         },
         "selector": "0xfecb57d5"
@@ -221,44 +180,29 @@
           {
             "label": "owner",
             "type": {
-              "displayName": [
-                "psp22_external",
-                "BalanceOfInput1"
-              ],
+              "displayName": ["psp22_external", "BalanceOfInput1"],
               "type": 4
             }
           }
         ],
-        "docs": [
-          " Returns the account Balance for the specified `owner`.",
-          "",
-          " Returns `0` if the account is non-existent."
-        ],
+        "docs": [" Returns the account Balance for the specified `owner`.", "", " Returns `0` if the account is non-existent."],
         "label": "PSP22::balance_of",
         "mutates": false,
         "payable": false,
         "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
+          "displayName": ["ink", "MessageResult"],
           "type": 11
         },
         "selector": "0x6568382f"
       },
       {
         "args": [],
-        "docs": [
-          " Returns the total token supply."
-        ],
+        "docs": [" Returns the total token supply."],
         "label": "PSP22::total_supply",
         "mutates": false,
         "payable": false,
         "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
+          "displayName": ["ink", "MessageResult"],
           "type": 11
         },
         "selector": "0x162df8c2"
@@ -268,20 +212,14 @@
           {
             "label": "spender",
             "type": {
-              "displayName": [
-                "psp22_external",
-                "ApproveInput1"
-              ],
+              "displayName": ["psp22_external", "ApproveInput1"],
               "type": 4
             }
           },
           {
             "label": "value",
             "type": {
-              "displayName": [
-                "psp22_external",
-                "ApproveInput2"
-              ],
+              "displayName": ["psp22_external", "ApproveInput2"],
               "type": 0
             }
           }
@@ -304,10 +242,7 @@
         "mutates": true,
         "payable": false,
         "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
+          "displayName": ["ink", "MessageResult"],
           "type": 7
         },
         "selector": "0xb20f1bbd"
@@ -317,20 +252,14 @@
           {
             "label": "spender",
             "type": {
-              "displayName": [
-                "psp22_external",
-                "IncreaseAllowanceInput1"
-              ],
+              "displayName": ["psp22_external", "IncreaseAllowanceInput1"],
               "type": 4
             }
           },
           {
             "label": "delta_value",
             "type": {
-              "displayName": [
-                "psp22_external",
-                "IncreaseAllowanceInput2"
-              ],
+              "displayName": ["psp22_external", "IncreaseAllowanceInput2"],
               "type": 0
             }
           }
@@ -350,10 +279,7 @@
         "mutates": true,
         "payable": false,
         "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
+          "displayName": ["ink", "MessageResult"],
           "type": 7
         },
         "selector": "0x96d6b57a"
@@ -363,20 +289,14 @@
           {
             "label": "owner",
             "type": {
-              "displayName": [
-                "psp22_external",
-                "AllowanceInput1"
-              ],
+              "displayName": ["psp22_external", "AllowanceInput1"],
               "type": 4
             }
           },
           {
             "label": "spender",
             "type": {
-              "displayName": [
-                "psp22_external",
-                "AllowanceInput2"
-              ],
+              "displayName": ["psp22_external", "AllowanceInput2"],
               "type": 4
             }
           }
@@ -390,10 +310,7 @@
         "mutates": false,
         "payable": false,
         "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
+          "displayName": ["ink", "MessageResult"],
           "type": 11
         },
         "selector": "0x4d47d921"
@@ -403,30 +320,21 @@
           {
             "label": "to",
             "type": {
-              "displayName": [
-                "psp22_external",
-                "TransferInput1"
-              ],
+              "displayName": ["psp22_external", "TransferInput1"],
               "type": 4
             }
           },
           {
             "label": "value",
             "type": {
-              "displayName": [
-                "psp22_external",
-                "TransferInput2"
-              ],
+              "displayName": ["psp22_external", "TransferInput2"],
               "type": 0
             }
           },
           {
             "label": "data",
             "type": {
-              "displayName": [
-                "psp22_external",
-                "TransferInput3"
-              ],
+              "displayName": ["psp22_external", "TransferInput3"],
               "type": 10
             }
           }
@@ -450,10 +358,7 @@
         "mutates": true,
         "payable": false,
         "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
+          "displayName": ["ink", "MessageResult"],
           "type": 7
         },
         "selector": "0xdb20f9f5"
@@ -463,37 +368,24 @@
           {
             "label": "account",
             "type": {
-              "displayName": [
-                "psp22mintable_external",
-                "MintInput1"
-              ],
+              "displayName": ["psp22mintable_external", "MintInput1"],
               "type": 4
             }
           },
           {
             "label": "amount",
             "type": {
-              "displayName": [
-                "psp22mintable_external",
-                "MintInput2"
-              ],
+              "displayName": ["psp22mintable_external", "MintInput2"],
               "type": 0
             }
           }
         ],
-        "docs": [
-          " Minting `amount` tokens to the account.",
-          "",
-          " See [`PSP22::_mint_to`]."
-        ],
+        "docs": [" Minting `amount` tokens to the account.", "", " See [`PSP22::_mint_to`]."],
         "label": "PSP22Mintable::mint",
         "mutates": true,
         "payable": false,
         "returnType": {
-          "displayName": [
-            "ink",
-            "MessageResult"
-          ],
+          "displayName": ["ink", "MessageResult"],
           "type": 7
         },
         "selector": "0xfc3c75d4"
@@ -642,9 +534,7 @@
             "type": 3
           }
         ],
-        "path": [
-          "Result"
-        ]
+        "path": ["Result"]
       }
     },
     {
@@ -660,10 +550,7 @@
             ]
           }
         },
-        "path": [
-          "ink_primitives",
-          "LangError"
-        ]
+        "path": ["ink_primitives", "LangError"]
       }
     },
     {
@@ -679,11 +566,7 @@
             ]
           }
         },
-        "path": [
-          "ink_primitives",
-          "types",
-          "AccountId"
-        ]
+        "path": ["ink_primitives", "types", "AccountId"]
       }
     },
     {
@@ -742,9 +625,7 @@
             "type": 3
           }
         ],
-        "path": [
-          "Result"
-        ]
+        "path": ["Result"]
       }
     },
     {
@@ -784,9 +665,7 @@
             "type": 9
           }
         ],
-        "path": [
-          "Result"
-        ]
+        "path": ["Result"]
       }
     },
     {
@@ -834,13 +713,7 @@
             ]
           }
         },
-        "path": [
-          "openbrush_contracts",
-          "traits",
-          "errors",
-          "psp22",
-          "PSP22Error"
-        ]
+        "path": ["openbrush_contracts", "traits", "errors", "psp22", "PSP22Error"]
       }
     },
     {
@@ -890,9 +763,7 @@
             "type": 3
           }
         ],
-        "path": [
-          "Result"
-        ]
+        "path": ["Result"]
       }
     }
   ],

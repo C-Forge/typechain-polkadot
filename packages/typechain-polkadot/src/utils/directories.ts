@@ -19,18 +19,18 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import * as FsExtraAPI from "fs-extra";
-import PathAPI from "path";
-import FsAPI from "fs";
+import * as FsExtraAPI from 'fs-extra';
+import PathAPI from 'path';
+import FsAPI from 'fs';
 
 /**
  * Assures that the given directory exists
  * @param absPathToBase - The absolute path to the base directory
  * @param relPathToDir - The relative path to the directory
  */
-export function assureDirExists(absPathToBase : string, relPathToDir : string) {
-	const absPath = PathAPI.resolve( absPathToBase, `./${relPathToDir}` );
-	if( !FsAPI.existsSync(absPath) ) FsAPI.mkdirSync(absPath);
+export function assureDirExists(absPathToBase: string, relPathToDir: string) {
+  const absPath = PathAPI.resolve(absPathToBase, `./${relPathToDir}`);
+  if (!FsAPI.existsSync(absPath)) FsAPI.mkdirSync(absPath);
 }
 
 /**
@@ -39,11 +39,8 @@ export function assureDirExists(absPathToBase : string, relPathToDir : string) {
  * @param relFilePath - The relative path to the file
  * @param contents - The contents of the file
  */
-export function writeFileSync(absPathToBase : string, relFilePath : string, contents : string) {
-	FsAPI.writeFileSync(
-		PathAPI.resolve( absPathToBase, `./${relFilePath}` ),
-		contents
-	);
+export function writeFileSync(absPathToBase: string, relFilePath: string, contents: string) {
+  FsAPI.writeFileSync(PathAPI.resolve(absPathToBase, `./${relFilePath}`), contents);
 }
 
 /**
@@ -51,10 +48,7 @@ export function writeFileSync(absPathToBase : string, relFilePath : string, cont
  * @param absPathToOutput - The absolute path to the output directory
  */
 export function generateProjectStructure(absPathToOutput: string) {
-	assureDirExists(absPathToOutput, '');
-	assureDirExists(absPathToOutput, 'shared');
-	FsExtraAPI.copySync(
-		PathAPI.resolve(__dirname, '../templates/raw/shared'),
-		PathAPI.resolve(absPathToOutput, 'shared')
-	);
+  assureDirExists(absPathToOutput, '');
+  assureDirExists(absPathToOutput, 'shared');
+  FsExtraAPI.copySync(PathAPI.resolve(__dirname, '../templates/raw/shared'), PathAPI.resolve(absPathToOutput, 'shared'));
 }

@@ -1,4 +1,5 @@
 # Mixed Methods
+
 This namespace contains both tx and query methods.
 
 ```typescript

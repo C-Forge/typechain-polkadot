@@ -11,7 +11,7 @@ Package for generating TypeScript definitions & runtime code for Polkadot smart 
 In your project install this package:
 
 ```bash
-npm i -D @prosopo/typechain-polkadot
+npm i -D wookashwackomytest-typechain-polkadot
 ```
 
 Now you can use it to generate TS definitions & runtime code for Polkadot smart contracts. To use typechain-polkadot.
@@ -28,7 +28,7 @@ Typechain can be used in two ways:
 After installing the package, you can use it as a CLI tool. To use it, run the following command:
 
 ```bash
-npx @prosopo/typechain-polkadot --input path/to/abis --output path/to/output
+npx wookashwackomytest-typechain-polkadot --input path/to/abis --output path/to/output
 ```
 
 ## Methods and namespaces used in the typechain, and their description
@@ -46,9 +46,11 @@ tx.signAndSend(account, (result) => {
 ```
 
 ### constructors
+
 Used to deploy contracts, using different constructors.
 
 Let's deploy the following contract:
+
 ```rust
 #![cfg_attr(not(feature = "std"), no_std)]
 #![feature(min_specialization)]
@@ -80,8 +82,10 @@ pub mod my_psp22 {
     }
 }
 ```
+
 This contract has a constructor `new` with one argument `initial_supply`.
 To deploy this contract, you need to use the following code:
+
 ```typescript
 // Import here Constructors and Contract classes
 
@@ -90,7 +94,7 @@ To deploy this contract, you need to use the following code:
 const factory = new Constructors(api, UserAlice);
 
 // You can access to the different constructors using the name of the constructor, here we will use "new"
-const {result, address} = await factory.new('10', {});
+const { result, address } = await factory.new('10', {});
 
 // Here we are creating an instance of the Contract class, which is used to interact with the deployed contract
 contract = new Contract(address, UserAlice, api);
@@ -132,9 +136,11 @@ contract.withAPI(api)
 ```
 
 ### data
+
 Utility file. Contains all info about types. It's used in runtime to parse return values from contracts.
 
 ### mixed-methods
+
 This namespace contains both tx and query methods.
 
 ```typescript
@@ -142,6 +148,7 @@ contract.mixedMethods.<functionName>(...args, options)
 ```
 
 ### query
+
 This namepsace contains all query methods
 
 ```typescript
@@ -154,11 +161,12 @@ You can also use it to get errors from contracts
 
 ```typescript
 try {
-	await contract.withSigner(UserBob).query.transfer(UserAlice.address, '10', []);
+  await contract.withSigner(UserBob).query.transfer(UserAlice.address, '10', []);
 } catch ({ _err }) {
-	console.log(_err);
+  console.log(_err);
 }
 ```
+
 ```bash
 console.log
 	{ insufficientBalance: null }
@@ -177,17 +185,14 @@ const result = await contract.tx.<functionName>(...args, options)
 You can also use typechain-polkadot as a library. To use it, you need to import it in your code:
 
 ```typescript
-import {Typechain} from '@prosopo/typechain-polkadot/src/types/typechain';
-import {testPathPatternToRegExp} from "jest-util";
+import { Typechain } from 'wookashwackomytest-typechain-polkadot/src/types/typechain';
+import { testPathPatternToRegExp } from 'jest-util';
 
 const typechain = new Typechain();
 
 typechain.loadDefaultPlugins();
 
-typechain.run(
-	pathToInput,
-	pathToOutput
-)
+typechain.run(pathToInput, pathToOutput);
 ```
 
 ## Plugins
@@ -204,13 +209,11 @@ Typechain-polkadot uses plugins to generate code. By default, it uses the follow
 - query [docs](./docs/query.md)
 - tx-sign-and-send [docs](./docs/tx-sign-and-send.md)
 
-
-
 You can also create your own plugins to add some custom logic to the typechain-polkadot. To do this, you need to create a class that implements the `TypechainPlugin` interface:
 
 ```typescript
-import {TypechainPlugin} from '@prosopo/typechain-polkadot/src/types/interfaces';
-import {Abi} from "@polkadot/api-contract";
+import { TypechainPlugin } from 'wookashwackomytest-typechain-polkadot/src/types/interfaces';
+import { Abi } from '@polkadot/api-contract';
 
 /**
  * generates a contract file
@@ -221,17 +224,16 @@ import {Abi} from "@polkadot/api-contract";
  * @param absPathToABIs - The absolute path to the ABIs directory
  */
 function generate(abi: Abi, fileName: string, absPathToOutput: string, absPathToABIs: string) {
-	console.log('Hello World!');
+  console.log('Hello World!');
 }
 
 export default class HelloWorldPlugin implements TypechainPlugin {
+  name: string = 'HelloWorld';
+  outputDir: string = 'HelloWorld';
 
-	name: string = 'HelloWorld';
-	outputDir: string = 'HelloWorld';
-
-	generate(abi: Abi, fileName: string, absPathToABIs: string, absPathToOutput: string): void {
-		generate(abi, fileName, absPathToOutput, absPathToABIs);
-	}
+  generate(abi: Abi, fileName: string, absPathToABIs: string, absPathToOutput: string): void {
+    generate(abi, fileName, absPathToOutput, absPathToABIs);
+  }
 }
 ```
 
@@ -244,19 +246,17 @@ typechain.loadPlugins(new MyPlugin());
 Or you can load them via cli:
 
 ```bash
-npx @prosopo/typechain-polkadot --input path/to/abis --output path/to/output --plugins ./plugins-directory
+npx wookashwackomytest-typechain-polkadot --input path/to/abis --output path/to/output --plugins ./plugins-directory
 ```
+
 > Note: if you're using the cli, every plugin should end with `.plugin.ts` and have default export of the plugin itself.
 
 Also you can use `loadPluginsFromFiles` method to load plugins from files:
 
 ```typescript
-typechain.loadPluginsFromFiles(
-	'./plugins-directory'
-)
+typechain.loadPluginsFromFiles('./plugins-directory');
 ```
 
 ## Example of plugins usage
 
 You can find an example of plugins usage in the [examples](../../examples) directory.
-

@@ -1,7 +1,9 @@
 # Typechain-Polkadot
+
 This library generates TypeScript types from an `ink!`-based smart contract.
 
 # NOTE
+
 This library is a modified version of 727-venture's typechain-polkadot library. Our team at prosopo is currently in the process of revamping the library to incorporate bug fixes, updates from polkadot libraries, and various improvements. Both the 727-venture and Brushfam iterations of this library seem to be in a state of disrepair, which prompted us to take it over. It's important to note that, at present, generating TypeScript code from a contract is functional, but only through the command line. The functionality of calling via JavaScript and the plugin system is currently flawed. We plan to address and rectify these issues in the near future.
 
 ### Installation & import
@@ -14,13 +16,15 @@ npm i @prosopo/typechain-polkadot
 
 Pass the folder with artifacts(in the example it is `artifacts`) as input argument
 and the output folder(in the example it is `typed_contracts`):
+
 ```bash
 npx @prosopo/typechain-polkadot --in artifacts --out typed_contracts
 ```
 
 Import the contract what you want to use(in the example it is [`my_psp22`](https://github.com/727-Ventures/openbrush-contracts/tree/main/examples/psp22)):
+
 ```typescript
-import MyPSP22 from "../typed_contracts/contracts/my_psp22"
+import MyPSP22 from '../typed_contracts/contracts/my_psp22';
 ```
 
 In the code you can find all available methods and constructors.
@@ -30,11 +34,7 @@ but you can wrap any already deployed contract. If in the code you already
 have instantiated `contract` then you can easily wrap it:
 
 ```typescript
-const typed_contract = new MyPSP22(
-    contract.address.toString(),
-    signer /* who will sign transactions*/,
-    contract.api
-);
+const typed_contract = new MyPSP22(contract.address.toString(), signer /* who will sign transactions*/, contract.api);
 ```
 
 More information you can find in [docs](docs/about.md).
@@ -48,12 +48,13 @@ npx typechain-compiler --config config.json
 Also you can set some additional arguments like `--noCompile`, `--noTypechain`, `--release`
 
 Config interface will be something like this:
+
 ```typescript
 export interface Config {
-    projectFiles: string[]; // Path to all project files, everystring in glob format
-    skipLinting : boolean; // Skip linting of project files
-    artifactsPath : string; // Path to artifacts folder, where artifacts will be stored it will save both .contract and .json (contract ABI)
-    typechainGeneratedPath : string; // Path to typechain generated folder
+  projectFiles: string[]; // Path to all project files, everystring in glob format
+  skipLinting: boolean; // Skip linting of project files
+  artifactsPath: string; // Path to artifacts folder, where artifacts will be stored it will save both .contract and .json (contract ABI)
+  typechainGeneratedPath: string; // Path to typechain generated folder
 }
 ```
 

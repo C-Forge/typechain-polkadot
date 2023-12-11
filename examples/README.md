@@ -3,9 +3,11 @@
 This directory contains examples of parsed contracts and pieces of advice how to use the typechain-polkadot in your project.
 
 ### General usage
+
 - Create a new project with `npm init`
 - Create a new directory for your contracts' abi's (for example /artifacts)
 - Add to your package.json file the following and install it with `npm i`:
+
 ```json
 "dependencies": {
 	"@prosopo/typechain-polkadot": "0.6.8",
@@ -18,7 +20,9 @@ This directory contains examples of parsed contracts and pieces of advice how to
 	"@types/bn.js": "^5.1.0"
 }
 ```
+
 - Run typechain with
+
 ```bash
 npx @prosopo/typechain-polkadot --in path/to/artifacts --out path/to/output
 ```

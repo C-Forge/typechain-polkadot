@@ -19,17 +19,18 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import {Abi} from "@polkadot/api-contract";
-import {TypeParser} from "@prosopo/typechain-polkadot-parser";
-import Handlebars from "handlebars";
-import {TypeInfo} from "@prosopo/typechain-polkadot-parser/src/types/TypeInfo";
-import {Import} from "../types";
-import {readTemplate} from "../utils/handlebars-helpers";
-import {writeFileSync} from "../utils/directories";
+import { Abi } from '@polkadot/api-contract';
+import { TypeParser } from 'wookashwackomytest-typechain-polkadot-parser';
+import Handlebars from 'handlebars';
+import { TypeInfo } from 'wookashwackomytest-typechain-polkadot-parser/src/types/TypeInfo';
+import { Import } from '../types';
+import { readTemplate } from '../utils/handlebars-helpers';
+import { writeFileSync } from '../utils/directories';
 
-const generateForMetaTemplate = Handlebars.compile(readTemplate("event-types"));
+const generateForMetaTemplate = Handlebars.compile(readTemplate('event-types'));
 
-export const FILE = (fileName: string, tsTypes : TypeInfo[], additionalImports: Import[]) => generateForMetaTemplate({fileName, tsTypes, additionalImports});
+export const FILE = (fileName: string, tsTypes: TypeInfo[], additionalImports: Import[]) =>
+  generateForMetaTemplate({ fileName, tsTypes, additionalImports });
 
 /**
  * generates a types-returns file
@@ -39,20 +40,16 @@ export const FILE = (fileName: string, tsTypes : TypeInfo[], additionalImports: 
  * @param absPathToOutput - The absolute path to the output directory
  */
 function generate(abi: Abi, fileName: string, absPathToOutput: string) {
-	const parser = new TypeParser(abi);
+  const parser = new TypeParser(abi);
 
-	writeFileSync(
-		absPathToOutput,
-		`event-types/${fileName}.ts`,
-		FILE(fileName, parser.tsEventTypes, [])
-	);
+  writeFileSync(absPathToOutput, `event-types/${fileName}.ts`, FILE(fileName, parser.tsEventTypes, []));
 }
 
 export default class EventTypesPlugin {
-	generate(abi: Abi, fileName: string, absPathToABIs: string, absPathToOutput: string): void {
-		generate(abi, fileName, absPathToOutput);
-	}
+  generate(abi: Abi, fileName: string, absPathToABIs: string, absPathToOutput: string): void {
+    generate(abi, fileName, absPathToOutput);
+  }
 
-	name: string = "EventTypesPlugin";
-	outputDir: string = "event-types";
+  name: string = 'EventTypesPlugin';
+  outputDir: string = 'event-types';
 }
