@@ -48,7 +48,7 @@ export type SignAndSendSuccessResponse = {
 export async function txSignAndSend(
   nativeAPI: ApiPromise,
   nativeContract: ContractPromise,
-  keyringPair: KeyringPair,
+  signer: KeyringPair | string,
   title: string,
   eventHandler: (event: EventRecord[]) => {
     [index: string]: any;
@@ -57,11 +57,12 @@ export async function txSignAndSend(
   contractOptions?: ContractOptions,
   signerOptions?: Partial<SignerOptions>,
 ) {
+  const signerAddress = typeof signer === 'string' ? signer : signer.address;
   const _gasLimitAndValue = await genValidContractOptionsWithValue(nativeAPI, contractOptions);
 
   // estimate gas limit
 
-  const estimatedGasLimit = (await nativeContract.query[title](keyringPair.address, _gasLimitAndValue, ...args)).gasRequired;
+  const estimatedGasLimit = (await nativeContract.query[title](signerAddress, _gasLimitAndValue, ...args)).gasRequired;
 
   const gasLimitAndValueToUse = {
     gasLimit: contractOptions?.gasLimit || estimatedGasLimit,
@@ -69,7 +70,7 @@ export async function txSignAndSend(
   };
 
   const submittableExtrinsic = buildSubmittableExtrinsic(nativeAPI, nativeContract, title, args, gasLimitAndValueToUse);
-  return _signAndSend(nativeAPI.registry, submittableExtrinsic, keyringPair, signerOptions, eventHandler);
+  return _signAndSend(nativeAPI.registry, submittableExtrinsic, signer, signerOptions, eventHandler);
 }
 
 export function buildSubmittableExtrinsic(
@@ -102,13 +103,13 @@ export function buildSubmittableExtrinsic(
 export async function _signAndSend(
   registry: Registry,
   extrinsic: SubmittableExtrinsic<'promise'>,
-  signer: KeyringPair,
+  signer: KeyringPair | string,
   signerOptions: Partial<SignerOptions> = {},
   eventHandler: (event: EventRecord[]) => {
     [index: string]: any;
   },
 ): Promise<SignAndSendSuccessResponse> {
-  const signerAddress = signer.address;
+  const signerAddress = typeof signer === 'string' ? signer : signer.address;
 
   return new Promise((resolve, reject) => {
     const actionStatus = {
