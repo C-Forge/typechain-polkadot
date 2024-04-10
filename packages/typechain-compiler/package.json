@@ -1,6 +1,6 @@
 {
-  "name": "wookashwackomytest-typechain-compiler",
-  "version": "0.0.4",
+  "name": "@c-forge/typechain-compiler",
+  "version": "0.1.0",
   "publishConfig": {
     "access": "public"
   },
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wookashwackomy/typechain-polkadot.git"
+    "url": "git+https://github.com/c-forge/typechain-polkadot.git"
   },
   "files": [
     "index.ts",
@@ -25,14 +25,14 @@
     "npm": ">=9.0.0"
   },
   "engineStrict": true,
-  "author": "wookashwackomy",
+  "author": "c-forge",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/wookashwackomy/typechain-polkadot/issues"
+    "url": "https://github.com/c-forge/typechain-polkadot/issues"
   },
-  "homepage": "https://github.com/wookashwackomy/typechain-polkadot#readme",
+  "homepage": "https://github.com/c-forge/typechain-polkadot#readme",
   "dependencies": {
-    "wookashwackomytest-typechain-polkadot": "0.0.1",
+    "@c-forge/typechain-polkadot": "0.0.1",
     "@types/consola": "^2.2.5",
     "@types/yargs": "^17.0.10",
     "chalk": "^4.1.0",
@@ -46,6 +46,5 @@
   },
   "devDependencies": {
     "typescript": "^4.9.5"
-  },
-  "gitHead": "9a259955310464444257acfd4899f1659e8f7ffe"
+  }
 }

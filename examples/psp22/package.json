@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "generate": "npx wookashwackomytest-typechain-polkadot --in ./artifacts --out ./out",
+    "generate": "npx @c-forge/typechain-polkadot --in ./artifacts --out ./out",
     "start": "ts-node index.ts"
   },
   "dependencies": {
-    "wookashwackomytest-typechain-polkadot": "../../packages/typechain-polkadot",
-    "wookashwackomytest-typechain-types": "../../packages/typechain-types",
+    "@c-forge/typechain-polkadot": "../../packages/typechain-polkadot",
+    "@c-forge/typechain-types": "../../packages/typechain-types",
     "@types/node": "^18.8.0",
     "ts-node": "^10.7.0",
     "typescript": "^5.2.2",

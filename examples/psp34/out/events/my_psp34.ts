@@ -3,7 +3,7 @@ import type { ContractPromise } from '@polkadot/api-contract';
 import type { ApiPromise } from '@polkadot/api';
 import EVENT_DATA_TYPE_DESCRIPTIONS from '../event-data/my_psp34.json';
 import { getEventTypeDescription } from '../shared/utils';
-import { handleEventReturn } from 'wookashwackomytest-typechain-types';
+import { handleEventReturn } from '@c-forge/typechain-types';
 
 export default class EventsClass {
   readonly __nativeContract: ContractPromise;

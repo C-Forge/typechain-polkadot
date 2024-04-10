@@ -1,5 +1,5 @@
 import type BN from 'bn.js';
-import type { ReturnNumber } from 'wookashwackomytest-typechain-types';
+import type { ReturnNumber } from '@c-forge/typechain-types';
 
 export enum LangError {
   couldNotReadInput = 'CouldNotReadInput',

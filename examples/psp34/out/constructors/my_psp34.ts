@@ -1,8 +1,8 @@
 import { CodePromise } from '@polkadot/api-contract';
 import type { KeyringPair } from '@polkadot/keyring/types';
 import type { ApiPromise } from '@polkadot/api';
-import { _genValidGasLimitAndValue, _signAndSend, SignAndSendSuccessResponse } from 'wookashwackomytest-typechain-types';
-import type { ConstructorOptions } from 'wookashwackomytest-typechain-types';
+import { _genValidGasLimitAndValue, _signAndSend, SignAndSendSuccessResponse } from '@c-forge/typechain-types';
+import type { ConstructorOptions } from '@c-forge/typechain-types';
 import type { WeightV2 } from '@polkadot/types/interfaces';
 import type * as ArgumentTypes from '../types-arguments/my_psp34';
 import { ContractFile } from '../contract-info/my_psp34';

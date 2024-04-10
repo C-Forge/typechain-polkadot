@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "generate": "echo No generate script",
-    "start": "npx wookashwackomytest-typechain-polkadot --plugins ./plugins --input ./artifacts --output ./output"
+    "start": "npx @c-forge/typechain-polkadot --plugins ./plugins --input ./artifacts --output ./output"
   },
   "dependencies": {
-    "wookashwackomytest-typechain-polkadot": "../../packages/typechain-polkadot",
-    "wookashwackomytest-typechain-types": "../../packages/typechain-types",
+    "@c-forge/typechain-polkadot": "../../packages/typechain-polkadot",
+    "@c-forge/typechain-types": "../../packages/typechain-types",
     "@types/node": "^17.0.34",
     "ts-node": "^10.7.0",
     "typescript": "^5.2.2",

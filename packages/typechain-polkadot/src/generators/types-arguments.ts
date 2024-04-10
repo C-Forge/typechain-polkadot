@@ -20,9 +20,9 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import { Abi } from '@polkadot/api-contract';
-import { TypeParser } from 'wookashwackomytest-typechain-polkadot-parser';
+import { TypeParser } from '@c-forge/typechain-polkadot-parser';
 import Handlebars from 'handlebars';
-import { TypeInfo } from 'wookashwackomytest-typechain-polkadot-parser/src/types/TypeInfo';
+import { TypeInfo } from '@c-forge/typechain-polkadot-parser/src/types/TypeInfo';
 import { Import } from '../types';
 import { readTemplate } from '../utils/handlebars-helpers';
 import { writeFileSync } from '../utils/directories';

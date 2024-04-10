@@ -1,6 +1,6 @@
 {
-  "name": "wookashwackomytest-typechain-polkadot-parser",
-  "version": "0.0.4",
+  "name": "@c-forge/typechain-polkadot-parser",
+  "version": "0.1.0",
   "publishConfig": {
     "access": "public"
   },
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wookashwackomy/typechain-polkadot.git"
+    "url": "git+https://github.com/c-forge/typechain-polkadot.git"
   },
-  "author": "wookashwackomy",
+  "author": "c-forge",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/wookashwackomy/typechain-polkadot/issues"
+    "url": "https://github.com/c-forge/typechain-polkadot/issues"
   },
-  "homepage": "https://github.com/wookashwackomy/typechain-polkadot#readme",
+  "homepage": "https://github.com/c-forge/typechain-polkadot#readme",
   "dependencies": {
     "@polkadot/api": "10.11.1",
     "@polkadot/api-contract": "10.11.1",
@@ -27,7 +27,6 @@
     "camelcase": "^6.3.0",
     "tslib": "^2.6.2"
   },
-  "gitHead": "9a259955310464444257acfd4899f1659e8f7ffe",
   "devDependencies": {
     "typescript": "^5.2.2"
   }

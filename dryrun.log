@@ -6,7 +6,7 @@ npm WARN publish npm auto-corrected some errors in your package.json when publis
 npm WARN publish errors corrected:
 npm WARN publish "bin" was converted to an object
 npm notice 
-npm notice 📦  wookashwackomytest-typechain-compiler@0.0.1
+npm notice 📦  @c-forge/typechain-compiler@0.0.1
 npm notice === Tarball Contents === 
 npm notice 1.8kB README.md    
 npm notice 108B  bin/index.js 
@@ -17,9 +17,9 @@ npm notice 654B  src/types.ts
 npm notice 846B  src/utils.ts 
 npm notice 593B  tsconfig.json
 npm notice === Tarball Details === 
-npm notice name:          wookashwackomytest-typechain-compiler          
+npm notice name:          @c-forge/typechain-compiler          
 npm notice version:       0.0.1                                      
-npm notice filename:      wookashwackomytest-typechain-compiler-0.0.1.tgz
+npm notice filename:      @c-forge/typechain-compiler-0.0.1.tgz
 npm notice package size:  3.7 kB                                     
 npm notice unpacked size: 11.2 kB                                    
 npm notice shasum:        c0b9369c800482a1e255d0bd5a4dc530608e80a7   
@@ -27,12 +27,12 @@ npm notice integrity:     sha512-GqbbYBruiDsg9[...]mY+P/UHW7cgWw==
 npm notice total files:   8                                          
 npm notice 
 npm notice Publishing to https://registry.npmjs.org/ with tag latest and public access (dry-run)
-+ wookashwackomytest-typechain-compiler@0.0.1
++ @c-forge/typechain-compiler@0.0.1
 npm WARN publish npm auto-corrected some errors in your package.json when publishing.  Please run "npm pkg fix" to address these errors.
 npm WARN publish errors corrected:
 npm WARN publish "bin" was converted to an object
 npm notice 
-npm notice 📦  wookashwackomytest-typechain-polkadot@0.0.1
+npm notice 📦  @c-forge/typechain-polkadot@0.0.1
 npm notice === Tarball Contents === 
 npm notice 1.1kB LICENSE                           
 npm notice 7.2kB README.md                         
@@ -75,9 +75,9 @@ npm notice 4.0kB src/utils/handlebars-helpers.ts
 npm notice 196B  src/utils/json.ts                 
 npm notice 609B  tsconfig.json                     
 npm notice === Tarball Details === 
-npm notice name:          wookashwackomytest-typechain-polkadot          
+npm notice name:          @c-forge/typechain-polkadot          
 npm notice version:       0.0.1                                      
-npm notice filename:      wookashwackomytest-typechain-polkadot-0.0.1.tgz
+npm notice filename:      @c-forge/typechain-polkadot-0.0.1.tgz
 npm notice package size:  15.7 kB                                    
 npm notice unpacked size: 87.2 kB                                    
 npm notice shasum:        6c9d5c02fb059020bd1780fcb43d2d74b22ac35b   
@@ -85,9 +85,9 @@ npm notice integrity:     sha512-aXfE3jjWqhgNe[...]ZCwQoPCV+Yv+A==
 npm notice total files:   40                                         
 npm notice 
 npm notice Publishing to https://registry.npmjs.org/ with tag latest and public access (dry-run)
-+ wookashwackomytest-typechain-polkadot@0.0.1
++ @c-forge/typechain-polkadot@0.0.1
 npm notice 
-npm notice 📦  wookashwackomytest-typechain-polkadot-parser@0.0.1
+npm notice 📦  @c-forge/typechain-polkadot-parser@0.0.1
 npm notice === Tarball Contents === 
 npm notice 1.1kB   LICENSE              
 npm notice 1.0kB   README.md            
@@ -101,9 +101,9 @@ npm notice 609B    tsconfig.json
 npm notice 123B    tsconfig.ref.json    
 npm notice 204.9kB tsconfig.tsbuildinfo 
 npm notice === Tarball Details === 
-npm notice name:          wookashwackomytest-typechain-polkadot-parser          
+npm notice name:          @c-forge/typechain-polkadot-parser          
 npm notice version:       0.0.1                                             
-npm notice filename:      wookashwackomytest-typechain-polkadot-parser-0.0.1.tgz
+npm notice filename:      @c-forge/typechain-polkadot-parser-0.0.1.tgz
 npm notice package size:  69.9 kB                                           
 npm notice unpacked size: 235.7 kB                                          
 npm notice shasum:        a4ce106431ebf09ef08dd6d901d5c2d00f46a9c4          
@@ -111,12 +111,12 @@ npm notice integrity:     sha512-PICv+ExgS9sLS[...]5lxTt8pSc5Vmw==
 npm notice total files:   11                                                
 npm notice 
 npm notice Publishing to https://registry.npmjs.org/ with tag latest and public access (dry-run)
-+ wookashwackomytest-typechain-polkadot-parser@0.0.1
++ @c-forge/typechain-polkadot-parser@0.0.1
 
-> wookashwackomytest-typechain-types@0.0.1 prepublishOnly
+> @c-forge/typechain-types@0.0.1 prepublishOnly
 > npm run build
 
 
-> wookashwackomytest-typechain-types@0.0.1 build
+> @c-forge/typechain-types@0.0.1 build
 > npx tsc
 

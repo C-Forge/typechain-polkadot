@@ -3,7 +3,7 @@ import PathAPI from 'path';
 import toml from 'toml';
 
 /**
- * This package should compile your Rust projects, and generate TypeScript types with {@link wookashwackomytest-typechain-polkadot}.
+ * This package should compile your Rust projects, and generate TypeScript types with {@link @c-forge/typechain-polkadot}.
  *
  *
  * @packageInfo

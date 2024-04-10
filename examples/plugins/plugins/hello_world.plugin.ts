@@ -1,4 +1,4 @@
-import { TypechainPlugin } from 'wookashwackomytest-typechain-polkadot/src/types/interfaces';
+import { TypechainPlugin } from '@c-forge/typechain-polkadot/src/types/interfaces';
 import { Abi } from '@polkadot/api-contract';
 
 export default class HelloWorldPlugin implements TypechainPlugin {

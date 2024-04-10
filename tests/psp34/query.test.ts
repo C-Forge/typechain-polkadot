@@ -4,7 +4,7 @@ import { IdBuilder } from '../generated/types-arguments/my_psp34';
 import Constructors from '../generated/constructors/my_psp34';
 import type { KeyringPair } from '@polkadot/keyring/types';
 import { GetAccounts } from '../config';
-import { ResultBuilder } from 'wookashwackomytest-typechain-types';
+import { ResultBuilder } from '@c-forge/typechain-types';
 
 describe('MY_PSP34', () => {
   let api: PolkadotAPI.ApiPromise;

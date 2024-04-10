@@ -21,7 +21,7 @@
 
 import { Abi } from '@polkadot/api-contract';
 import { Import, Method } from '../types';
-import { TypeParser } from 'wookashwackomytest-typechain-polkadot-parser';
+import { TypeParser } from '@c-forge/typechain-polkadot-parser';
 import Handlebars from 'handlebars';
 import { writeFileSync } from '../utils/directories';
 import { readTemplate } from '../utils/handlebars-helpers';

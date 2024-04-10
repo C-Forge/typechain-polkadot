@@ -23,7 +23,7 @@
 /**
  *  ## Typechain-Polkadot-Parser
  *
- *	Utility-package for parsing types from ABIs for wookashwackomytest-typechain-polkadot.
+ *	Utility-package for parsing types from ABIs for @c-forge/typechain-polkadot.
  *
  *
  *	@remarks

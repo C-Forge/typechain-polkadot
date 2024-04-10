@@ -10,7 +10,7 @@ import logger from './src/logger';
 import dotenv from 'dotenv';
 
 function Typechain(input: string, output: string) {
-  execSync(`npx wookashwackomytest-typechain-polkadot --in ${input} --out ${output}`);
+  execSync(`npx @c-forge/typechain-polkadot --in ${input} --out ${output}`);
 }
 
 function main() {

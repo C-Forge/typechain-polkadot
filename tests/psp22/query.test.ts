@@ -3,7 +3,7 @@ import Constructors from '../generated/constructors/my_psp22';
 import { ApiPromise, Keyring } from '@polkadot/api';
 import type { KeyringPair } from '@polkadot/keyring/types';
 import { GetAccounts } from '../config';
-import type { ReturnNumber } from 'wookashwackomytest-typechain-types';
+import type { ReturnNumber } from '@c-forge/typechain-types';
 
 describe("Correctness of the PSP22 contract' methods types query", () => {
   let api: ApiPromise;

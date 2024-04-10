@@ -1,8 +1,8 @@
 /* This file is auto-generated */
 
 import type { ContractPromise } from '@polkadot/api-contract';
-import type { GasLimit, GasLimitAndRequiredValue } from 'wookashwackomytest-typechain-types';
-import { buildSubmittableExtrinsic } from 'wookashwackomytest-typechain-types';
+import type { GasLimit, GasLimitAndRequiredValue } from '@c-forge/typechain-types';
+import { buildSubmittableExtrinsic } from '@c-forge/typechain-types';
 import type * as ArgumentTypes from '../types-arguments/my_psp34';
 import type BN from 'bn.js';
 import type { ApiPromise } from '@polkadot/api';

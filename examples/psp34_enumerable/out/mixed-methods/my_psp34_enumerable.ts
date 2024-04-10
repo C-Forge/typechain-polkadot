@@ -3,16 +3,16 @@
 import type { ContractPromise } from '@polkadot/api-contract';
 import type { ApiPromise } from '@polkadot/api';
 import type { KeyringPair } from '@polkadot/keyring/types';
-import type { GasLimit, GasLimitAndRequiredValue, Result } from 'wookashwackomytest-typechain-types';
-import type { QueryReturnType } from 'wookashwackomytest-typechain-types';
-import { queryOkJSON, queryJSON, handleReturnType } from 'wookashwackomytest-typechain-types';
-import { txSignAndSend } from 'wookashwackomytest-typechain-types';
+import type { GasLimit, GasLimitAndRequiredValue, Result } from '@c-forge/typechain-types';
+import type { QueryReturnType } from '@c-forge/typechain-types';
+import { queryOkJSON, queryJSON, handleReturnType } from '@c-forge/typechain-types';
+import { txSignAndSend } from '@c-forge/typechain-types';
 import type * as ArgumentTypes from '../types-arguments/my_psp34_enumerable';
 import type * as ReturnTypes from '../types-returns/my_psp34_enumerable';
 import type BN from 'bn.js';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { ReturnNumber } from 'wookashwackomytest-typechain-types';
+import { ReturnNumber } from '@c-forge/typechain-types';
 import { getTypeDescription } from './../shared/utils';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

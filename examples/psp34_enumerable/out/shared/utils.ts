@@ -1,6 +1,6 @@
 import fs from 'fs';
 import type { ContractPromise } from '@polkadot/api-contract';
-import { handleEventReturn } from 'wookashwackomytest-typechain-types';
+import { handleEventReturn } from '@c-forge/typechain-types';
 
 export function getTypeDescription(id: number | string, types: any): any {
   return types[id];

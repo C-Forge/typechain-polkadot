@@ -1,20 +1,15 @@
 {
   "name": "typechain-workspace",
-  "workspaces": [
-    "packages/*",
-    "examples/*"
-  ],
   "files": [
     "tests/**/*"
   ],
-  "private": true,
   "scripts": {
     "start-typechain": "npx tsx packages/typechain-polkadot/index.ts --in ./artifacts --out ./out",
-    "build:all": "npm run --workspaces --if-present build",
-    "publish:dry-run": "npm --workspaces publish --dry-run",
-    "publish:all": "npm --workspaces publish --access=public",
-    "publish:packages": "npm --workspace packages publish --access=public",
-    "publish:examples": "npm --workspace packages publish --access=public",
+    "build:all": "pnpm -r build",
+    "publish:dry-run": "pnpm -r publish --dry-run",
+    "publish:all": "pnpm -r publish --access=public --no-git-checks",
+    "publish:packages": "pnpm -r --filter packages publish --access=public",
+    "publish:examples": "pnpm -r --filter examples publish --access=public",
     "gen-test-ts": "npx tsx packages/typechain-polkadot/index.ts --in tests/artifacts --out tests/generated",
     "only-test": "npx jest --no-cache --maxWorkers 1",
     "test": "npm run gen-test-ts && npm run only-test",

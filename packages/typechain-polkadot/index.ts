@@ -33,8 +33,8 @@
  *  @example
  *  # Usage from CLI
  *  ```bash
- *     $ npm i wookashwackomytest-typechain-polkadot
- *     $ npx wookashwackomytest-typechain-polkadot --in path/to/abis --out path/to/output/folder
+ *     $ npm i @c-forge/typechain-polkadot
+ *     $ npx @c-forge/typechain-polkadot --in path/to/abis --out path/to/output/folder
  *  ```
  *
  *  @packageDocumentation
