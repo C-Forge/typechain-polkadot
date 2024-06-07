@@ -1,7 +1,9 @@
 /* This file is auto-generated */
+// @ts-nocheck
 
 import type { ContractPromise } from '@polkadot/api-contract';
-import type { GasLimit, GasLimitAndRequiredValue } from '@c-forge/typechain-types';
+import type { ContractOptions } from '@polkadot/api-contract/types';
+import type { ContractOptionsWithRequiredValue } from '@c-forge/typechain-types';
 import { buildSubmittableExtrinsic } from '@c-forge/typechain-types';
 import type * as ArgumentTypes from '../types-arguments/{{{fileName}}}';
 import type BN from 'bn.js';
@@ -35,9 +37,9 @@ export default class Methods {
 	{{#each args}}
 		{{{name}}}: {{{type.tsStr}}},
 	{{/each}}
-		__options: {{#if payable}}GasLimitAndRequiredValue{{else}}GasLimit{{/if}},
+		__options: {{#if payable}}ContractOptionsWithRequiredValue{{else}}ContractOptions{{/if}},
 	){{{buildReturnType this}}}{
-		return {{{buildReturn this}}} "{{{toCamelCaseForFunctions originalName}}}", [{{#each args}}{{{name}}}{{#unless @last}}, {{/unless}}{{/each}}], __options);
+		return {{{buildReturn this}}} "{{{toCamelCase originalName}}}", [{{#each args}}{{{name}}}{{#unless @last}}, {{/unless}}{{/each}}], __options);
 	}
 
 {{/each}}

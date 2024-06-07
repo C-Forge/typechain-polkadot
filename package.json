@@ -1,15 +1,12 @@
 {
   "name": "typechain-workspace",
-  "files": [
-    "tests/**/*"
-  ],
   "scripts": {
     "start-typechain": "npx tsx packages/typechain-polkadot/index.ts --in ./artifacts --out ./out",
-    "build:all": "pnpm -r build",
-    "publish:dry-run": "pnpm -r publish --dry-run",
-    "publish:all": "pnpm -r publish --access=public --no-git-checks",
-    "publish:packages": "pnpm -r --filter packages publish --access=public",
-    "publish:examples": "pnpm -r --filter examples publish --access=public",
+    "build:all": "npm run --workspaces --if-present build",
+    "publish:dry-run": "npm --workspaces publish --dry-run",
+    "publish:all": "npm --workspaces publish --access=public",
+    "publish:packages": "npm --workspace packages publish --access=public",
+    "publish:examples": "npm --workspace packages publish --access=public",
     "gen-test-ts": "npx tsx packages/typechain-polkadot/index.ts --in tests/artifacts --out tests/generated",
     "only-test": "npx jest --no-cache --maxWorkers 1",
     "test": "npm run gen-test-ts && npm run only-test",
@@ -18,21 +15,14 @@
     "postinstall": "husky install"
   },
   "dependencies": {
-    "@types/bn.js": "^5.1.0",
-    "@types/eslint": "^8.4.3",
-    "@types/jest": "^27.5.2",
-    "@typescript-eslint/eslint-plugin": "^5.25.0",
-    "@typescript-eslint/parser": "^5.25.0",
-    "eslint": "^8.18.0",
-    "eslint-import-resolver-typescript": "^2.7.1",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-node": "^11.1.0",
-    "hjson": "^3.2.2",
-    "ts-jest": "^28.0.0",
-    "tslib": "^2.6.2"
-  },
-  "devDependencies": {
-    "@types/node": "^20.10.0",
+    "@c-forge/typechain-types": "workspace:^",
+    "@polkadot/api": "^10.12.4",
+    "@polkadot/api-contract": "^10.12.4",
+    "@polkadot/keyring": "^12.6.2",
+    "@polkadot/types": "^10.12.4",
+    "@types/bn.js": "^5.1.5",
+    "@types/node": "^20.11.30",
+    "bn.js": "^5.2.1",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
     "prettier": "^3.1.0",

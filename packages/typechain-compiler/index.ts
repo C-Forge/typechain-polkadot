@@ -1,7 +1,7 @@
 import YARGS from 'yargs';
 import * as PathAPI from 'path';
-import * as FsAPI from 'fs';
-import { parseConfig } from './src/types';
+import * as FsAPI from 'fs-extra';
+import { readConfigOrDefault } from './src/types';
 import { sync as globbySync } from 'globby';
 import { execSync } from 'child_process';
 import { __assureDirExists, __writeFileSync, getContractNameFromToml } from './src/utils';
@@ -68,14 +68,12 @@ function main() {
   const argv = _argv as Awaited<typeof _argv>;
 
   const cwdPath = process.cwd();
-  const absPathToConfig = PathAPI.resolve(cwdPath, `./${argv.config}`);
   const isRelease = argv.release;
   const isNoCompile = argv.noCompile;
   const isNoTypechain = argv.noTypechain;
   const toolchain = argv.toolchain;
 
-  const configStr = FsAPI.readFileSync(absPathToConfig, 'utf8');
-  const config = parseConfig(configStr);
+  const config = readConfigOrDefault(argv.config);
 
   if (argv.files !== undefined) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -117,6 +115,7 @@ function main() {
 
     const cargoTargetDir = process.env.CARGO_TARGET_DIR;
     const artifactsPath = PathAPI.resolve(cwdPath, config.artifactsPath);
+    FsAPI.ensureDirSync(artifactsPath);
 
     for (const tomlFile of tomlFiles) {
       const contractName = getContractNameFromToml(tomlFile);

@@ -1,4 +1,5 @@
 // Copyright (c) 2012-2022 Supercolony
+// Copyright (c) 2024 C Forge
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the"Software"),
@@ -23,7 +24,7 @@ import { INK_PRIMITIVE_TYPES_TO_TS_ARGUMENTS, INK_PRIMITIVE_TYPES_TO_TS_RETURNS 
 import assert from 'assert';
 import { Abi } from '@polkadot/api-contract';
 import { TypeInfo, TypeTS } from './types/TypeInfo';
-import camelcase from 'camelcase';
+import { stringCamelCase } from '@polkadot/util';
 
 function __getV3(abiJson: any) {
   if (abiJson.V3) return abiJson.V3;
@@ -54,7 +55,7 @@ export const generateInterfaceReturns = (interfaceName: string, argumentNames: s
   }
 
   return `export type ${interfaceName} = {
-\t${argumentNames.map((e, i) => `${camelcase(e)}: ${argumentTypes[i]!.tsReturnType}`).join(',\n\t')}
+\t${argumentNames.map((e, i) => `${stringCamelCase(e)}: ${argumentTypes[i]!.tsReturnType}`).join(',\n\t')}
 }`;
 };
 
@@ -70,20 +71,20 @@ export const generateInterfaceArgs = (interfaceName: string, argumentNames: stri
   }
 
   return `export type ${interfaceName} = {
-\t${argumentNames.map((e, i) => `${camelcase(e)}: ${argumentTypes[i]!.tsArgType}`).join(',\n\t')}
+\t${argumentNames.map((e, i) => `${stringCamelCase(e)}: ${argumentTypes[i]!.tsArgType}`).join(',\n\t')}
 }`;
 };
 
 export const generateEnum = (enumName: string, enumFields: string[]): string => {
   return `export enum ${enumName} {
-	${enumFields.map((e) => `${camelcase(e)} = '${e}'`).join(',\n\t')}
+	${enumFields.map((e) => `${stringCamelCase(e)} = '${e}'`).join(',\n\t')}
 }`;
 };
 
 export const generateClassEnum = (enumName: string, enumFields: string[], enumValues: string[]): string => {
   assert(enumFields.length === enumValues.length);
   return `export interface ${enumName} {
-	${enumFields.map((e, i) => `${camelcase(e)} ? : ${enumValues[i]}`).join(',\n\t')}
+	${enumFields.map((e, i) => `${stringCamelCase(e)} ? : ${enumValues[i]}`).join(',\n\t')}
 }
 
 export class ${enumName}Builder {
@@ -91,7 +92,7 @@ export class ${enumName}Builder {
     .map(
       (e, i) => `static ${e}(${enumValues[i] !== 'null' ? `value: ${enumValues[i]}` : ''}): ${enumName} {
 		return {
-		${enumValues[i] !== 'null' ? `\t${camelcase(e)}: value` : `\t${camelcase(e)}: null`},
+		${enumValues[i] !== 'null' ? `\t${stringCamelCase(e)}: value` : `\t${stringCamelCase(e)}: null`},
 		};
 	}`,
     )

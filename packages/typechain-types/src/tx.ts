@@ -1,4 +1,5 @@
 // Copyright (c) 2012-2022 Supercolony
+// Copyright (c) 2024 C Forge
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the"Software"),
@@ -21,15 +22,16 @@
 
 import type { ApiPromise, SubmittableResult } from '@polkadot/api';
 import type { ContractPromise } from '@polkadot/api-contract';
-import type { SubmittableExtrinsic } from '@polkadot/api/submittable/types';
+import type { SignerOptions, SubmittableExtrinsic } from '@polkadot/api/submittable/types';
 import type { KeyringPair } from '@polkadot/keyring/types';
 import type { Registry } from '@polkadot/types-codec/types';
-import { _genValidGasLimitAndValue } from './query';
-import type { GasLimitAndValue, MethodDoesntExistError, RequestArgumentType } from './types';
+import { genValidContractOptionsWithValue } from './query';
+import type { MethodDoesntExistError, RequestArgumentType } from './types';
 import type { EventRecord } from '@polkadot/types/interfaces';
 import { BN_ZERO } from '@polkadot/util';
+import { ContractOptions } from '@polkadot/api-contract/types';
 
-type SignAndSendSuccessResponse = {
+export type SignAndSendSuccessResponse = {
   from: string;
   txHash?: string;
   blockHash?: string;
@@ -43,8 +45,6 @@ type SignAndSendSuccessResponse = {
   };
 };
 
-export type { SignAndSendSuccessResponse };
-
 export async function txSignAndSend(
   nativeAPI: ApiPromise,
   nativeContract: ContractPromise,
@@ -53,26 +53,23 @@ export async function txSignAndSend(
   eventHandler: (event: EventRecord[]) => {
     [index: string]: any;
   },
-  args?: readonly RequestArgumentType[],
-  gasLimitAndValue?: GasLimitAndValue,
+  args: readonly RequestArgumentType[] = [],
+  contractOptions?: ContractOptions,
+  signerOptions?: Partial<SignerOptions>,
 ) {
-  const _gasLimitAndValue = await _genValidGasLimitAndValue(nativeAPI, gasLimitAndValue);
-  const _realGasLimit = gasLimitAndValue || {
-    gasLimit: undefined,
-    value: undefined,
-  };
+  const _gasLimitAndValue = await genValidContractOptionsWithValue(nativeAPI, contractOptions);
 
   // estimate gas limit
 
   const estimatedGasLimit = (await nativeContract.query[title](keyringPair.address, _gasLimitAndValue, ...args)).gasRequired;
 
-  const estimatedGasLimitAndValue = {
-    gasLimit: _realGasLimit.gasLimit || estimatedGasLimit,
-    value: _realGasLimit.value || BN_ZERO,
+  const gasLimitAndValueToUse = {
+    gasLimit: contractOptions?.gasLimit || estimatedGasLimit,
+    value: contractOptions?.value || BN_ZERO,
   };
 
-  const submittableExtrinsic = buildSubmittableExtrinsic(nativeAPI, nativeContract, title, args, estimatedGasLimitAndValue);
-  return _signAndSend(nativeAPI.registry, submittableExtrinsic, keyringPair, eventHandler);
+  const submittableExtrinsic = buildSubmittableExtrinsic(nativeAPI, nativeContract, title, args, gasLimitAndValueToUse);
+  return _signAndSend(nativeAPI.registry, submittableExtrinsic, keyringPair, signerOptions, eventHandler);
 }
 
 export function buildSubmittableExtrinsic(
@@ -80,7 +77,7 @@ export function buildSubmittableExtrinsic(
   nativeContract: ContractPromise,
   title: string,
   args?: readonly RequestArgumentType[],
-  gasLimitAndValue?: GasLimitAndValue,
+  options: ContractOptions = {},
 ) {
   if (nativeContract.tx[title] === null || nativeContract.tx[title] === undefined) {
     const error: MethodDoesntExistError = {
@@ -92,7 +89,7 @@ export function buildSubmittableExtrinsic(
 
   const _args = args || [];
 
-  const submittableExtrinsic = nativeContract.tx[title]!(gasLimitAndValue, ..._args);
+  const submittableExtrinsic = nativeContract.tx[title]!(options, ..._args);
 
   return submittableExtrinsic;
 }
@@ -106,6 +103,7 @@ export async function _signAndSend(
   registry: Registry,
   extrinsic: SubmittableExtrinsic<'promise'>,
   signer: KeyringPair,
+  signerOptions: Partial<SignerOptions> = {},
   eventHandler: (event: EventRecord[]) => {
     [index: string]: any;
   },
@@ -119,7 +117,7 @@ export async function _signAndSend(
     } as SignAndSendSuccessResponse;
 
     extrinsic
-      .signAndSend(signer, (result: SubmittableResult) => {
+      .signAndSend(signer, signerOptions, (result: SubmittableResult) => {
         if (result.status.isInBlock) {
           actionStatus.blockHash = result.status.asInBlock.toHex();
         }
@@ -141,7 +139,7 @@ export async function _signAndSend(
                 if (dispatchError.isModule) {
                   try {
                     const mod = dispatchError.asModule;
-                    const error = registry.findMetaError(new Uint8Array([mod.index.toNumber(), mod.error.toNumber()]));
+                    const error = registry.findMetaError(new Uint8Array([mod.index.toNumber(), parseInt(mod.error.toString())]));
                     message = `${error.section}.${error.name}${Array.isArray(error.docs) ? `(${error.docs.join('')})` : error.docs || ''}`;
                   } catch (error) {
                     // swallow

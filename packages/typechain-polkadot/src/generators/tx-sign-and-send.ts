@@ -1,4 +1,5 @@
 // Copyright (c) 2012-2022 Supercolony
+// Copyright (c) 2024 C Forge
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the"Software"),
@@ -38,7 +39,11 @@ const generateForMetaTemplate = Handlebars.compile(readTemplate('tx-sign-and-sen
  * @returns {string} Generated file content
  */
 export const FILE = (fileName: string, methods: Method[], additionalImports: Import[]) =>
-  generateForMetaTemplate({ fileName, methods, additionalImports });
+  generateForMetaTemplate({
+    fileName,
+    methods: methods.filter((value, index, self) => self.findIndex((v) => v.name === value.name) === index),
+    additionalImports,
+  });
 
 /**
  * generates a tx-sign-and-send file

@@ -2,23 +2,19 @@
 
 This library generates TypeScript types from an `ink!`-based smart contract.
 
-# NOTE
-
-This library is a modified version of 727-venture's typechain-polkadot library. Our team at prosopo is currently in the process of revamping the library to incorporate bug fixes, updates from polkadot libraries, and various improvements. Both the 727-venture and Brushfam iterations of this library seem to be in a state of disrepair, which prompted us to take it over. It's important to note that, at present, generating TypeScript code from a contract is functional, but only through the command line. The functionality of calling via JavaScript and the plugin system is currently flawed. We plan to address and rectify these issues in the near future.
-
 ### Installation & import
 
 Install the package as dependency:
 
 ```bash
-npm i @prosopo/typechain-polkadot
+npm i @c-forge/typechain-polkadot
 ```
 
 Pass the folder with artifacts(in the example it is `artifacts`) as input argument
 and the output folder(in the example it is `typed_contracts`):
 
 ```bash
-npx @prosopo/typechain-polkadot --in artifacts --out typed_contracts
+npx @c-forge/typechain-polkadot --in artifacts --out typed_contracts
 ```
 
 Import the contract what you want to use(in the example it is [`my_psp22`](https://github.com/727-Ventures/openbrush-contracts/tree/main/examples/psp22)):

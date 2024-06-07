@@ -5,3 +5,4 @@ config.json
 artifacts/
 wip/
 config.json
+node_modules

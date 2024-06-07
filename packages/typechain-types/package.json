@@ -1,6 +1,6 @@
 {
   "name": "@c-forge/typechain-types",
-  "version": "0.1.0",
+  "version": "0.0.60-experimental3",
   "publishConfig": {
     "access": "public"
   },
@@ -15,26 +15,44 @@
     "url": "https://github.com/c-forge/typechain-polkadot/issues"
   },
   "scripts": {
-    "build": "npx tsc",
-    "test": "jest",
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
-    "prepublishOnly": "npm run build"
+    "lint": "pnpm prettier --check && pnpm eslint",
+    "lint:fix": "pnpm prettier --write && pnpm eslint --fix",
+    "eslint": "eslint 'src/**/*.ts' 'test/**/*.ts'",
+    "prettier": "prettier \"**/*.{js,md,json}\"",
+    "pretest": "cd ../.. && pnpm build",
+    "build": "tsc --build .",
+    "prepublishOnly": "pnpm build",
+    "clean": "rimraf dist internal types *.{d.ts,js}{,.map} build-test tsconfig.tsbuildinfo"
   },
   "files": [
-    "dist"
+    "dist/src/",
+    "dist/*.d.ts",
+    "dist/*.js",
+    "dist/*.js.map",
+    "src/",
+    "*.d.ts",
+    "*.d.ts.map",
+    "*.js",
+    "*.js.map",
+    "LICENSE",
+    "README.md"
   ],
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "homepage": "https://github.com/c-forge/typechain-polkadot#readme",
   "dependencies": {
-    "@polkadot/api": "10.11.1",
-    "@polkadot/api-contract": "10.11.1",
+    "@polkadot/api": "^10.12.2",
+    "@polkadot/api-contract": "^10.12.2",
+    "@polkadot/keyring": "^12.6.2",
+    "@polkadot/types": "^10.12.4",
+    "@polkadot/types-codec": "^10.12.4",
+    "@polkadot/util": "^12.6.2",
     "@types/bn.js": "^5.1.0",
     "@types/node": "^18.0.3",
-    "camelcase": "^6.3.0",
     "tslib": "^2.6.2"
   },
   "devDependencies": {
+    "rimraf": "^3.0.2",
     "typescript": "^5.2.2"
   }
 }

@@ -1,4 +1,5 @@
 // Copyright (c) 2012-2022 Supercolony
+// Copyright (c) 2024 C Forge
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the"Software"),
@@ -26,25 +27,12 @@ import type { ContractExecResultErr } from '@polkadot/types/interfaces/contracts
 import type { AnyJson } from '@polkadot/types-codec/types';
 import fs from 'fs';
 import { WeightV2 } from '@polkadot/types/interfaces';
+import { ContractOptions } from '@polkadot/api-contract/types';
+import { Text } from '@polkadot/types-codec';
 
 export type RequestArgumentType = number | string | boolean | bigint | (string | number)[] | BN | null | AnyJson | object;
 
-export interface GasLimit {
-  /**
-   * Defaults to `-1`
-   */
-  gasLimit?: WeightV2 | null;
-}
-
-export interface GasLimitAndValue extends GasLimit {
-  /**
-   * Only required for 'payable' methods
-   * Defaults to `0`
-   */
-  value?: bigint | BN | string | number;
-}
-
-export interface GasLimitAndRequiredValue extends GasLimit {
+export interface ContractOptionsWithRequiredValue extends ContractOptions {
   /**
    * Only required for 'payable' methods
    * Defaults to `0`
@@ -52,14 +40,9 @@ export interface GasLimitAndRequiredValue extends GasLimit {
   value: bigint | BN | string | number;
 }
 
-export interface ConstructorOptions extends GasLimitAndValue {
-  storageDepositLimit?: bigint | BN | string | number;
-}
-
-//
-
 export interface ErrorWithTexts {
   texts?: string[];
+  debugMessage?: string;
 }
 
 export type MethodDoesntExistError = ErrorWithTexts & {
@@ -88,7 +71,7 @@ export type QueryCallError =
           }
       ));
 
-export type QueryOkCallError =
+export type QueryOkCallError = (
   | QueryCallError
   | {
       issue: 'READ_ERR_IN_BODY';
@@ -97,7 +80,8 @@ export type QueryOkCallError =
   | {
       issue: 'BODY_ISNT_OKERR';
       value: any;
-    };
+    }
+) & { debugMessage: string };
 
 export class Result<T, E> {
   constructor(ok?: T, err?: E) {
@@ -123,11 +107,9 @@ export class Result<T, E> {
       }
 
       return this.ok;
-    }
+    } else if (this.err) throw this.err;
 
-    if (this.err) throw this.err;
-
-    return this.ok;
+    return this.ok as T; // undefined
   }
 
   unwrapErr(): E | undefined {
@@ -145,34 +127,6 @@ export class ResultBuilder {
   }
   static Err<T, E>(error: E): Result<T, E> {
     return new Result<T, E>(undefined, error);
-  }
-}
-
-export class ReturnNumber {
-  readonly rawNumber: BN;
-
-  constructor(value: number | string | BN) {
-    if (typeof value === 'string' && value.startsWith('0x')) {
-      this.rawNumber = new BN(value.substring(2), 16);
-    } else {
-      this.rawNumber = new BN(value);
-    }
-  }
-
-  toString() {
-    return this.rawNumber.toString();
-  }
-
-  toHuman() {
-    return this.toString();
-  }
-
-  toNumber() {
-    return this.rawNumber.toNumber();
-  }
-
-  static ToBN(value: number | string) {
-    return new ReturnNumber(value).rawNumber;
   }
 }
 

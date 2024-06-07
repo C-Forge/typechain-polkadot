@@ -1,7 +1,7 @@
 import * as PolkadotAPI from '@polkadot/api';
 import Contract from '../generated/contracts/my_psp34';
 import { IdBuilder } from '../generated/types-arguments/my_psp34';
-import Constructors from '../generated/constructors/my_psp34';
+import Constructors from '../generated/deployers/my_psp34';
 import type { KeyringPair } from '@polkadot/keyring/types';
 import { GetAccounts } from '../config';
 

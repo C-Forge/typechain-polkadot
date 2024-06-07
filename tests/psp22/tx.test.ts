@@ -1,6 +1,6 @@
 import Contract from '../generated/contracts/my_psp22';
 import { GetAccounts } from '../config';
-import Constructors from '../generated/constructors/my_psp22';
+import Constructors from '../generated/deployers/my_psp22';
 import type { KeyringPair } from '@polkadot/keyring/types';
 import { ApiPromise } from '@polkadot/api';
 

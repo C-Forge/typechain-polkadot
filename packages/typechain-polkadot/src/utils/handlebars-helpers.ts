@@ -1,4 +1,5 @@
 // Copyright (c) 2012-2022 Supercolony
+// Copyright (c) 2024 C Forge
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the"Software"),
@@ -22,11 +23,10 @@
 import path from 'path';
 import fs from 'fs';
 import Handlebars from 'handlebars';
-import toCamelCase from 'camelcase';
 import { Method } from '../types';
 import { Abi } from '@polkadot/api-contract';
 import { TypeTS } from '@c-forge/typechain-polkadot-parser/src/types/TypeInfo';
-import { stringCamelCase } from '@polkadot/util';
+import { stringCamelCase, stringPascalCase } from '@polkadot/util';
 
 /**
  * Reads handlebars templates from the given template name from {@link src/templates}
@@ -47,11 +47,8 @@ export function readTemplate(template: string): string {
   return fs.readFileSync(file).toString();
 }
 
-Handlebars.registerHelper('toCamelCase', toCamelCase);
-
-Handlebars.registerHelper('toCamelCaseForFunctions', function (fn: string) {
-  return stringCamelCase(fn);
-});
+Handlebars.registerHelper('toCamelCase', stringCamelCase);
+Handlebars.registerHelper('toPascalCase', stringPascalCase);
 
 Handlebars.registerHelper('buildReturn', function (fn: Method) {
   if (fn.methodType === 'query') {
@@ -60,8 +57,8 @@ Handlebars.registerHelper('buildReturn', function (fn: Method) {
       res += 'queryOkJSON';
     } else {
       res += 'queryJSON';
-      if (fn.returnType?.tsStr === 'ReturnNumber') {
-        res += '< ReturnNumber >';
+      if (fn.returnType?.tsStr === 'BN') {
+        res += '< BN >';
       }
     }
 
@@ -86,8 +83,8 @@ Handlebars.registerHelper('buildReturnType', function (fn: Method) {
 });
 
 Handlebars.registerHelper('buildWrapper', function (fn: Method) {
-  if (fn.methodType === 'query' && fn.returnType?.tsStr === 'ReturnNumber') {
-    return ', (result) => { return new ReturnNumber(result as (number | string)); }';
+  if (fn.methodType === 'query' && fn.returnType?.tsStr === 'BN') {
+    return ', (result) => { return bnToBn(result); }';
   } else if (
     fn.methodType === 'query' &&
     fn.returnType &&

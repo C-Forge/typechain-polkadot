@@ -1,5 +1,5 @@
 import Contract from '../generated/contracts/my_psp34_events';
-import Constructors from '../generated/constructors/my_psp34_events';
+import Constructors from '../generated/deployers/my_psp34_events';
 import { ApiPromise, Keyring } from '@polkadot/api';
 import type { KeyringPair } from '@polkadot/keyring/types';
 import { GetAccounts } from '../config';
