@@ -1,4 +1,5 @@
 // Copyright (c) 2012-2022 Supercolony
+// Copyright (c) 2024 C Forge
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the"Software"),
@@ -24,19 +25,19 @@ export const INK_PRIMITIVE_TYPES_TO_TS_RETURNS = {
   Char: 'string',
   Str: 'string',
 
-  U8: 'ReturnNumber',
-  U16: 'ReturnNumber',
-  U32: 'ReturnNumber',
-  U64: 'ReturnNumber',
-  U128: 'ReturnNumber',
-  U256: 'ReturnNumber',
+  U8: 'BN',
+  U16: 'BN',
+  U32: 'BN',
+  U64: 'BN',
+  U128: 'BN',
+  U256: 'BN',
 
-  I8: 'ReturnNumber',
-  I16: 'ReturnNumber',
-  I32: 'ReturnNumber',
-  I64: 'ReturnNumber',
-  I128: 'ReturnNumber',
-  I256: 'ReturnNumber',
+  I8: 'BN',
+  I16: 'BN',
+  I32: 'BN',
+  I64: 'BN',
+  I128: 'BN',
+  I256: 'BN',
 } as const;
 
 export type INK_PRIMITIVE_TYPE = keyof typeof INK_PRIMITIVE_TYPES_TO_TS_RETURNS;

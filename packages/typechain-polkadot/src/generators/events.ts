@@ -1,4 +1,5 @@
 // Copyright (c) 2012-2022 Supercolony
+// Copyright (c) 2024 C Forge
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the"Software"),
@@ -28,7 +29,8 @@ import { readTemplate } from '../utils/handlebars-helpers';
 
 const generateForMetaTemplate = Handlebars.compile(readTemplate('events'));
 
-export const FILE = (fileName: string, events: PolkadotEvent[]) => generateForMetaTemplate({ fileName, events });
+export const FILE = (fileName: string, events: PolkadotEvent[]) =>
+  generateForMetaTemplate({ fileName, events: events.filter((value, index, self) => self.findIndex((v) => v.name === value.name) === index) });
 
 /**
  * generates a mixed-methods file
@@ -43,6 +45,7 @@ function generate(abi: Abi, fileName: string, absPathToOutput: string) {
   const events: PolkadotEvent[] = parser.tsEventTypes.map((event) => {
     return {
       name: event.tsReturnType,
+      signatureTopic: event.typeDescription.signatureTopic!,
     };
   });
 

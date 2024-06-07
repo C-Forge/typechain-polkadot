@@ -1,4 +1,5 @@
 // Copyright (c) 2012-2022 Supercolony
+// Copyright (c) 2024 C Forge
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the"Software"),
@@ -22,14 +23,18 @@
 import { Abi } from '@polkadot/api-contract';
 import { TypeParser } from '@c-forge/typechain-polkadot-parser';
 import Handlebars from 'handlebars';
-import { TypeInfo } from '@c-forge/typechain-polkadot-parser/src/types/TypeInfo';
+import { TypeInfo } from '@c-forge/typechain-polkadot-parser';
 import { Import } from '../types';
 import { readTemplate } from '../utils/handlebars-helpers';
 import { writeFileSync } from '../utils/directories';
 
 const generateForMetaTemplate = Handlebars.compile(readTemplate('types-returns'));
 
-export const FILE = (tsTypes: TypeInfo[], additionalImports: Import[]) => generateForMetaTemplate({ tsTypes, additionalImports });
+export const FILE = (tsTypes: TypeInfo[], additionalImports: Import[]) =>
+  generateForMetaTemplate({
+    tsTypes: tsTypes.filter((value, index, self) => self.findIndex((v) => v.bodyReturnType === value.bodyReturnType) === index),
+    additionalImports,
+  });
 
 /**
  * generates a types-returns file

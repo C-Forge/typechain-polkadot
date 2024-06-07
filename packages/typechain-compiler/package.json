@@ -1,14 +1,21 @@
 {
   "name": "@c-forge/typechain-compiler",
-  "version": "0.1.0",
+  "version": "0.0.60-experimental3",
   "publishConfig": {
     "access": "public"
   },
   "description": "Util to test and compile your rust project",
   "bin": "bin/index.js",
   "scripts": {
+    "lint": "pnpm prettier --check && pnpm eslint",
+    "lint:fix": "pnpm prettier --write && pnpm eslint --fix",
+    "eslint": "eslint 'src/**/*.ts' 'test/**/*.ts'",
+    "prettier": "prettier \"**/*.{js,md,json}\"",
+    "pretest": "cd ../.. && pnpm build",
+    "prepublishOnly": "pnpm build",
+    "clean": "rimraf dist internal types *.{d.ts,js}{,.map} build-test tsconfig.tsbuildinfo",
     "build": "npx tsc",
-    "start": "ts-node ./index.ts --config config.json"
+    "start": "tsx ./index.ts --config config.json"
   },
   "repository": {
     "type": "git",
@@ -32,19 +39,22 @@
   },
   "homepage": "https://github.com/c-forge/typechain-polkadot#readme",
   "dependencies": {
-    "@c-forge/typechain-polkadot": "0.0.1",
-    "@types/consola": "^2.2.5",
+    "@types/fs-extra": "^9.0.13",
     "@types/yargs": "^17.0.10",
     "chalk": "^4.1.0",
+    "consola": "^3.2.3",
     "dotenv": "^16.0.3",
+    "fs-extra": "^9.1.0",
     "globby": "11.0.2",
     "minimatch": "^5.1.0",
     "toml": "^3.0.0",
     "ts-node": "^10.9.1",
     "tslib": "^2.6.2",
+    "tsx": "^4.7.1",
     "yargs": "^17.5.1"
   },
   "devDependencies": {
-    "typescript": "^4.9.5"
+    "rimraf": "^3.0.2",
+    "typescript": "^5.2.2"
   }
 }

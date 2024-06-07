@@ -1,4 +1,5 @@
 // Copyright (c) 2012-2022 Supercolony
+// Copyright (c) 2024 C Forge
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the"Software"),
@@ -20,27 +21,24 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import type { ContractPromise } from '@polkadot/api-contract';
-import type { ContractCallOutcome } from '@polkadot/api-contract/types';
+import type { ContractCallOutcome, ContractOptions } from '@polkadot/api-contract/types';
 import type { AnyJson } from '@polkadot/types-codec/types';
-import type { RequestArgumentType, GasLimitAndValue, QueryCallError, QueryOkCallError } from './types';
-import { Result, ResultBuilder, ReturnNumber } from './types';
+import type { RequestArgumentType, QueryCallError, QueryOkCallError, ContractOptionsWithRequiredValue } from './types';
+import { Result } from './types';
 import { Weight, WeightV2 } from '@polkadot/types/interfaces';
 import { ApiPromise } from '@polkadot/api';
-import { BN_ONE, BN_ZERO, BN_HUNDRED } from '@polkadot/util';
-import { BN } from 'bn.js';
+import { BN_ONE, BN_ZERO, BN_HUNDRED, bnToBn } from '@polkadot/util';
+import BN from 'bn.js';
 import { convertWeight } from '@polkadot/api-contract/base/util';
 
 const MAX_CALL_GAS = new BN(5_000_000_000_000).isub(BN_ONE);
 
-type QueryReturnType<T> = {
+export type QueryReturnType<T> = {
   value: T;
   gasConsumed: Weight;
   gasRequired: Weight;
+  debugMessage: string;
 };
-
-export type { QueryReturnType };
-
-export { _genValidGasLimitAndValue };
 
 /**
  * @throws { QueryCallError }
@@ -51,12 +49,12 @@ export async function queryJSON<T>(
   callerAddress: string,
   title: string,
   args?: readonly RequestArgumentType[],
-  gasLimitAndValue?: GasLimitAndValue,
+  contractOptions?: ContractOptionsWithRequiredValue,
   handler: (json: AnyJson) => T = (json: AnyJson): T => {
     return json as unknown as T;
   },
 ): Promise<QueryReturnType<T>> {
-  const { output, gasConsumed, gasRequired } = await queryOutput(api, nativeContract, callerAddress, title, args, gasLimitAndValue);
+  const { output, gasConsumed, gasRequired, debugMessage } = await queryOutput(api, nativeContract, callerAddress, title, args, contractOptions);
 
   let _value = output.toJSON();
 
@@ -65,6 +63,7 @@ export async function queryJSON<T>(
       const error: QueryOkCallError = {
         issue: 'READ_ERR_IN_BODY',
         _err: _value.err,
+        debugMessage,
       };
       throw error;
     }
@@ -72,6 +71,7 @@ export async function queryJSON<T>(
   }
 
   return {
+    debugMessage,
     value: handler(output.toJSON()),
     gasConsumed,
     gasRequired,
@@ -90,23 +90,25 @@ export async function queryOkJSON<T>(
   //
   title: string,
   args?: readonly RequestArgumentType[],
-  gasLimitAndValue?: GasLimitAndValue,
+  contractOptions?: ContractOptionsWithRequiredValue,
   handler: (json: AnyJson) => T = (json: AnyJson): T => {
     return json as unknown as T;
   },
 ): Promise<QueryReturnType<T>> {
-  const { output, gasConsumed, gasRequired } = await queryOutput(api, nativeContract, callerAddress, title, args, gasLimitAndValue);
+  const { output, gasConsumed, gasRequired, debugMessage } = await queryOutput(api, nativeContract, callerAddress, title, args, contractOptions);
   const _value = output.toJSON();
 
   if (_value === null || _value === undefined || typeof _value !== 'object') {
     const error: QueryOkCallError = {
       issue: 'BODY_ISNT_OKERR',
       value: _value,
+      debugMessage,
     };
     throw error;
   }
 
   return {
+    debugMessage,
     value: handler(_value),
     gasConsumed,
     gasRequired,
@@ -123,7 +125,7 @@ export async function queryOutput(
   //
   title: string,
   args?: readonly RequestArgumentType[],
-  gasLimitAndValue?: GasLimitAndValue,
+  contractOptions?: ContractOptionsWithRequiredValue,
 ) {
   const contractAddress = nativeContract.address.toString();
   if (nativeContract.query[title] === null || nativeContract.query[title] === undefined) {
@@ -135,12 +137,12 @@ export async function queryOutput(
   }
 
   const _args = args || [];
-  const _gasLimitAndValue = await _genValidGasLimitAndValue(api, gasLimitAndValue);
+  const _contractOptions = await genValidContractOptionsWithValue(api, contractOptions);
 
   let response: ContractCallOutcome;
   let error: QueryCallError | undefined;
   try {
-    response = await nativeContract.query[title]!(callerAddress, _gasLimitAndValue, ..._args);
+    response = await nativeContract.query[title]!(callerAddress, _contractOptions, ..._args);
   } catch (caughtError) {
     error = {
       issue: 'FAIL_AT_CALL',
@@ -150,7 +152,7 @@ export async function queryOutput(
     throw error;
   }
 
-  const { gasConsumed, result, output, gasRequired } = response;
+  const { gasConsumed, result, output, gasRequired, debugMessage } = response;
 
   const resValueStr = output ? output.toString() : null;
   const resValueJSON = output ? output.toJSON() : null;
@@ -160,25 +162,31 @@ export async function queryOutput(
       issue: 'FAIL_AFTER_CALL::IS_ERROR',
       _resultIsOk: result.isOk,
       _asError: result.isErr ? result.asErr : undefined,
+      debugMessage: debugMessage.toHuman(),
     };
 
   if (result.isOk === false)
     error = {
       issue: 'FAIL_AFTER_CALL::RESULT_NOT_OK',
       _asError: result.isErr ? result.asErr : undefined,
+      debugMessage: debugMessage.toHuman(),
     };
 
   if (error) throw error;
 
   return {
+    debugMessage: debugMessage.toHuman(),
     output: output!,
     gasConsumed: gasConsumed,
     gasRequired: gasRequired,
   };
 }
 
-async function _genValidGasLimitAndValue(api: ApiPromise, gasLimitAndValue?: GasLimitAndValue): Promise<GasLimitAndValue> {
-  if (gasLimitAndValue === null || gasLimitAndValue === undefined) {
+export async function genValidContractOptionsWithValue(
+  api: ApiPromise,
+  contractOptions?: ContractOptions,
+): Promise<{ gasLimit: WeightV2; value: BN }> {
+  if (contractOptions === null || contractOptions === undefined) {
     return {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -200,7 +208,7 @@ async function _genValidGasLimitAndValue(api: ApiPromise, gasLimitAndValue?: Gas
     };
   }
 
-  let { value, gasLimit } = gasLimitAndValue;
+  let { value, gasLimit } = contractOptions;
 
   if (!value) value = BN_ZERO;
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -221,19 +229,22 @@ async function _genValidGasLimitAndValue(api: ApiPromise, gasLimitAndValue?: Gas
       proofSize: MAX_CALL_GAS,
     }) as WeightV2;
 
-  return { value, gasLimit };
+  // if (typeof gasLimit === 'number' || typeof gasLimit === 'string') gasLimit = bnToBn(gasLimit);
+  // if (typeof gasLimit === 'bigint') gasLimit = bnToBn(gasLimit.toString(10));
+
+  return { value: bnToBn(value), gasLimit: gasLimit as WeightV2 }; //TODO
 }
 
 export function handleReturnType(result: any, typeDescription: any): any {
   const tryReturnAsNumber = () => {
-    return typeof result === 'number' || typeof result === 'bigint' || result?.startsWith?.('0x') ? new ReturnNumber(result) : result;
+    return typeof result === 'number' ? bnToBn(result) : result;
   };
   if (typeof result === 'undefined' || typeof typeDescription === 'undefined') return result;
   if (result === null || result === undefined || typeDescription === null || typeDescription === undefined) return result;
   if (typeof result === 'object' && typeof typeDescription === 'object' && (typeDescription.isResult || typeDescription.name.startsWith('Result<'))) {
     return new Result(handleReturnType(result.ok, typeDescription.body.ok), handleReturnType(result.err, typeDescription.body.err));
   }
-  if (typeDescription.name === 'ReturnNumber') return new ReturnNumber(result as string | number);
+  if (typeDescription.name === 'BN') return bnToBn(result);
   if (typeof typeDescription === 'object' && typeDescription.name === 'Option')
     return result !== null ? handleReturnType(result, typeDescription.body[0]) : handleReturnType(result, typeDescription.body[1]);
   if (typeof result !== 'object' || typeof typeDescription !== 'object' || typeDescription.isPrimitive) return tryReturnAsNumber();

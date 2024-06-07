@@ -3,4 +3,4 @@
 require('ts-node').register({
   projectSearchDir: __dirname,
 });
-require('../index.ts');
+require('../src/index.ts');

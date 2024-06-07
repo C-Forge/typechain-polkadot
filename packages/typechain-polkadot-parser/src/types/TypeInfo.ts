@@ -1,4 +1,5 @@
 // Copyright (c) 2012-2022 Supercolony
+// Copyright (c) 2024 C Forge
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the"Software"),
@@ -69,7 +70,7 @@ export class TypeInfo {
    * @returns {TypeInfo} - A new empty TypeInfo object
    */
   static get EMPTY_TYPE_INFO() {
-    return new TypeInfo(0, '', '', '', '', new TypeTS('', false, false, true), '', '');
+    return new TypeInfo(0, '', '', '', '', new TypeTS('', false, true), '', '');
   }
 }
 
@@ -84,12 +85,11 @@ export class TypeTS {
       };
   isResult: boolean;
   isPrimitive: boolean;
-  isConvertable: boolean;
+  signatureTopic?: string;
 
   constructor(
     name: string,
     isResult: boolean,
-    isConvertable: boolean,
     isPrimitive: boolean,
     body?:
       | null
@@ -98,12 +98,13 @@ export class TypeTS {
       | {
           [index: string]: TypeTS | null;
         },
+    signatureTopic?: string,
   ) {
     this.name = name;
     this.isResult = isResult;
-    this.isConvertable = isConvertable;
     this.isPrimitive = isPrimitive;
     this.body = body;
+    this.signatureTopic = signatureTopic;
   }
 
   logger() {

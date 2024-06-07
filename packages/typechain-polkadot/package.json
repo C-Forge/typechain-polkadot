@@ -1,16 +1,16 @@
 {
   "name": "@c-forge/typechain-polkadot",
-  "version": "0.1.0",
+  "version": "0.0.60-experimental3",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
     "build": "npx tsc",
-    "start": "ts-node index.ts --in artifacts --out out",
+    "start": "tsx index.ts --in artifacts --out out",
     "lint": "eslint \"{src,tests}/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix`": "eslint --fix \"{src,tests}/**/*.{js,jsx,ts,tsx}\""
   },
-  "bin": "bin/index.js",
+  "bin": "bin/index.ts",
   "files": [
     "index.ts",
     "src",
@@ -23,24 +23,24 @@
   },
   "engineStrict": true,
   "dependencies": {
-    "@polkadot/api": "10.11.1",
-    "@polkadot/api-contract": "10.11.1",
-    "@polkadot/keyring": "12.6.1",
-    "@c-forge/typechain-polkadot-parser": "../typechain-polkadot-parser",
+    "@c-forge/typechain-polkadot-parser": "workspace:^",
+    "@c-forge/typechain-types": "workspace:^",
+    "@polkadot/api": "^10.12.2",
+    "@polkadot/api-contract": "^10.12.2",
+    "@polkadot/keyring": "^12.6.2",
+    "@polkadot/util": "^12.6.2",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.11.18",
     "@types/yargs": "^17.0.10",
-    "camelcase": "^6.3.0",
     "eslint": "^8.18.0",
     "fs-extra": "^9.1.0",
     "handlebars": "^4.7.7",
     "prettier": "^2.7.1",
-    "ts-node": "^10.7.0",
     "tslib": "^2.6.2",
+    "tsx": "^4.7.1",
     "yargs": "^17.5.1"
   },
   "devDependencies": {
-    "@c-forge/typechain-types": "0.0.1",
     "@types/bn.js": "^5.1.0",
     "@types/eslint": "^8.4.3",
     "@types/jest": "^27.5.2",
@@ -51,8 +51,9 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-node": "^11.1.0",
     "hjson": "^3.2.2",
+    "rimraf": "^3.0.2",
     "ts-jest": "^28.0.3",
-    "typescript": "^4.9.5"
+    "typescript": "^5.2.2"
   },
   "author": "c-forge",
   "homepage": "https://github.com/c-forge/typechain-polkadot#readme",

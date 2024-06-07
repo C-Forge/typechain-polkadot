@@ -11,11 +11,11 @@ import TxSignAndSendPlugin from '../generators/tx-sign-and-send';
 import MixedMethodsPlugin from '../generators/mixed-methods';
 import DataPlugin from '../generators/data';
 import ContractPlugin from '../generators/contract';
-import ConstructorsPlugin from '../generators/constructors';
+import DeployerPlugin from '../generators/deployer';
 import EventTypesPlugin from '../generators/events-types';
 import EventsPlugin from '../generators/events';
 import EventDataPlugin from '../generators/event-data';
-import ContractInfoPlugin from '../generators/contract-info';
+import ContractInfoPlugin from '../generators/artifacts';
 
 export default class TypechainPolkadot {
   plugins: TypechainPlugin[] = [];
@@ -83,7 +83,7 @@ export const defaultPlugins: TypechainPlugin[] = [
   new MixedMethodsPlugin(),
   new DataPlugin(),
   new ContractPlugin(),
-  new ConstructorsPlugin(),
+  new DeployerPlugin(),
   new EventTypesPlugin(),
   new EventsPlugin(),
   new EventDataPlugin(),

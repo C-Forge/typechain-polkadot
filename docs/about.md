@@ -161,10 +161,10 @@ To dive deeper into configuration, you can check [typechain-compiler documentati
 ```json
 "dependencies": {
 	"@c-forge/typechain-compiler": "^0.5.16",
-	"@c-forge/typechain-types": "^0.0.22",
+	"@c-forge/typechain-types": "^0.0.23",
 	"@types/node": "^17.0.34",
 	"ts-node": "^10.7.0",
-	"typescript": "^4.6.4",
+	"typescript": "^5.2.2",
 	"@polkadot/api": "10.9.1",
 	"@polkadot/api-contract": "10.9.1",
 	"@polkadot/keyring": "^10.4.2",
@@ -243,10 +243,10 @@ cargo +stable build --release
 ./target/release/substrate-contracts-node --dev --tmp
 ```
 
-10. And now, you can run it with `ts-node`:
+10. And now, you can run it with `tsx`:
 
 ```bash
-$ npx ts-node index.ts
+$ npx tsx index.ts
 ```
 
 Whoa! We've just deployed and interacted with our contract! 🎉
@@ -368,7 +368,7 @@ main().then(() => {
 4. And now, let's run it:
 
 ```bash
-$ npx ts-node index.ts
+$ npx tsx index.ts
 ```
 
 And you should see something like this:
@@ -380,12 +380,12 @@ Contract deployed at: 5Cc95McifGEqPsc9kfBNvWgAkDZeZ2BkQ5BCBXkHXmsNYavM
 Transfer event received: {
   from: null,
   to: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY',
-  value: ReturnNumber { rawNumber: <BN: 2710> }
+  value:  <BN: 2710>
 }
 Transfer event received: {
   from: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY',
   to: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
-  value: ReturnNumber { rawNumber: <BN: 1> }
+  value: <BN: 1>
 }
  Total supply after transfer: 10000
  Balance of Alice after transfer: 9999

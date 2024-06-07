@@ -1,24 +1,24 @@
 /* This file is auto-generated */
+// @ts-nocheck
 
 import type { ContractPromise } from '@polkadot/api-contract';
 import type { ApiPromise } from '@polkadot/api';
-import type { GasLimit, GasLimitAndRequiredValue, Result } from '@c-forge/typechain-types';
+import type { ContractOptionsWithRequiredValue, Result } from '@c-forge/typechain-types';
+import type { ContractOptions } from '@polkadot/api-contract/types';
 import type { QueryReturnType } from '@c-forge/typechain-types';
 import { queryJSON, queryOkJSON, handleReturnType } from '@c-forge/typechain-types';
 import type * as ArgumentTypes from '../types-arguments/{{{fileName}}}';
 import type * as ReturnTypes from '../types-returns/{{{fileName}}}';
 import type BN from 'bn.js';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import {ReturnNumber} from '@c-forge/typechain-types';
 import {getTypeDescription} from './../shared/utils';
 import DATA_TYPE_DESCRIPTIONS from '../data/{{{fileName}}}.json';
+import { bnToBn } from '@polkadot/util';
 {{#if additionalImports.length}}
 {{#each additionalImports}}
 import { {{#each values}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}} } from '{{{path}}}';
 {{/each}}{{/if}}
 
-export default class Methods {
+export default class {{{toPascalCase fileName}}}Methods {
 	readonly __nativeContract : ContractPromise;
 	readonly __apiPromise: ApiPromise;
 	readonly __callerAddress : string;
@@ -46,9 +46,9 @@ export default class Methods {
 	{{#each args}}
 		{{{name}}}: {{{type.tsStr}}},
 	{{/each}}
-		__options ? : {{#if payable}}GasLimitAndRequiredValue{{else}}GasLimit{{/if}},
+		__options ? : {{#if payable}}ContractOptionsWithRequiredValue{{else}}ContractOptions{{/if}},
 	){{{buildReturnType this}}}{
-		return {{{buildReturn this}}} "{{{toCamelCaseForFunctions originalName}}}", [{{#each args}}{{{name}}}{{#unless @last}}, {{/unless}}{{/each}}], __options {{{buildWrapper this}}});
+		return {{{buildReturn this}}} "{{{toCamelCase originalName}}}", [{{#each args}}{{{name}}}{{#unless @last}}, {{/unless}}{{/each}}], __options {{{buildWrapper this}}});
 	}
 
 {{/each}}

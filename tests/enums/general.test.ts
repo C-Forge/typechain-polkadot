@@ -1,7 +1,7 @@
 import * as PolkadotAPI from '@polkadot/api';
 import Contract from '../generated/contracts/contract_with_enums';
 import { AnotherEnumBuilder, EnumExampleBuilder } from '../generated/types-arguments/contract_with_enums';
-import Constructors from '../generated/constructors/contract_with_enums';
+import Constructors from '../generated/deployers/contract_with_enums';
 import type { KeyringPair } from '@polkadot/keyring/types';
 import { GetAccounts } from '../config';
 

@@ -1,3 +1,7 @@
+import * as PathAPI from 'path';
+import * as FsAPI from 'fs';
+import logger from './logger';
+import chalk from 'chalk';
 export interface Config {
   projectFiles: string[];
   skipLinting: boolean;
@@ -7,24 +11,39 @@ export interface Config {
   workspacePath?: string;
 }
 
-export function parseConfig(configStr: string): Config {
-  const config = JSON.parse(configStr);
+const getDefaultConfig = (): Config => ({
+  projectFiles: [],
+  skipLinting: false,
+  artifactsPath: './artifacts',
+  typechainGeneratedPath: './typechain-generated',
+});
 
-  if (config.projectFiles === undefined) {
-    config.projectFiles = [];
+export function readConfigOrDefault(relativeCfgPath: string): Config {
+  try {
+    const cwdPath = process.cwd();
+    const absPathToConfig = PathAPI.resolve(cwdPath, `./${relativeCfgPath}`);
+    const configStr = FsAPI.readFileSync(absPathToConfig, 'utf8');
+    const config = JSON.parse(configStr);
+
+    if (config.projectFiles === undefined) {
+      config.projectFiles = getDefaultConfig().projectFiles;
+    }
+
+    if (config.skipLinting === undefined) {
+      config.skipLinting = getDefaultConfig().artifactsPath;
+    }
+
+    if (config.artifactsPath === undefined) {
+      config.artifactsPath = getDefaultConfig().artifactsPath;
+    }
+
+    if (config.typechainGeneratedPath === undefined) {
+      config.typechainGeneratedPath = getDefaultConfig().typechainGeneratedPath;
+    }
+
+    return config;
+  } catch {
+    logger.log(chalk.magenta(`Config not provided or failed to parse - using defaults`));
+    return getDefaultConfig();
   }
-
-  if (config.skipLinting === undefined) {
-    config.skipLinting = false;
-  }
-
-  if (config.artifactsPath === undefined) {
-    config.artifactsPath = './artifacts';
-  }
-
-  if (config.typechainGeneratedPath === undefined) {
-    config.typechainGeneratedPath = './typechain-generated';
-  }
-
-  return config;
 }
