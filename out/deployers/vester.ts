@@ -32,15 +32,40 @@ export default class VesterDeployer {
     return contractFileParsed.source.wasm;
   }
 
+  private createCodePromise(): CodePromise {
+    const abi = JSON.parse(FsAPI.readFileSync(PathAPI.resolve(__dirname, `../artifacts/${fileName}.json`)).toString());
+    const wasm = this.getWasm();
+    return new CodePromise(this.nativeAPI, abi, wasm);
+  }
+
+  /**
+   * Deploy contract's code
+   *
+   * @param { BN | null | undefined } [storageDepositLimit],
+   * @param { 'Enforced' | 'Relaxed' | number } [determinism],
+   */
+  async deployCode(storageDepositLimit: BN | null = null, determinism: 'Enforced' | 'Relaxed' | number = 0) {
+    const codePromise = this.createCodePromise();
+
+    const tx = this.nativeAPI.tx.contracts.uploadCode!(codePromise.code, storageDepositLimit, determinism);
+    let response;
+
+    try {
+      response = await _signAndSend(this.nativeAPI.registry, tx, this.signer, undefined, (event: any) => event);
+    } catch (error) {
+      console.log(error);
+    }
+
+    return response as SignAndSendSuccessResponse;
+  }
+
   /**
    * new
    *
    */
   async new(__options?: ContractOptions) {
-    const abi = JSON.parse(FsAPI.readFileSync(PathAPI.resolve(__dirname, `../artifacts/${fileName}.json`)).toString());
+    const codePromise = this.createCodePromise();
 
-    const wasm = this.getWasm();
-    const codePromise = new CodePromise(this.nativeAPI, abi, wasm);
     const gasLimit = (await genValidContractOptionsWithValue(this.nativeAPI, __options)).gasLimit as WeightV2 as any;
 
     const storageDepositLimit = __options?.storageDepositLimit;
@@ -48,7 +73,7 @@ export default class VesterDeployer {
     let response;
 
     try {
-      response = await _signAndSend(this.nativeAPI.registry, tx, this.signer, (event: any) => event);
+      response = await _signAndSend(this.nativeAPI.registry, tx, this.signer, undefined, (event: any) => event);
     } catch (error) {
       console.log(error);
     }
