@@ -2,9 +2,9 @@
   "name": "typechain-workspace",
   "scripts": {
     "start-typechain": "npx tsx packages/typechain-polkadot/index.ts --in ./artifacts --out ./out",
-    "build:all": "npm run --workspaces --if-present build",
-    "publish:dry-run": "npm --workspaces publish --dry-run",
-    "publish:all": "npm --workspaces publish --access=public",
+    "build:all": "pnpm run -r --if-present build",
+    "publish:dry-run": "pnpm -r publish --dry-run",
+    "publish:all": "pnpm -r publish --access=public",
     "publish:packages": "npm --workspace packages publish --access=public",
     "publish:examples": "npm --workspace packages publish --access=public",
     "gen-test-ts": "npx tsx packages/typechain-polkadot/index.ts --in tests/artifacts --out tests/generated",
