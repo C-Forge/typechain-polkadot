@@ -101,10 +101,6 @@ function generate(abi: Abi, fileName: string, absPathToOutput: string, absPathTo
 }
 
 export default class ConstructorsPlugin implements TypechainPlugin {
-  name = 'ConstructorsPlugin';
-  outputDir = 'deployers';
-  overrides = false;
-
   generate(abi: Abi, fileName: string, absPathToABIs: string, absPathToOutput: string): void {
     generate(abi, fileName, absPathToOutput, absPathToABIs);
   }

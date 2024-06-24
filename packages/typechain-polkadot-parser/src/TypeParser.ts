@@ -38,7 +38,7 @@ import { generateClassEnum, generateEnum, generateInterfaceArgs, generateInterfa
 import { PortableType } from '@polkadot/types/interfaces/metadata/types';
 import { Vec } from '@polkadot/types-codec/base/Vec';
 import { TypeInfo, TypeTS } from './types/TypeInfo';
-import { ContractEventSpecV2 } from '@polkadot/types/interfaces/contractsAbi/types';
+import { ContractEventSpecV2, ContractMetadataV5 } from '@polkadot/types/interfaces/contractsAbi/types';
 import { stringCamelCase } from '@polkadot/util';
 import { INK_PRIMITIVE_TYPE } from './consts';
 
@@ -47,6 +47,7 @@ export class TypeParser {
   readonly tsEventTypes: Array<TypeInfo> = [];
   private abiTypes: Vec<PortableType>;
   private eventTypes: Vec<ContractEventSpecV2>;
+  readonly legacyEventsMode: boolean = false;
 
   /**
    * @constructor
@@ -55,6 +56,7 @@ export class TypeParser {
    * @remark When you are creating instances of this class calling constructor, types are automatically parsing.
    */
   constructor(abi: Abi) {
+    this.legacyEventsMode = parseInt(abi.metadata.version.toString()) < 5;
     this.abiTypes = abi.metadata.types;
     this.eventTypes = abi.metadata.spec.events;
 
@@ -154,7 +156,13 @@ export class TypeParser {
         event.label.toString(),
         `EventTypes.${event.label.toString()}`,
         `EventTypes.${event.label.toString()}`,
-        new TypeTS(event.label.toString(), false, false, eventBodyStructure, (abi.json as any).spec.events[i].signature_topic.toString()),
+        new TypeTS(
+          event.label.toString(),
+          false,
+          false,
+          eventBodyStructure,
+          this.legacyEventsMode ? undefined : (abi.metadata as ContractMetadataV5).spec.events[i].signature_topic.toString(),
+        ),
         eventBody,
         eventBody,
       );
@@ -398,23 +406,6 @@ ${event.args
           err: typeErr.typeDescription,
         }),
       );
-
-      if (variant.variants[0]!.fields.length > 0) {
-        const generatedType = this.generateType(variant.variants[0]!.fields[0]!.type.toJSON() as number);
-
-        return new TypeInfo(
-          typeID,
-          `${generatedType.tsArgType} | null`,
-          generatedType.tsReturnType,
-          `${generatedType.tsArgTypePrefixed} | null`,
-          generatedType.tsReturnTypePrefixed,
-          new TypeTS('Result', false, false, {
-            '0': generatedType.typeDescription,
-          }),
-        );
-      } else {
-        return new TypeInfo(typeID, 'null', 'null', 'null', 'null', new TypeTS('null', false, true));
-      }
     } else if (variantName === 'Option') {
       if (variant.variants[1]!.fields.length > 0) {
         const generatedType = this.generateType(variant.variants[1]!.fields[0]!.type.toJSON() as number);

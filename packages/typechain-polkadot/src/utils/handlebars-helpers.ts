@@ -110,3 +110,9 @@ Handlebars.registerHelper('ifTx', function (fn: Method, options: any) {
     return '';
   }
 });
+
+Handlebars.registerHelper('coalesce', (...args) => args.find((i) => !!i));
+
+Handlebars.registerHelper('ternary', function (test, yes, no) {
+  return test ? yes : no;
+});

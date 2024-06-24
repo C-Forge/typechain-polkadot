@@ -57,7 +57,4 @@ export default class DataPlugin implements TypechainPlugin {
   generate(abi: Abi, fileName: string, absPathToABIs: string, absPathToOutput: string): void {
     generate(abi, fileName, absPathToOutput);
   }
-
-  name: string = 'DataPlugin';
-  outputDir: string = 'data';
 }

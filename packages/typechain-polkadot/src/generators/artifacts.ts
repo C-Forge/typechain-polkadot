@@ -24,6 +24,7 @@ import { Abi } from '@polkadot/api-contract';
 import { TypechainPlugin } from '../types/interfaces';
 import { copyFileSync } from 'fs';
 import PathAPI from 'path';
+import { ensureDirSync } from 'fs-extra';
 
 /**
  * Generates file content for contarct-info/<fileName>.ts using Handlebars
@@ -35,11 +36,12 @@ import PathAPI from 'path';
 
 export default class ContractInfoPlugin implements TypechainPlugin {
   generate(abi: Abi, fileName: string, absPathToABIs: string, absPathToOutput: string): void {
+    ensureDirSync(PathAPI.resolve(absPathToOutput, 'artifacts'));
     copyFileSync(`${absPathToABIs}/${fileName}.json`, PathAPI.resolve(absPathToOutput, `artifacts/${fileName}.json`));
     try {
       copyFileSync(`${absPathToABIs}/${fileName}.wasm`, PathAPI.resolve(absPathToOutput, `artifacts/${fileName}.wasm`));
     } catch (_) {
-      console.warn(`Could not read wasm file for ${fileName}`);
+      console.warn(`Could not read wasm file for ${fileName}. Typechain will be forced to use contract file which may be flaky.`);
     }
     try {
       copyFileSync(`${absPathToABIs}/${fileName}.contract`, PathAPI.resolve(absPathToOutput, `artifacts/${fileName}.contract`));
@@ -47,7 +49,4 @@ export default class ContractInfoPlugin implements TypechainPlugin {
       console.warn(`Could not read contract file for ${fileName}`);
     }
   }
-
-  name: string = 'ContractInfoPlugin';
-  outputDir: string = 'artifacts';
 }

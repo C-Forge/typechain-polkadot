@@ -30,11 +30,11 @@ import { writeFileSync } from '../utils/directories';
 
 const generateForMetaTemplate = Handlebars.compile(readTemplate('event-types'));
 
-export const FILE = (fileName: string, tsTypes: TypeInfo[], additionalImports: Import[]) =>
+export const FILE = (fileName: string, tsTypes: TypeInfo[], legacyEventsMode: boolean) =>
   generateForMetaTemplate({
     fileName,
     tsTypes: tsTypes.filter((value, index, self) => self.findIndex((v) => v.bodyReturnType === value.bodyReturnType) === index),
-    additionalImports,
+    legacyEventsMode,
   });
 
 /**
@@ -47,14 +47,11 @@ export const FILE = (fileName: string, tsTypes: TypeInfo[], additionalImports: I
 function generate(abi: Abi, fileName: string, absPathToOutput: string) {
   const parser = new TypeParser(abi);
 
-  writeFileSync(absPathToOutput, `event-types/${fileName}.ts`, FILE(fileName, parser.tsEventTypes, []));
+  writeFileSync(absPathToOutput, `event-types/${fileName}.ts`, FILE(fileName, parser.tsEventTypes, parser.legacyEventsMode));
 }
 
 export default class EventTypesPlugin {
   generate(abi: Abi, fileName: string, absPathToABIs: string, absPathToOutput: string): void {
     generate(abi, fileName, absPathToOutput);
   }
-
-  name: string = 'EventTypesPlugin';
-  outputDir: string = 'event-types';
 }
