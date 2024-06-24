@@ -1,5 +1,5 @@
 import { TypechainPlugin } from './interfaces';
-import { assureDirExists, generateProjectStructure } from '../utils/directories';
+import { generateProjectStructureAndCopyRawFiles } from '../utils/directories';
 import FsAPI from 'fs';
 import PathAPI from 'path';
 import { preprocessABI } from '../utils/abi';
@@ -16,6 +16,7 @@ import EventTypesPlugin from '../generators/events-types';
 import EventsPlugin from '../generators/events';
 import EventDataPlugin from '../generators/event-data';
 import ContractInfoPlugin from '../generators/artifacts';
+import EventsEnumPlugin from '../generators/events-enum';
 
 export default class TypechainPolkadot {
   plugins: TypechainPlugin[] = [];
@@ -29,14 +30,12 @@ export default class TypechainPolkadot {
   }
 
   async run(absPathToABIs: string, absPathToOutput: string) {
-    generateProjectStructure(absPathToOutput);
+    generateProjectStructureAndCopyRawFiles(absPathToOutput);
 
     for (const plugin of this.plugins) {
-      if (plugin.beforeRun) {
-        await plugin.beforeRun(absPathToABIs, absPathToOutput);
+      if (plugin.beforeAll) {
+        await plugin.beforeAll(absPathToABIs, absPathToOutput);
       }
-
-      assureDirExists(absPathToOutput, plugin.outputDir);
     }
 
     const fullFileNames = FsAPI.readdirSync(absPathToABIs);
@@ -49,7 +48,12 @@ export default class TypechainPolkadot {
       const abi = preprocessABI(_abiStr);
 
       for (const plugin of this.plugins) {
-        await plugin.generate(abi, fileName, absPathToABIs, absPathToOutput);
+        await plugin.generate?.(abi, fileName, absPathToABIs, absPathToOutput);
+      }
+    }
+    for (const plugin of this.plugins) {
+      if (plugin.afterAll) {
+        await plugin.afterAll(absPathToABIs, absPathToOutput);
       }
     }
   }
@@ -61,7 +65,7 @@ export default class TypechainPolkadot {
       plugins.push(new plugin.default());
     }
 
-    console.log('Succesfully loaded plugins: ', plugins.map((p) => p.name).join(', '));
+    console.log('Succesfully loaded plugins: ', plugins.map((p) => p.constructor.name).join(', '));
 
     this.plugins.push(...plugins);
 
@@ -87,4 +91,5 @@ export const defaultPlugins: TypechainPlugin[] = [
   new EventTypesPlugin(),
   new EventsPlugin(),
   new EventDataPlugin(),
+  new EventsEnumPlugin(),
 ];

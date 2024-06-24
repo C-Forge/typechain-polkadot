@@ -29,8 +29,12 @@ import { readTemplate } from '../utils/handlebars-helpers';
 
 const generateForMetaTemplate = Handlebars.compile(readTemplate('events'));
 
-export const FILE = (fileName: string, events: PolkadotEvent[]) =>
-  generateForMetaTemplate({ fileName, events: events.filter((value, index, self) => self.findIndex((v) => v.name === value.name) === index) });
+export const FILE = (fileName: string, events: PolkadotEvent[], legacyEventsMode: boolean) =>
+  generateForMetaTemplate({
+    fileName,
+    events: events.filter((value, index, self) => self.findIndex((v) => v.name === value.name) === index),
+    legacyEventsMode,
+  });
 
 /**
  * generates a mixed-methods file
@@ -45,18 +49,15 @@ function generate(abi: Abi, fileName: string, absPathToOutput: string) {
   const events: PolkadotEvent[] = parser.tsEventTypes.map((event) => {
     return {
       name: event.tsReturnType,
-      signatureTopic: event.typeDescription.signatureTopic!,
+      signatureTopic: event.typeDescription.signatureTopic,
     };
   });
 
-  writeFileSync(absPathToOutput, `events/${fileName}.ts`, FILE(fileName, events));
+  writeFileSync(absPathToOutput, `events/${fileName}.ts`, FILE(fileName, events, parser.legacyEventsMode));
 }
 
 export default class EventsPlugin {
   generate(abi: Abi, fileName: string, absPathToABIs: string, absPathToOutput: string): void {
     generate(abi, fileName, absPathToOutput);
   }
-
-  name: string = 'EventsPlugin';
-  outputDir: string = 'events';
 }

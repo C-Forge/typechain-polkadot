@@ -1,0 +1,22 @@
+{
+  "name": "plugins-typechain-example-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "generate": "echo No generate script",
+    "start": "npx @c-forge/typechain-polkadot --plugins ./plugins --input ./artifacts --output ./output"
+  },
+  "dependencies": {
+    "@c-forge/typechain-polkadot": "../../packages/typechain-polkadot",
+    "@c-forge/typechain-types": "../../packages/typechain-types",
+    "@types/node": "^17.0.34",
+    "ts-node": "^10.7.0",
+    "typescript": "^5.2.2",
+    "@polkadot/api": "10.11.1",
+    "@polkadot/api-contract": "10.11.1",
+    "@types/bn.js": "^5.1.0"
+  },
+  "author": "Varex Silver",
+  "license": "ISC"
+}

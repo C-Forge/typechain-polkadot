@@ -95,7 +95,6 @@ function generate(abi: Abi, fileName: string, absPathToOutput: string) {
       methodType: 'extrinsic',
     });
   }
-
   writeFileSync(absPathToOutput, `build-extrinsic/${fileName}.ts`, FILE(fileName, methods, imports));
 }
 
@@ -103,7 +102,4 @@ export default class BuildExtrinsicPlugin implements TypechainPlugin {
   generate(abi: Abi, fileName: string, absPathToABIs: string, absPathToOutput: string): void {
     generate(abi, fileName, absPathToOutput);
   }
-
-  name: string = 'BuildExtrinsicPlugin';
-  outputDir: string = 'build-extrinsic';
 }

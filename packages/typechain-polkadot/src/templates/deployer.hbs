@@ -30,7 +30,7 @@ export default class {{{toPascalCase fileName}}}Deployer {
 		try {
    			return FsAPI.readFileSync(PathAPI.resolve(__dirname,`../artifacts/${fileName}.wasm`));
 		} catch(_) {
-			console.warn(`No wasm file found for ${fileName}`);
+			console.warn(`No wasm file found for ${fileName}. Trying to use contract file...`);
 		}
    		const contractFileParsed = JSON.parse(FsAPI.readFileSync(PathAPI.resolve(__dirname,`../artifacts/${fileName}.contract`)).toString());
 		return contractFileParsed.source.wasm;
@@ -54,7 +54,7 @@ export default class {{{toPascalCase fileName}}}Deployer {
 	) {
    		const codePromise = this.createCodePromise();
 
-		const tx = this.nativeAPI.tx.contracts.uploadCode!(codePromise.code, storageDepositLimit, determinism);
+		const tx = this.nativeAPI.tx.contracts!.uploadCode!(codePromise.code, storageDepositLimit, determinism);
 		let response;
 
 		try {

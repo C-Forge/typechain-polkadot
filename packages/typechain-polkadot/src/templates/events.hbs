@@ -29,17 +29,44 @@ export default class EventsClass {
 				_event[event.args[i]!.name] = args[i]!.toJSON();
 			}
 
-			callback(handleEventReturn(_event, getEventTypeDescription('{{signatureTopic}}', EVENT_DATA_TYPE_DESCRIPTIONS)) as EventTypes.{{name}});
+			callback(handleEventReturn(_event, getEventTypeDescription('{{ternary ../legacyEventsMode name signatureTopic}}', EVENT_DATA_TYPE_DESCRIPTIONS)) as EventTypes.{{name}});
 		};
-
+		{{#if ../legacyEventsMode }}
 		return this.__subscribeOnEvent(callbackWrapper, (eventName : string) => eventName === '{{name}}');
+		{{else}}
+		return this.__subscribeOnEvent(callbackWrapper, (signatureTopic : string) => signatureTopic === '{{signatureTopic}}');
+		{{/if}}
 	}
 
 {{/each}}
-
+{{#if legacyEventsMode }}
 	private __subscribeOnEvent(
 		callback : (args: any[], event: any) => void,
 		filter : (eventName: string) => boolean = () => true
+	) {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
+		return this.__api.query.system.events((events) => {
+			events.forEach((record: any) => {
+				const { event } = record;
+
+				if (event.method == 'ContractEmitted') {
+					const [address] = record.event.data;
+
+					if (address.toString() === this.__nativeContract.address.toString()) {
+						const {args, event} = this.__nativeContract.abi.decodeEvent(record);
+
+						if (filter(event.identifier.toString()))
+							callback(args, event);
+					}
+				}
+			});
+		});
+	}
+{{else}}
+private __subscribeOnEvent(
+		callback : (args: any[], event: any) => void,
+		filter : (signatureTopic: string) => boolean = () => true
 	) {
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
@@ -56,12 +83,12 @@ export default class EventsClass {
 							.events[(this.__nativeContract.abi.json as any).spec.events
 							.findIndex((e: any) => e.signature_topic === record.topics[0].toString())].fromU8a(data);
 
-						if (filter(decodeResult.event.identifier.toString()))
+						if (filter(decodeResult.event.signatureTopic.toString()))
 							callback(decodeResult.args, decodeResult.event);
 					}
 				}
 			});
 		});
 	}
-
+{{/if}}
 }

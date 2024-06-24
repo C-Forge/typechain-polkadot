@@ -57,9 +57,6 @@ function generate(abi: Abi, fileName: string, absPathToOutput: string, absPathTo
 }
 
 export default class ContractPlugin implements TypechainPlugin {
-  name: string = 'ContractPlugin';
-  outputDir: string = 'contracts';
-
   generate(abi: Abi, fileName: string, absPathToABIs: string, absPathToOutput: string): void {
     generate(abi, fileName, absPathToOutput, absPathToABIs);
   }

@@ -49,7 +49,4 @@ export default class EventDataPlugin implements TypechainPlugin {
   generate(abi: Abi, fileName: string, absPathToABIs: string, absPathToOutput: string): void {
     generate(abi, fileName, absPathToOutput);
   }
-
-  name: string = 'EventDataPlugin';
-  outputDir: string = 'event-data';
 }

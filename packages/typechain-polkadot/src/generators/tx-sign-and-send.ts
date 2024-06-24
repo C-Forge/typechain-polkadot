@@ -38,11 +38,12 @@ const generateForMetaTemplate = Handlebars.compile(readTemplate('tx-sign-and-sen
  * @param additionalImports - Any additional imports to add to the file
  * @returns {string} Generated file content
  */
-export const FILE = (fileName: string, methods: Method[], additionalImports: Import[]) =>
+export const FILE = (fileName: string, methods: Method[], additionalImports: Import[], legacyEventsMode: boolean) =>
   generateForMetaTemplate({
     fileName,
     methods: methods.filter((value, index, self) => self.findIndex((v) => v.name === value.name) === index),
     additionalImports,
+    legacyEventsMode,
   });
 
 /**
@@ -99,14 +100,11 @@ function generate(abi: Abi, fileName: string, absPathToOutput: string) {
     });
   }
 
-  writeFileSync(absPathToOutput, `tx-sign-and-send/${fileName}.ts`, FILE(fileName, methods, []));
+  writeFileSync(absPathToOutput, `tx-sign-and-send/${fileName}.ts`, FILE(fileName, methods, [], parser.legacyEventsMode));
 }
 
 export default class TxSignAndSendPlugin implements TypechainPlugin {
   generate(abi: Abi, fileName: string, absPathToABIs: string, absPathToOutput: string): void {
     generate(abi, fileName, absPathToOutput);
   }
-
-  name: string = 'TxSignAndSendPlugin';
-  outputDir: string = 'tx-sign-and-send';
 }

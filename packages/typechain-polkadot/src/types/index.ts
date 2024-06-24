@@ -57,5 +57,5 @@ export interface Import {
 
 export interface PolkadotEvent {
   name: string;
-  signatureTopic: string;
+  signatureTopic?: string;
 }

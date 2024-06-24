@@ -7,12 +7,11 @@ export interface Config {
   skipLinting: boolean;
   artifactsPath: string;
   typechainGeneratedPath: string;
-  isWorkspace?: boolean;
-  workspacePath?: string;
+  contractsRootPath?: string;
 }
 
 const getDefaultConfig = (): Config => ({
-  projectFiles: [],
+  projectFiles: ['./**/Cargo.toml'],
   skipLinting: false,
   artifactsPath: './artifacts',
   typechainGeneratedPath: './typechain-generated',

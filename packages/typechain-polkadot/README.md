@@ -186,7 +186,6 @@ You can also use typechain-polkadot as a library. To use it, you need to import 
 
 ```typescript
 import { Typechain } from '@c-forge/typechain-polkadot/src/types/typechain';
-import { testPathPatternToRegExp } from 'jest-util';
 
 const typechain = new Typechain();
 
@@ -228,9 +227,6 @@ function generate(abi: Abi, fileName: string, absPathToOutput: string, absPathTo
 }
 
 export default class HelloWorldPlugin implements TypechainPlugin {
-  name: string = 'HelloWorld';
-  outputDir: string = 'HelloWorld';
-
   generate(abi: Abi, fileName: string, absPathToABIs: string, absPathToOutput: string): void {
     generate(abi, fileName, absPathToOutput, absPathToABIs);
   }

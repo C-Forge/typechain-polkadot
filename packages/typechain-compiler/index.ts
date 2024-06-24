@@ -2,18 +2,24 @@ import YARGS from 'yargs';
 import * as PathAPI from 'path';
 import * as FsAPI from 'fs-extra';
 import { readConfigOrDefault } from './src/types';
-import { sync as globbySync } from 'globby';
+import globby from 'globby';
 import { execSync } from 'child_process';
-import { __assureDirExists, __writeFileSync, getContractNameFromToml } from './src/utils';
+import {
+  __assureDirExists,
+  __writeFileSync,
+  compileContractByNameAndCopyArtifacts,
+  getAllContractNamesAndFolderNames,
+  getContractNameFromToml,
+} from './src/utils';
 import chalk from 'chalk';
 import logger from './src/logger';
 import dotenv from 'dotenv';
 
-function Typechain(input: string, output: string) {
+function runTypechain(input: string, output: string) {
   execSync(`npx @c-forge/typechain-polkadot --in ${input} --out ${output}`);
 }
 
-function main() {
+async function main() {
   const _argv = YARGS(process.argv)
     .option('config', {
       alias: ['c'],
@@ -45,10 +51,9 @@ function main() {
     })
     .option('toolchain', {
       alias: ['toolchain'],
-      demandOption: 'Please, specify, what toolchain you want to use (nightly, stable)',
+      demandOption: 'Force toolchain you want to use (nightly, stable)',
       description: 'Compile typechain code',
       type: 'string',
-      default: 'stable',
     })
     .array('files')
     .describe('files', 'Files to compile')
@@ -58,10 +63,10 @@ function main() {
     .describe('artifactsPath', 'Artifacts path')
     .string('typechainGeneratedPath')
     .describe('typechainGeneratedPath', 'Typechain generated path')
-    .boolean('isWorkspace')
-    .describe('isWorkspace', 'Is workspace')
-    .string('workspacePath')
-    .describe('workspacePath', 'Workspace path')
+    .string('contractsRoot')
+    .describe('contractsRoot', 'Contracts root path')
+    .string('regex')
+    .describe('regex', 'Regex to filter contract names')
     .help()
     .alias('h', 'help').argv;
 
@@ -69,9 +74,10 @@ function main() {
 
   const cwdPath = process.cwd();
   const isRelease = argv.release;
-  const isNoCompile = argv.noCompile;
-  const isNoTypechain = argv.noTypechain;
+  const shouldCompile = !argv.noCompile;
+  const shouldRunTypechain = !argv.noTypechain;
   const toolchain = argv.toolchain;
+  const regex = argv.regex;
 
   const config = readConfigOrDefault(argv.config);
 
@@ -95,88 +101,41 @@ function main() {
     // @ts-ignore
     config.typechainGeneratedPath = argv.typechainGeneratedPath;
   }
-  if (argv.isWorkspace !== undefined) {
+  if (argv.contractsRootPath !== undefined) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    config.isWorkspace = argv.isWorkspace;
-  }
-  if (argv.workspacePath !== undefined) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    config.workspacePath = argv.workspacePath;
+    config.contractsRootPath = argv.contractsRoot;
   }
 
-  if (!isNoCompile) {
-    const files = globbySync(config.projectFiles, { onlyFiles: true });
-    const tomlFiles = files.filter((file: string) => file.endsWith('Cargo.toml'));
+  if (!shouldCompile) {
+    for (const fileGlob of config.projectFiles) {
+      const searchResult = getAllContractNamesAndFolderNames(fileGlob, regex);
 
-    logger.log(chalk.magenta('======== Found contracts ========'));
-    logger.log('\t' + chalk.greenBright(tomlFiles.map((e) => getContractNameFromToml(e)).join(',\n\t')));
-
-    const cargoTargetDir = process.env.CARGO_TARGET_DIR;
-    const artifactsPath = PathAPI.resolve(cwdPath, config.artifactsPath);
-    FsAPI.ensureDirSync(artifactsPath);
-
-    for (const tomlFile of tomlFiles) {
-      const contractName = getContractNameFromToml(tomlFile);
-
-      logger.log(chalk.magenta(`======== Compiling ${contractName} ========`));
-
-      const cmd = `cargo +${toolchain} contract ${isRelease ? 'build --release' : 'build'} --manifest-path ${tomlFile} ${
-        config.skipLinting ? '--skip-linting' : ''
-      }`;
-
-      try {
-        execSync(cmd);
-      } catch (e) {
-        logger.error(chalk.redBright(`======== Failed to compile ${contractName} ========`));
-        continue;
+      if (searchResult.length > 0) {
+        logger.log(chalk.magenta('======== Found contracts ========'));
+      } else {
+        logger.log(chalk.magenta('======== No contracts found ========'));
+        return;
       }
-
-      let targetInfo = {
-        path: PathAPI.resolve(PathAPI.dirname(tomlFile), 'target', 'ink'),
-        name: getContractNameFromToml(tomlFile),
-      };
-
-      if (config.isWorkspace) {
-        targetInfo = {
-          path: PathAPI.resolve(cwdPath, config.workspacePath!, 'target', 'ink', targetInfo.name),
-          name: targetInfo.name,
-        };
+      const outputPath = PathAPI.resolve(cwdPath, config.artifactsPath);
+      FsAPI.ensureDirSync(outputPath);
+      for (const [name, fullPath] of searchResult) {
+        await compileContractByNameAndCopyArtifacts(outputPath, fullPath, name, {
+          toolchain,
+          isRelease,
+          skipLinting: config.skipLinting,
+        });
       }
-
-      if (cargoTargetDir) {
-        targetInfo = {
-          path: PathAPI.resolve(cargoTargetDir, 'ink'),
-          name: targetInfo.name,
-        };
-      }
-
-      __assureDirExists(cwdPath, config.artifactsPath);
-
-      __writeFileSync(
-        artifactsPath,
-        `${targetInfo.name}.json`,
-        FsAPI.readFileSync(PathAPI.resolve(targetInfo.path, `${targetInfo.name}.json`), 'utf8'),
-      );
-
-      __writeFileSync(
-        artifactsPath,
-        `${targetInfo.name}.contract`,
-        FsAPI.readFileSync(PathAPI.resolve(targetInfo.path, `${targetInfo.name}.contract`), 'utf8'),
-      );
-
-      logger.log(chalk.magenta(`======== Compiled ${contractName} ========`));
     }
 
     logger.log(chalk.greenBright(`======== Compiled all contracts ========`));
   }
 
   // path to artifacts
-  if (!isNoTypechain) {
+  if (!shouldRunTypechain) {
     logger.log(chalk.magenta(`======== Compiling Typechain' code ========`));
 
-    Typechain(config.artifactsPath, config.typechainGeneratedPath);
+    runTypechain(config.artifactsPath, config.typechainGeneratedPath);
 
     logger.log(chalk.greenBright(`======== Compiled Typechain' code ========`));
   }

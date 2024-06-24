@@ -52,7 +52,4 @@ export default class TypesArgumentsPlugin implements TypechainPlugin {
   generate(abi: Abi, fileName: string, absPathToABIs: string, absPathToOutput: string): void {
     generate(abi, fileName, absPathToOutput);
   }
-
-  name: string = 'TypesArgumentsPlugin';
-  outputDir: string = 'types-arguments';
 }

@@ -53,7 +53,4 @@ export default class TypesReturnsPlugin {
   generate(abi: Abi, fileName: string, absPathToABIs: string, absPathToOutput: string): void {
     generate(abi, fileName, absPathToOutput);
   }
-
-  name: string = 'TypesReturnsPlugin';
-  outputDir: string = 'types-returns';
 }
