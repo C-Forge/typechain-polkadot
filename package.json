@@ -8,7 +8,8 @@
     "publish:packages": "npm --workspace packages publish --access=public",
     "publish:examples": "npm --workspace packages publish --access=public",
     "gen-test-ts": "npx tsx packages/typechain-polkadot/index.ts --in tests/artifacts --out tests/generated",
-    "only-test": "npx jest --no-cache --maxWorkers 1",
+    "only-test": "npx mocha --config ./.mocharc.js -C --exit --full-trace false --require tsx/cjs 'tests/**/*.ts' --colors",
+    "localNode": "./substrate-contracts-node --dev --tmp -lerror,runtime::contracts=debug --rpc-max-connections 5000 --pruning=archive",
     "test": "npm run gen-test-ts && npm run only-test",
     "lint": "eslint \"{packages, examples}/**/*.ts\"",
     "lint:fix": "eslint --fix \"{packages, examples}/**/*.ts\"",
@@ -20,13 +21,21 @@
     "@polkadot/api-contract": "^10.12.4",
     "@polkadot/keyring": "^12.6.2",
     "@polkadot/types": "^10.12.4",
-    "@types/bn.js": "^5.1.5",
-    "@types/node": "^20.11.30",
     "bn.js": "^5.2.1",
+    "chai": "^4.4.1",
+    "chai-as-promised": "^7.1.1",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
+    "mocha": "^10.5.2",
     "prettier": "^3.1.0",
     "tsx": "^4.6.2",
     "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "@types/bn.js": "^5.1.5",
+    "@types/mocha": "^10.0.7",
+    "@types/node": "^20.11.30",
+    "@types/chai": "^4.3.12",
+    "@types/chai-as-promised": "^7.1.8"
   }
 }

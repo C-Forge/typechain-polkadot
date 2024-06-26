@@ -4,47 +4,44 @@ import { AnotherEnumBuilder, EnumExampleBuilder } from '../generated/types-argum
 import Constructors from '../generated/deployers/contract_with_enums';
 import type { KeyringPair } from '@polkadot/keyring/types';
 import { GetAccounts } from '../config';
+import { BN } from 'bn.js';
+import { expect } from 'chai';
 
 describe('MY_PSP34', () => {
   let api: PolkadotAPI.ApiPromise;
   let contract: Contract;
-  let UserAlice: KeyringPair, UserBob: KeyringPair, UserCharlie: KeyringPair;
+  let UserAlice: KeyringPair;
 
-  beforeAll(async () => {
-    api = await PolkadotAPI.ApiPromise.create();
+  before(async () => {
+    api = await PolkadotAPI.ApiPromise.create({ noInitWarn: true });
 
     const accounts = GetAccounts();
 
     UserAlice = accounts.UserAlice;
-    UserBob = accounts.UserBob;
-    UserCharlie = accounts.UserCharlie;
-
     const factory = new Constructors(api, UserAlice);
 
     const res = await factory.new();
 
-    contract = new Contract(res.address, UserAlice, api);
+    contract = new Contract(res.contract.address, UserAlice, api);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await api.disconnect();
   });
 
-  jest.setTimeout(10000);
-
-  test('Returns proper value', async () => {
+  it('Returns proper value', async () => {
     const { query, tx } = contract;
 
     const resultA = await query.getMessage(EnumExampleBuilder.A('Hello'));
-    expect(resultA.value).toEqual('Hello');
+    expect(resultA.value).to.equal('Hello');
 
-    const resultB = await query.getMessage(EnumExampleBuilder.B(42));
-    expect(resultB.value).toEqual('42');
+    const resultB = await query.getMessage(EnumExampleBuilder.B(new BN(42)));
+    expect(resultB.value).to.equal('42');
 
-    const resultC = await query.getMessage(EnumExampleBuilder.C(AnotherEnumBuilder.A([42])));
-    expect(resultC.value).toEqual('[42]');
+    const resultC = await query.getMessage(EnumExampleBuilder.C(AnotherEnumBuilder.A([new BN(42)])));
+    expect(resultC.value).to.equal('[42]');
 
     const resultE = await query.getMessage(EnumExampleBuilder.E());
-    expect(resultE.value).toEqual('E');
+    expect(resultE.value).to.equal('E');
   });
 });
