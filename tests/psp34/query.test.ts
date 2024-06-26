@@ -1,114 +1,112 @@
 import * as PolkadotAPI from '@polkadot/api';
-import Contract from '../generated/contracts/my_psp34';
-import { IdBuilder } from '../generated/types-arguments/my_psp34';
-import Constructors from '../generated/deployers/my_psp34';
 import type { KeyringPair } from '@polkadot/keyring/types';
+import { BN } from 'bn.js';
+import { expect } from 'chai';
 import { GetAccounts } from '../config';
-import { ResultBuilder } from '@c-forge/typechain-types';
+import Contract from '../generated/contracts/my_psp34';
+import Constructors from '../generated/deployers/my_psp34';
+import { IdBuilder } from '../generated/types-arguments/my_psp34';
 
 describe('MY_PSP34', () => {
   let api: PolkadotAPI.ApiPromise;
   let contract: Contract;
-  let UserAlice: KeyringPair, UserBob: KeyringPair, UserCharlie: KeyringPair;
+  let UserAlice: KeyringPair, UserBob: KeyringPair;
 
-  beforeAll(async () => {
-    api = await PolkadotAPI.ApiPromise.create();
+  before(async () => {
+    api = await PolkadotAPI.ApiPromise.create({ noInitWarn: true });
 
     const accounts = GetAccounts();
 
     UserAlice = accounts.UserAlice;
     UserBob = accounts.UserBob;
-    UserCharlie = accounts.UserCharlie;
 
     const factory = new Constructors(api, UserAlice);
 
     const res = await factory.new();
 
-    contract = new Contract(res.address, UserAlice, api);
+    contract = new Contract(res.contract.address, UserAlice, api);
   });
 
-  afterAll(async () => {
+  after(async () => {
     await api.disconnect();
   });
 
-  jest.setTimeout(10000);
-
-  test('Approve', async () => {
+  it('Approve', async () => {
     const { query } = contract;
 
     const totalSupply = Number((await query.totalSupply()).value);
     const id = totalSupply + 1;
 
-    await contract.tx.mint(UserAlice.address, IdBuilder.U8(id));
+    await contract.tx.mint(UserAlice.address, IdBuilder.U8(new BN(id)));
 
-    const result = await query.approve(UserBob.address, IdBuilder.U8(id), true);
+    const result = await query.approve(UserBob.address, IdBuilder.U8(new BN(id)), true);
 
-    expect(result.value.ok).toBe(null);
+    expect(result.value.ok).to.equal(null);
   });
 
-  test('Transfer', async () => {
+  it('Transfer', async () => {
     const { query, tx } = contract;
 
     const totalSupply = Number((await query.totalSupply()).value);
 
-    await tx.mint(UserAlice.address, IdBuilder.U16(totalSupply.valueOf() + 1));
+    await tx.mint(UserAlice.address, IdBuilder.U16(new BN(totalSupply.valueOf() + 1)));
 
-    const result = await query.transfer(UserBob.address, IdBuilder.U16(totalSupply.valueOf() + 1), []);
+    const result = await query.transfer(UserBob.address, IdBuilder.U16(new BN(totalSupply.valueOf() + 1)), []);
 
-    expect(result.value.ok).toBe(null);
+    expect(result.value.ok).to.equal(null);
   });
 
-  test('Can mint any Id', async () => {
+  it('Can mint any Id', async () => {
     const { query } = contract;
 
     const totalSupply = Number((await query.totalSupply()).value);
     const id = totalSupply + 1;
 
-    let result = await query.mint(UserAlice.address, IdBuilder.U8(id));
-    expect(result.value.ok).toBe(null);
+    let result = await query.mint(UserAlice.address, IdBuilder.U8(new BN(id)));
+    expect(result.value.ok).to.equal(null);
 
-    result = await query.mint(UserAlice.address, IdBuilder.U16(id));
-    expect(result.value.ok).toBe(null);
+    result = await query.mint(UserAlice.address, IdBuilder.U16(new BN(id)));
+    expect(result.value.ok).to.equal(null);
 
-    result = await query.mint(UserAlice.address, IdBuilder.U32(id));
-    expect(result.value.ok).toBe(null);
+    result = await query.mint(UserAlice.address, IdBuilder.U32(new BN(id)));
+    expect(result.value.ok).to.equal(null);
 
-    result = await query.mint(UserAlice.address, IdBuilder.U64(id));
-    expect(result.value.ok).toBe(null);
+    result = await query.mint(UserAlice.address, IdBuilder.U64(new BN(id)));
+    expect(result.value.ok).to.equal(null);
 
-    result = await query.mint(UserAlice.address, IdBuilder.U128(id));
-    expect(result.value.ok).toBe(null);
+    result = await query.mint(UserAlice.address, IdBuilder.U128(new BN(id)));
+    expect(result.value.ok).to.equal(null);
 
-    result = await query.mint(UserAlice.address, IdBuilder.Bytes([id]));
-    expect(result.value.ok).toBe(null);
+    result = await query.mint(UserAlice.address, IdBuilder.Bytes([new BN(id)]));
+    expect(result.value.ok).to.equal(null);
   });
 
-  test('Allowance', async () => {
+  it('Allowance', async () => {
     const { query } = contract;
 
     const totalSupply = Number((await query.totalSupply()).value);
     const id = totalSupply + 1;
 
-    await contract.tx.mint(UserAlice.address, IdBuilder.U8(id));
+    await contract.tx.mint(UserAlice.address, IdBuilder.U8(new BN(id)));
 
-    const result = await query.allowance(UserAlice.address, UserBob.address, IdBuilder.U8(id));
+    const result = await query.allowance(UserAlice.address, UserBob.address, IdBuilder.U8(new BN(id)));
 
-    expect(result.value).toBe(false);
+    expect(result.value).to.equal(false);
   });
 
-  test('BalanceOf', async () => {
+  it('BalanceOf', async () => {
     const { query } = contract;
 
     await query.balanceOf(UserAlice.address);
   });
 
-  test('OwnerOf', async () => {
+  it('OwnerOf', async () => {
     const { query } = contract;
 
-    await query.ownerOf(IdBuilder.U8(1));
+    await query.ownerOf(IdBuilder.U8(new BN(1)));
   });
 
-  test('TotalSupply', async () => {
+  it('TotalSupply', async () => {
     const { query } = contract;
 
     await query.totalSupply();
