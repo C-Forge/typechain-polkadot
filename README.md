@@ -58,7 +58,7 @@ export interface Config {
 
 Typesafe contracts' descriptions can be generated automatically by a script, taking a list of ABIs as an input, giving usable TS type definitions and even runtime code as its output.
 
-Given, that a front-end developer needs to do this with every contracts update, such tool would save a lot of time and prevent mistakes of misusing smart contracts. It is installed as a package with built-in CLI.
+Given that a front-end developer needs to do this with every contract update, such a tool would save a lot of time and prevent mistakes of misusing smart contracts. It provides a way to generate TypeScript types to interact with ink! smart contracts on substrate chains, which is essential for building front-end applications as well as node.js development (e2e testing, one-off scripts, bots etc). It is installed as a package with a built-in CLI.
 
 When contracts descriptions come both with ABI and source code (`*.contract` files), our tool will provide means for deployment as well.
 
