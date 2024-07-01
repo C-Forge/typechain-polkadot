@@ -1,6 +1,6 @@
 {
   "name": "@c-forge/typechain-compiler",
-  "version": "0.0.60-experimental3",
+  "version": "0.2.0",
   "publishConfig": {
     "access": "public"
   },
