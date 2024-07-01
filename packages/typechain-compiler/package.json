@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "Util to test and compile your rust project",
-  "bin": "bin/index.js",
+  "bin": "bin/index.ts",
   "scripts": {
     "lint": "pnpm prettier --check && pnpm eslint",
     "lint:fix": "pnpm prettier --write && pnpm eslint --fix",
@@ -15,7 +15,7 @@
     "prepublishOnly": "pnpm build",
     "clean": "rimraf dist internal types *.{d.ts,js}{,.map} build-test tsconfig.tsbuildinfo",
     "build": "npx tsc",
-    "start": "tsx ./index.ts --config config.json"
+    "start": "tsx ./index.ts --config config.example.json --regex vester"
   },
   "repository": {
     "type": "git",

@@ -1,7 +1,7 @@
 import YARGS from 'yargs';
 import * as PathAPI from 'path';
 import * as FsAPI from 'fs-extra';
-import { readConfigOrDefault } from './src/types';
+import { readConfigOrDefault } from './src/config';
 import globby from 'globby';
 import { execSync } from 'child_process';
 import {
@@ -10,6 +10,7 @@ import {
   compileContractByNameAndCopyArtifacts,
   getAllContractNamesAndFolderNames,
   getContractNameFromToml,
+  getLineSeparator,
 } from './src/utils';
 import chalk from 'chalk';
 import logger from './src/logger';
@@ -51,8 +52,7 @@ async function main() {
     })
     .option('toolchain', {
       alias: ['toolchain'],
-      demandOption: 'Force toolchain you want to use (nightly, stable)',
-      description: 'Compile typechain code',
+      description: 'Force toolchain you want to use (nightly, stable)',
       type: 'string',
     })
     .array('files')
@@ -107,22 +107,22 @@ async function main() {
     config.contractsRootPath = argv.contractsRoot;
   }
 
-  if (!shouldCompile) {
+  if (shouldCompile) {
     for (const fileGlob of config.projectFiles) {
       const searchResult = getAllContractNamesAndFolderNames(fileGlob, regex);
 
       if (searchResult.length > 0) {
-        logger.log(chalk.magenta('======== Found contracts ========'));
+        logger.log(chalk.magenta(getLineSeparator() + '\nFound contracts\n ' + getLineSeparator()));
       } else {
-        logger.log(chalk.magenta('======== No contracts found ========'));
+        logger.log(chalk.magenta(getLineSeparator() + '\nNo contracts found\n ' + getLineSeparator()));
         return;
       }
       const outputPath = PathAPI.resolve(cwdPath, config.artifactsPath);
       FsAPI.ensureDirSync(outputPath);
       for (const [name, fullPath] of searchResult) {
         await compileContractByNameAndCopyArtifacts(outputPath, fullPath, name, {
-          toolchain,
           isRelease,
+          toolchain,
           skipLinting: config.skipLinting,
         });
       }
@@ -132,7 +132,7 @@ async function main() {
   }
 
   // path to artifacts
-  if (!shouldRunTypechain) {
+  if (shouldRunTypechain) {
     logger.log(chalk.magenta(`======== Compiling Typechain' code ========`));
 
     runTypechain(config.artifactsPath, config.typechainGeneratedPath);

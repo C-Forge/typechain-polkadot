@@ -25,8 +25,6 @@ export interface Config {
   skipLinting: boolean;
   artifactsPath: string;
   typechainGeneratedPath: string;
-  isWorkspace?: boolean;
-  workspacePath?: string;
 }
 ```
 
@@ -52,5 +50,14 @@ Options:
       --noCompile, --nc    Compile         [boolean] [required] [default: false]
       --noTypechain, --nt  Compile typechain code
                                            [boolean] [required] [default: false]
+      --toolchain          Force toolchain you want to use (nightly, stable)
+                                                           [string] [default: ""]
+      --files              Files to compile                            [array]
+      --skipLinting        Skip linting                               [boolean]
+      --artifactsPath      Artifacts path                             [string]
+      --typechainGeneratedPath  Typechain generated path               [string]
+      --contractsRoot      Contracts root path                         [string]
+      --regex              Regex to filter contract names             [string]
+
   -h, --help               Show help                                   [boolean]
 ```

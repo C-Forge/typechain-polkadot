@@ -6,16 +6,9 @@ import { default as PathAPI, default as path } from 'path';
 import toml from 'toml';
 import logger from './logger';
 
-export const getLineSeparator = () => '='.repeat(process.stdout.columns ?? 60);
+export const getLineSeparator = () => '='.repeat(process.stdout.columns - 20 ?? 60);
 
-export const compileContract = async (
-  contractPath: string,
-  buildParams: {
-    toolchain: string;
-    isRelease: boolean;
-    skipLinting: boolean;
-  },
-) => {
+export const compileContract = async (contractPath: string, buildParams: BuildParams) => {
   const command = 'cargo';
   const args = [
     'contract',
@@ -81,15 +74,16 @@ export const copyArtifacts = (artifactsOutputPath: string, fullPath: string, con
   }
 };
 
+type BuildParams = {
+  toolchain?: string;
+  isRelease: boolean;
+  skipLinting: boolean;
+};
 export const compileContractByNameAndCopyArtifacts = async (
   artifactsOutputPath: string,
   fullPath: string,
   contractName: string,
-  buildParams: {
-    toolchain: string;
-    isRelease: boolean;
-    skipLinting: boolean;
-  },
+  buildParams: BuildParams,
 ) => {
   const contractFolderPath = path.parse(fullPath).dir;
   logger.log(getLineSeparator());
