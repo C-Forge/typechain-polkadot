@@ -1,0 +1,8 @@
+{
+    "projectFiles": [
+        "./**/Cargo.toml"
+    ],
+    "skipLinting": false,
+    "artifactsPath": "./artifacts",
+    "typechainGeneratedPath": "./typechain"
+}
