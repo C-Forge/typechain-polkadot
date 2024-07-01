@@ -311,7 +311,7 @@ pub mod my_psp22 {
 2. And now, let's run `typechain-compiler` in the root of our project:
 
 ```bash
-$ npx @727-Ventures/typechain-compiler --config typechain.config.json
+$ npx @c-forge/typechain-compiler --config typechain.config.json
 ```
 
 3. And now, let's add subscription to the events, so the final code will look like this:
