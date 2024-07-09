@@ -41,12 +41,14 @@ export default class ContractInfoPlugin implements TypechainPlugin {
     try {
       copyFileSync(`${absPathToABIs}/${fileName}.wasm`, PathAPI.resolve(absPathToOutput, `artifacts/${fileName}.wasm`));
     } catch (_) {
-      console.warn(`Could not read wasm file for ${fileName}. Typechain will be forced to use contract file which may be flaky.`);
+      console.warn(
+        `[Typechain Generator] Could not read wasm file for ${fileName}. Typechain will be forced to use contract file which may be flaky.`,
+      );
     }
     try {
       copyFileSync(`${absPathToABIs}/${fileName}.contract`, PathAPI.resolve(absPathToOutput, `artifacts/${fileName}.contract`));
     } catch (e) {
-      console.warn(`Could not read contract file for ${fileName}`);
+      console.warn(`[Typechain Generator] Could not read contract file for ${fileName}`);
     }
   }
 }

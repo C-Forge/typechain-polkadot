@@ -1,17 +1,20 @@
 /* This file is auto-generated */
+// @ts-nocheck
 
 import type { ApiPromise } from '@polkadot/api';
 import { Abi } from '@polkadot/api-contract';
 import type { KeyringPair } from '@polkadot/keyring/types';
 import { ContractPromise } from '@polkadot/api-contract';
-import { ContractAbi } from '../contract-info/my_psp34';
+import ContractAbi from '../artifacts/my_psp34.json';
 import QueryMethods from '../query/my_psp34';
 import BuildExtrinsicMethods from '../build-extrinsic/my_psp34';
 import TxSignAndSendMethods from '../tx-sign-and-send/my_psp34';
 import MixedMethods from '../mixed-methods/my_psp34';
 import EventsClass from '../events/my_psp34';
+import EVENT_DATA_TYPE_DESCRIPTIONS from '../event-data/my_psp34.json';
+import type { EventDataTypeDescriptions } from '../shared/types';
 
-export default class Contract {
+export default class MyPsp34Contract {
   readonly query: QueryMethods;
   readonly buildExtrinsic: BuildExtrinsicMethods;
   readonly tx: TxSignAndSendMethods;
@@ -24,6 +27,7 @@ export default class Contract {
   readonly nativeContract: ContractPromise;
   readonly nativeAPI: ApiPromise;
   readonly contractAbi: Abi;
+  readonly eventDataTypeDescriptions: EventDataTypeDescriptions;
 
   /**
 	 * @constructor
@@ -33,6 +37,7 @@ export default class Contract {
 	 * @param nativeAPI - The API instance to use for queries.
 	*/
   constructor(address: string, signer: KeyringPair, nativeAPI: ApiPromise) {
+    this.eventDataTypeDescriptions = EVENT_DATA_TYPE_DESCRIPTIONS;
     this.address = address;
     this.nativeContract = new ContractPromise(nativeAPI, ContractAbi, address);
     this.nativeAPI = nativeAPI;
@@ -71,13 +76,13 @@ export default class Contract {
    * @returns New instance of the contract class with new signer.
    * @example
    * ```typescript
-   * const contract = new Contract(address, signerAlice, api);
+   * const contract = new MyPsp34Contract(address, signerAlice, api);
    * await contract.mint(signerBob.address, 100);
    * await contract.withSigner(signerBob).transfer(signerAlice.address, 100);
    * ```
    */
-  withSigner(signer: KeyringPair): Contract {
-    return new Contract(this.address, signer, this.nativeAPI);
+  withSigner(signer: KeyringPair): MyPsp34Contract {
+    return new MyPsp34Contract(this.address, signer, this.nativeAPI);
   }
 
   /**
@@ -86,8 +91,8 @@ export default class Contract {
    * @param address - The address of the contract.
    * @returns New instance of the contract class to interact with new contract.
    */
-  withAddress(address: string): Contract {
-    return new Contract(address, this.signer, this.nativeAPI);
+  withAddress(address: string): MyPsp34Contract {
+    return new MyPsp34Contract(address, this.signer, this.nativeAPI);
   }
 
   /**
@@ -96,7 +101,7 @@ export default class Contract {
    * @param api - The API instance to use for queries.
    * @returns New instance of the contract class to interact with new API.
    */
-  withAPI(api: ApiPromise): Contract {
-    return new Contract(this.address, this.signer, api);
+  withAPI(api: ApiPromise): MyPsp34Contract {
+    return new MyPsp34Contract(this.address, this.signer, api);
   }
 }

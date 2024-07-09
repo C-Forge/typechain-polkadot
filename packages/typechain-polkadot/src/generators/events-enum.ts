@@ -26,7 +26,12 @@ async function generate(absPathToOutput: string) {
   const resultFileOutputPath = path.join(absPathToOutput, 'events', 'enum.ts');
   const foundEvents = getAllEvents(absPathToOutput);
 
-  const enumString = `
+  const enumString =
+    foundEvents.length === 0
+      ? `export type AnyContractEvent = never;
+export const ContractsEvents = {};
+`
+      : `
 ${foundEvents
   .map(
     ({ contractName, events }) => `
@@ -42,8 +47,8 @@ ${events
   )
   .join('\n')}
 export type AnyContractEvent = ${foundEvents
-    .map(({ contractName }, index) => `${contractName}Event${index === foundEvents.length - 1 ? ';' : ' | '}`)
-    .join('')}
+          .map(({ contractName }, index) => `${contractName}Event${index === foundEvents.length - 1 ? ';' : ' | '}`)
+          .join('')}
 export const ContractsEvents = {
 ${foundEvents.map(({ contractName }, index) => `  ${contractName}Event${index === foundEvents.length - 1 ? '' : `,\n`}`).join('')}
 }`;

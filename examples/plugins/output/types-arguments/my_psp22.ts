@@ -7,16 +7,16 @@ export enum LangError {
 export type AccountId = string | number[];
 
 export interface PSP22Error {
-  custom?: Array<number | string | BN>;
+  custom?: Array<BN>;
   insufficientBalance?: null;
   insufficientAllowance?: null;
   zeroRecipientAddress?: null;
   zeroSenderAddress?: null;
-  safeTransferCheckFailed?: Array<number | string | BN>;
+  safeTransferCheckFailed?: Array<BN>;
 }
 
 export class PSP22ErrorBuilder {
-  static Custom(value: Array<number | string | BN>): PSP22Error {
+  static Custom(value: Array<BN>): PSP22Error {
     return {
       custom: value,
     };
@@ -41,7 +41,7 @@ export class PSP22ErrorBuilder {
       zeroSenderAddress: null,
     };
   }
-  static SafeTransferCheckFailed(value: Array<number | string | BN>): PSP22Error {
+  static SafeTransferCheckFailed(value: Array<BN>): PSP22Error {
     return {
       safeTransferCheckFailed: value,
     };

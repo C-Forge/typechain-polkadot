@@ -1,6 +1,6 @@
 {
   "name": "@c-forge/typechain-polkadot-parser",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publishConfig": {
     "access": "public"
   },
@@ -14,7 +14,7 @@
     "build": "tsc --build .",
     "prepublishOnly": "pnpm build",
     "clean": "rimraf dist internal types *.{d.ts,js}{,.map} build-test tsconfig.tsbuildinfo",
-    "test": "ts-node index.ts"
+    "test": "tsx index.ts"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -42,14 +42,17 @@
   },
   "homepage": "https://github.com/c-forge/typechain-polkadot#readme",
   "dependencies": {
-    "@polkadot/api": "^10.12.2",
-    "@polkadot/api-contract": "^10.12.2",
+    "@polkadot/api": "^10.12.4",
+    "@polkadot/api-contract": "^10.12.4",
     "@polkadot/types": "^10.12.4",
     "@polkadot/types-codec": "^10.12.4",
     "@polkadot/util": "^12.6.2",
     "@types/bn.js": "^5.1.0",
     "@types/node": "^18.0.3",
     "tslib": "^2.6.2"
+  },
+  "peerDependencies": {
+    "ts-node": "10.9.2"
   },
   "devDependencies": {
     "rimraf": "^3.0.2",

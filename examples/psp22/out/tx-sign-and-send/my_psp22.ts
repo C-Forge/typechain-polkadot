@@ -1,19 +1,22 @@
 /* This file is auto-generated */
+// @ts-nocheck
 
 import type { ContractPromise } from '@polkadot/api-contract';
 import type { KeyringPair } from '@polkadot/keyring/types';
 import type { ApiPromise } from '@polkadot/api';
-import type { GasLimit, GasLimitAndRequiredValue, Result } from '@c-forge/typechain-types';
+import type { ContractOptionsWithRequiredValue, Result } from '@c-forge/typechain-types';
+import type { ContractOptions } from '@polkadot/api-contract/types';
 import { txSignAndSend } from '@c-forge/typechain-types';
 import type * as ArgumentTypes from '../types-arguments/my_psp22';
 import type BN from 'bn.js';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import type { EventRecord } from '@polkadot/types/interfaces';
-import { decodeEvents } from '../shared/utils';
+import type { SignerOptions } from '@polkadot/api/submittable/types';
+import { decodeEvents, decodeEventsLegacy } from '../shared/utils';
 import EVENT_DATA_TYPE_DESCRIPTIONS from '../event-data/my_psp22.json';
 
-export default class Methods {
+export default class MyPsp22Methods {
   readonly __nativeContract: ContractPromise;
   readonly __keyringPair: KeyringPair;
   readonly __apiPromise: ApiPromise;
@@ -31,17 +34,24 @@ export default class Methods {
    * @param { (string | number | BN) } value,
    * @param { Array<(number | string | BN)> } data,
    */
-  transfer(to: ArgumentTypes.AccountId, value: string | number | BN, data: Array<number | string | BN>, __options?: GasLimit) {
+  transfer(
+    to: ArgumentTypes.AccountId,
+    value: string | number | BN,
+    data: Array<number | string | BN>,
+    contractOptions?: ContractOptions,
+    signerOptions?: Partial<SignerOptions>,
+  ) {
     return txSignAndSend(
       this.__apiPromise,
       this.__nativeContract,
       this.__keyringPair,
       'psp22::transfer',
       (events: EventRecord[]) => {
-        return decodeEvents(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
+        return decodeEventsLegacy(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
       },
       [to, value, data],
-      __options,
+      contractOptions,
+      signerOptions,
     );
   }
 
@@ -51,17 +61,23 @@ export default class Methods {
    * @param { ArgumentTypes.AccountId } spender,
    * @param { (string | number | BN) } deltaValue,
    */
-  decreaseAllowance(spender: ArgumentTypes.AccountId, deltaValue: string | number | BN, __options?: GasLimit) {
+  decreaseAllowance(
+    spender: ArgumentTypes.AccountId,
+    deltaValue: string | number | BN,
+    contractOptions?: ContractOptions,
+    signerOptions?: Partial<SignerOptions>,
+  ) {
     return txSignAndSend(
       this.__apiPromise,
       this.__nativeContract,
       this.__keyringPair,
       'psp22::decreaseAllowance',
       (events: EventRecord[]) => {
-        return decodeEvents(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
+        return decodeEventsLegacy(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
       },
       [spender, deltaValue],
-      __options,
+      contractOptions,
+      signerOptions,
     );
   }
 
@@ -70,17 +86,18 @@ export default class Methods {
    *
    * @param { ArgumentTypes.AccountId } owner,
    */
-  balanceOf(owner: ArgumentTypes.AccountId, __options?: GasLimit) {
+  balanceOf(owner: ArgumentTypes.AccountId, contractOptions?: ContractOptions, signerOptions?: Partial<SignerOptions>) {
     return txSignAndSend(
       this.__apiPromise,
       this.__nativeContract,
       this.__keyringPair,
       'psp22::balanceOf',
       (events: EventRecord[]) => {
-        return decodeEvents(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
+        return decodeEventsLegacy(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
       },
       [owner],
-      __options,
+      contractOptions,
+      signerOptions,
     );
   }
 
@@ -90,17 +107,23 @@ export default class Methods {
    * @param { ArgumentTypes.AccountId } owner,
    * @param { ArgumentTypes.AccountId } spender,
    */
-  allowance(owner: ArgumentTypes.AccountId, spender: ArgumentTypes.AccountId, __options?: GasLimit) {
+  allowance(
+    owner: ArgumentTypes.AccountId,
+    spender: ArgumentTypes.AccountId,
+    contractOptions?: ContractOptions,
+    signerOptions?: Partial<SignerOptions>,
+  ) {
     return txSignAndSend(
       this.__apiPromise,
       this.__nativeContract,
       this.__keyringPair,
       'psp22::allowance',
       (events: EventRecord[]) => {
-        return decodeEvents(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
+        return decodeEventsLegacy(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
       },
       [owner, spender],
-      __options,
+      contractOptions,
+      signerOptions,
     );
   }
 
@@ -110,17 +133,23 @@ export default class Methods {
    * @param { ArgumentTypes.AccountId } spender,
    * @param { (string | number | BN) } deltaValue,
    */
-  increaseAllowance(spender: ArgumentTypes.AccountId, deltaValue: string | number | BN, __options?: GasLimit) {
+  increaseAllowance(
+    spender: ArgumentTypes.AccountId,
+    deltaValue: string | number | BN,
+    contractOptions?: ContractOptions,
+    signerOptions?: Partial<SignerOptions>,
+  ) {
     return txSignAndSend(
       this.__apiPromise,
       this.__nativeContract,
       this.__keyringPair,
       'psp22::increaseAllowance',
       (events: EventRecord[]) => {
-        return decodeEvents(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
+        return decodeEventsLegacy(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
       },
       [spender, deltaValue],
-      __options,
+      contractOptions,
+      signerOptions,
     );
   }
 
@@ -128,17 +157,18 @@ export default class Methods {
    * totalSupply
    *
    */
-  totalSupply(__options?: GasLimit) {
+  totalSupply(contractOptions?: ContractOptions, signerOptions?: Partial<SignerOptions>) {
     return txSignAndSend(
       this.__apiPromise,
       this.__nativeContract,
       this.__keyringPair,
       'psp22::totalSupply',
       (events: EventRecord[]) => {
-        return decodeEvents(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
+        return decodeEventsLegacy(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
       },
       [],
-      __options,
+      contractOptions,
+      signerOptions,
     );
   }
 
@@ -155,7 +185,8 @@ export default class Methods {
     to: ArgumentTypes.AccountId,
     value: string | number | BN,
     data: Array<number | string | BN>,
-    __options?: GasLimit,
+    contractOptions?: ContractOptions,
+    signerOptions?: Partial<SignerOptions>,
   ) {
     return txSignAndSend(
       this.__apiPromise,
@@ -163,10 +194,11 @@ export default class Methods {
       this.__keyringPair,
       'psp22::transferFrom',
       (events: EventRecord[]) => {
-        return decodeEvents(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
+        return decodeEventsLegacy(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
       },
       [from, to, value, data],
-      __options,
+      contractOptions,
+      signerOptions,
     );
   }
 
@@ -176,17 +208,18 @@ export default class Methods {
    * @param { ArgumentTypes.AccountId } spender,
    * @param { (string | number | BN) } value,
    */
-  approve(spender: ArgumentTypes.AccountId, value: string | number | BN, __options?: GasLimit) {
+  approve(spender: ArgumentTypes.AccountId, value: string | number | BN, contractOptions?: ContractOptions, signerOptions?: Partial<SignerOptions>) {
     return txSignAndSend(
       this.__apiPromise,
       this.__nativeContract,
       this.__keyringPair,
       'psp22::approve',
       (events: EventRecord[]) => {
-        return decodeEvents(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
+        return decodeEventsLegacy(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
       },
       [spender, value],
-      __options,
+      contractOptions,
+      signerOptions,
     );
   }
 
@@ -196,17 +229,18 @@ export default class Methods {
    * @param { ArgumentTypes.AccountId } account,
    * @param { (string | number | BN) } amount,
    */
-  mint(account: ArgumentTypes.AccountId, amount: string | number | BN, __options?: GasLimit) {
+  mint(account: ArgumentTypes.AccountId, amount: string | number | BN, contractOptions?: ContractOptions, signerOptions?: Partial<SignerOptions>) {
     return txSignAndSend(
       this.__apiPromise,
       this.__nativeContract,
       this.__keyringPair,
       'psp22Mintable::mint',
       (events: EventRecord[]) => {
-        return decodeEvents(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
+        return decodeEventsLegacy(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
       },
       [account, amount],
-      __options,
+      contractOptions,
+      signerOptions,
     );
   }
 }

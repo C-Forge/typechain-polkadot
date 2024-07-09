@@ -1,7 +1,7 @@
 // In this example we will deploy & interact with psp22 token to mint some tokens to the owner and get total supply.
 import Contract from './out/contracts/my_psp22';
 import { ApiPromise, Keyring } from '@polkadot/api';
-import Constructors from './out/constructors/my_psp22';
+import Constructors from './out/deployers/my_psp22';
 
 async function main() {
   const api = await ApiPromise.create();
@@ -12,7 +12,9 @@ async function main() {
 
   const constructors = new Constructors(api, aliceKeyringPair);
 
-  const { address: TOKEN_ADDRESS } = await constructors.new('10000000000000000000');
+  const {
+    contract: { address: TOKEN_ADDRESS },
+  } = await constructors.new('10000000000000000000');
 
   console.log('Contract deployed at:', TOKEN_ADDRESS);
 
@@ -37,4 +39,5 @@ async function main() {
 
 main().then(() => {
   console.log('done');
+  process.exit(0);
 });

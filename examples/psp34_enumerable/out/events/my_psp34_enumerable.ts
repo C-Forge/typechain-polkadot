@@ -1,3 +1,6 @@
+/* This file is auto-generated */
+// @ts-nocheck
+
 import type * as EventTypes from '../event-types/my_psp34_enumerable';
 import type { ContractPromise } from '@polkadot/api-contract';
 import type { ApiPromise } from '@polkadot/api';
@@ -21,13 +24,13 @@ export default class EventsClass {
       events.forEach((record: any) => {
         const { event } = record;
 
-        if (event.method === 'ContractEmitted') {
-          const [address, data] = record.event.data;
+        if (event.method == 'ContractEmitted') {
+          const [address] = record.event.data;
 
           if (address.toString() === this.__nativeContract.address.toString()) {
-            const decodeResult = this.__nativeContract.abi.decodeEvent(data);
+            const { args, event } = this.__nativeContract.abi.decodeEvent(record);
 
-            if (filter(decodeResult.event.identifier.toString())) callback(decodeResult.args, event);
+            if (filter(event.identifier.toString())) callback(args, event);
           }
         }
       });

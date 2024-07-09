@@ -1,5 +1,11 @@
 # Typechain-Polkadot Documentation
 
+Note: The following guide use `pnpm`. If you don't have it, you can install it via `npm`:
+
+```bash
+npm i -g pnpm
+```
+
 ## Packages of Typechain-Polkadot
 
 Typechain Polkadot has 4 main packages:
@@ -28,7 +34,7 @@ So let's create a simple project, which will contain 2 contracts, and we will us
 ```bash
 $ mkdir typechain-compiler-example
 $ cd typechain-compiler-example
-$ npm init -y
+$ pnpm init -y
 ```
 
 And add typescript config:
@@ -62,33 +68,42 @@ $ cargo contract new flipper
 $ cargo contract new psp22
 ```
 
-4. Let's let flipper be flipper, and add some code to psp22. For this, let's copy code from openbrush wizard:
+4. Let's let flipper be flipper, and add some code to psp22. For this, let's copy folder with psp22 code.
+   Here we'll use the code from https://github.com/Pendzl/pendzl/tree/main/examples/psp22.
 
 ```toml
 # psp22/Cargo.toml
 [package]
 name = "my_psp22"
-version = "1.0.0"
+version = "0.2.4-v1calls2"
+previous-authors = ["Brushfam <green@727.ventures>"]
+authors = [
+    "Konrad Wierzbik <konrad.wierzbik@gmail.com",
+    "Łukasz Łakomy <wookie.xp.07@gmail.com>",
+]
 edition = "2021"
-authors = ["The best developer ever"]
 
 [dependencies]
+ink = { version = "5.0.0", default-features = false }
 
-ink = { git = "https://github.com/paritytech/ink", rev = "4655a8b4413cb50cbc38d1b7c173ad426ab06cde", default-features = false }
+scale = { package = "parity-scale-codec", version = "3.6.9", default-features = false, features = [
+    "derive",
+] }
+scale-info = { version = "2.11", default-features = false, features = [
+    "derive",
+], optional = true }
 
-scale = { package = "parity-scale-codec", version = "3", default-features = false, features = ["derive"] }
-scale-info = { version = "2.3", default-features = false, features = ["derive"], optional = true }
+# These dependencies
+pendzl = { path = "../..", default-features = false, features = ["psp22_impl"] }
 
-# Include brush as a dependency and enable default implementation for PSP22 via brush feature
-openbrush = { tag = "3.0.0-beta", git = "https://github.com/727-Ventures/openbrush-contracts", default-features = false, features = ["psp22"] }
+[dev-dependencies]
+ink_e2e = "5.0.0"
+test_helpers = { path = "../test_helpers", default-features = false }
 
 [lib]
 name = "my_psp22"
 path = "lib.rs"
-crate-type = [
-    # Used for normal contract Wasm blobs.
-    "cdylib",
-]
+
 
 [features]
 default = ["std"]
@@ -96,40 +111,78 @@ std = [
     "ink/std",
     "scale/std",
     "scale-info/std",
-
-    "openbrush/std",
+    # These dependencies
+    "pendzl/std",
 ]
 ink-as-dependency = []
+e2e-tests = []
+
+[profile.dev]
+codegen-units = 16
 ```
 
 ```rust
 // psp22/lib.rs
-#![cfg_attr(not(feature = "std"), no_std)]
-#![feature(min_specialization)]
+// SPDX-License-Identifier: MIT
+#![cfg_attr(not(feature = "std"), no_std, no_main)]
 
-#[openbrush::contract]
+#[pendzl::implementation(PSP22)]
+#[ink::contract]
 pub mod my_psp22 {
-
-    // imports from openbrush
-	use openbrush::contracts::psp22::*;
-	use openbrush::traits::Storage;
-
-    #[ink(storage)]
-    #[derive(Default, Storage)]
-    pub struct Contract {
-    	#[storage_field]
-		psp22: psp22::Data,
+    use ink::prelude::string::String;
+    #[ink::storage_item]
+    #[derive(Debug)]
+    pub struct HatedStorage {
+        pub hated_account: AccountId,
     }
 
-    // Section contains default implementation without any modifications
-	impl PSP22 for Contract {}
+    #[ink(storage)]
+    // derive explained below
+    #[derive(StorageFieldGetter)]
+    pub struct Contract {
+        #[storage_field]
+        psp22: PSP22Data,
+        #[storage_field]
+        hated_storage: HatedStorage,
+    }
+
+    #[overrider(PSP22Internal)]
+    fn _update(
+        &mut self,
+        from: Option<&AccountId>,
+        to: Option<&AccountId>,
+        amount: &Balance,
+    ) -> Result<(), PSP22Error> {
+        if to == Some(&self.hated_storage.hated_account) {
+            return Err(PSP22Error::Custom(String::from(
+                "I hate this account!",
+            )));
+        }
+        pendzl::contracts::psp22::PSP22InternalDefaultImpl::_update_default_impl(
+            self, from, to, amount,
+        )
+    }
 
     impl Contract {
         #[ink(constructor)]
-        pub fn new(initial_supply: Balance) -> Self {
-            let mut _instance = Self::default();
-			_instance._mint_to(_instance.env().caller(), initial_supply).expect("Should mint");
-			_instance
+        pub fn new(total_supply: Balance) -> Self {
+            let mut instance = Self {
+                psp22: Default::default(),
+                hated_storage: HatedStorage {
+                    hated_account: [255; 32].into(),
+                },
+            };
+
+            instance
+                ._mint_to(&Self::env().caller(), &total_supply)
+                .expect("Should mint");
+
+            instance
+        }
+
+        #[ink(message)]
+        pub fn set_hated_account(&mut self, account: AccountId) {
+            self.hated_storage.hated_account = account;
         }
     }
 }
@@ -160,19 +213,18 @@ To dive deeper into configuration, you can check [typechain-compiler documentati
 
 ```json
 "dependencies": {
-	"@c-forge/typechain-compiler": "^0.5.16",
-	"@c-forge/typechain-types": "^0.0.23",
+	"@c-forge/typechain-compiler": "^0.2.1",
+	"@c-forge/typechain-types": "^0.2.1",
 	"@types/node": "^17.0.34",
-	"ts-node": "^10.7.0",
 	"typescript": "^5.2.2",
 	"@polkadot/api": "10.9.1",
 	"@polkadot/api-contract": "10.9.1",
-	"@polkadot/keyring": "^10.4.2",
+	"@polkadot/util": "^12.6.2",
 	"@types/bn.js": "^5.1.0"
 }
 ```
 
-And install it with `npm install`.
+And install it with `pnpm install`.
 
 > If you're still confused, you can check our examples in [examples](../examples) directory
 
@@ -187,7 +239,7 @@ $ npx @c-forge/typechain-compiler --config typechain.config.json
 ```typescript
 // In this example we will deploy & interact with psp22 token to transfer some tokens to the owner and get total supply.
 import { ApiPromise, Keyring } from '@polkadot/api';
-import Constructors from './typechain-generated/constructors/my_psp22';
+import Deployer from './typechain-generated/deployers/my_psp22';
 import Contract from './typechain-generated/contracts/my_psp22';
 
 async function main() {
@@ -201,11 +253,13 @@ async function main() {
   const bobKeyringPair = keyring.addFromUri('//Bob');
 
   // Create instance of constructors, that will be used to deploy contracts
-  // Constructors contains all constructors from the contract
-  const constructors = new Constructors(api, aliceKeyringPair);
+  // Deployer contains all constructors from the contract
+  const constructors = new Deployer(api, aliceKeyringPair);
 
   // Deploy contract via constructor
-  const { address: TOKEN_ADDRESS } = await constructors.new(10000);
+  const {
+    contract: { address: TOKEN_ADDRESS },
+  } = await constructors.new(10000);
 
   console.log('Contract deployed at:', TOKEN_ADDRESS);
 
@@ -230,24 +284,22 @@ async function main() {
 
 main().then(() => {
   console.log('done');
+  process.exit(0);
 });
 ```
 
 9. To interact with our contract, we need to have `substrate-contracts-node` installed and running:
+   Download the latest release from [substrate-contracts-node](https://github.com/paritytech/substrate-contracts-node/releases) and run it:
 
+````bash
+$ ./substrate-contracts-node --dev
 ```bash
-git clone https://github.com/paritytech/substrate-contracts-node
-cd ./substrate-contracts-node
-git checkout v0.23.0
-cargo +stable build --release
-./target/release/substrate-contracts-node --dev --tmp
-```
 
 10. And now, you can run it with `tsx`:
 
 ```bash
 $ npx tsx index.ts
-```
+````
 
 Whoa! We've just deployed and interacted with our contract! 🎉
 
@@ -260,51 +312,85 @@ In this section we will handle smart contract events!
 1. Let's add `event` to our contract, so the final code will look like this:
 
 ```rust
-#![cfg_attr(not(feature = "std"), no_std)]
-#![feature(min_specialization)]
+// psp22/lib.rs
+// SPDX-License-Identifier: MIT
+#![cfg_attr(not(feature = "std"), no_std, no_main)]
 
-#[openbrush::contract]
+#[pendzl::implementation(PSP22)]
+#[ink::contract]
 pub mod my_psp22 {
+    use ink::prelude::string::String;
+    #[ink::storage_item]
+    #[derive(Debug)]
+    pub struct HatedStorage {
+        pub hated_account: AccountId,
+    }
 
-	// imports from openbrush
-	use openbrush::contracts::psp22::*;
-	use openbrush::traits::{DefaultEnv, Storage};
-	use ink::codegen::EmitEvent;
+    #[ink(storage)]
+    // derive explained below
+    #[derive(StorageFieldGetter)]
+    pub struct Contract {
+        #[storage_field]
+        psp22: PSP22Data,
+        #[storage_field]
+        hated_storage: HatedStorage,
+    }
 
-	#[ink(storage)]
-	#[derive(Default, Storage)]
-	pub struct Contract {
-		#[storage_field]
-		psp22: psp22::Data,
-	}
+    #[overrider(PSP22Internal)]
+    fn _update(
+        &mut self,
+        from: Option<&AccountId>,
+        to: Option<&AccountId>,
+        amount: &Balance,
+    ) -> Result<(), PSP22Error> {
+        if to == Some(&self.hated_storage.hated_account) {
+            return Err(PSP22Error::Custom(String::from(
+                "I hate this account!",
+            )));
+        }
+        pendzl::contracts::psp22::PSP22InternalDefaultImpl::_update_default_impl(
+            self, from, to, amount,
+        )
+        Self::env().emit_event(CustomTransferEvent {
+            from: from.and_then(|v| Some(*v)),
+            to: to.and_then(|v| Some(*v)),
+            value: *amount,
+        });
+    }
 
-	#[ink(event)]
-	pub struct TransferEvent {
-		#[ink(topic)]
-		from: Option<AccountId>,
-		#[ink(topic)]
-		to: Option<AccountId>,
-		value: Balance,
-	}
+    #[ink::event]
+    #[derive(Debug)]
+    pub struct CustomTransferEvent {
+        #[ink(topic)]
+        pub from: Option<AccountId>,
+        #[ink(topic)]
+        pub to: Option<AccountId>,
+        pub value: Balance,
+    }
 
-	// Section contains default implementation without any modifications
-	impl PSP22 for Contract {}
 
-	impl Transfer for Contract {
-		fn _after_token_transfer(&mut self, _from: Option<&AccountId>, _to: Option<&AccountId>, _amount: &Balance) -> Result<(), PSP22Error> {
-			Self::env().emit_event(TransferEvent { from: _from.copied(), to: _to.copied(), value: *_amount });
-			Ok(())
-		}
-	}
+    impl Contract {
+        #[ink(constructor)]
+        pub fn new(total_supply: Balance) -> Self {
+            let mut instance = Self {
+                psp22: Default::default(),
+                hated_storage: HatedStorage {
+                    hated_account: [255; 32].into(),
+                },
+            };
 
-	impl Contract {
-		#[ink(constructor)]
-		pub fn new(initial_supply: Balance) -> Self {
-			let mut _instance = Self::default();
-			_instance._mint_to(_instance.env().caller(), initial_supply).expect("Should mint");
-			_instance
-		}
-	}
+            instance
+                ._mint_to(&Self::env().caller(), &total_supply)
+                .expect("Should mint");
+
+            instance
+        }
+
+        #[ink(message)]
+        pub fn set_hated_account(&mut self, account: AccountId) {
+            self.hated_storage.hated_account = account;
+        }
+    }
 }
 ```
 
@@ -320,7 +406,7 @@ $ npx @c-forge/typechain-compiler --config typechain.config.json
 // index.ts
 // In this example we will deploy & interact with psp22 token to mint some tokens to the owner and get total supply.
 import { ApiPromise, Keyring } from '@polkadot/api';
-import Constructors from './typechain-generated/constructors/my_psp22';
+import Deployer from './typechain-generated/deployers/my_psp22';
 import Contract from './typechain-generated/contracts/my_psp22';
 
 async function main() {
@@ -331,9 +417,11 @@ async function main() {
   const aliceKeyringPair = keyring.addFromUri('//Alice');
   const bobKeyringPair = keyring.addFromUri('//Bob');
 
-  const constructors = new Constructors(api, aliceKeyringPair);
+  const constructors = new Deployer(api, aliceKeyringPair);
 
-  const { address: TOKEN_ADDRESS } = await constructors.new(10000);
+  const {
+    contract: { address: TOKEN_ADDRESS },
+  } = await constructors.new(10000);
 
   console.log('Contract deployed at:', TOKEN_ADDRESS);
 
@@ -345,8 +433,8 @@ async function main() {
   console.log(`%c Total supply before transfer: ${totalSupply.value.unwrap().toNumber()}`, 'color: green');
   console.log(`%c Balance of Alice before transfer: ${balance.value.unwrap()}`, 'color: green');
 
-  contract.events.subscribeOnTransferEventEvent((event) => {
-    console.log('Transfer event received:', event);
+  contract.events.subscribeOnCustomTransferEventEvent((event) => {
+    console.log('Custom Transfer event received:', event);
   });
 
   const mintTx = await contract.tx.transfer(bobKeyringPair.address, 1, []);
@@ -362,6 +450,7 @@ async function main() {
 
 main().then(() => {
   console.log('done');
+  process.exit(0);
 });
 ```
 
@@ -410,7 +499,7 @@ cargo contract build
 2. And now, let's install `typechain-polkadot`:
 
 ```bash
-$ npm install @c-forge/typechain-polkadot
+$ pnpm install @c-forge/typechain-polkadot
 ```
 
 3. Let's create a directory with artifacts:

@@ -12,7 +12,7 @@ cargo +stable build --release
 2. Run tests
 
 ```bash
-npm run test
+pnpm run test
 ```
 
 > Note, run the command 2 in project' root directory
@@ -24,11 +24,11 @@ npm run test
 2. Generate typechain-code for the contracts
 
 ```bash
-npm run gen-test-ts
+pnpm run gen-test-ts
 ```
 
 3. Run tests
 
 ```bash
-npm run only-test
+pnpm run only-test
 ```

@@ -1,19 +1,22 @@
 /* This file is auto-generated */
+// @ts-nocheck
 
 import type { ContractPromise } from '@polkadot/api-contract';
 import type { KeyringPair } from '@polkadot/keyring/types';
 import type { ApiPromise } from '@polkadot/api';
-import type { GasLimit, GasLimitAndRequiredValue, Result } from '@c-forge/typechain-types';
+import type { ContractOptionsWithRequiredValue, Result } from '@c-forge/typechain-types';
+import type { ContractOptions } from '@polkadot/api-contract/types';
 import { txSignAndSend } from '@c-forge/typechain-types';
 import type * as ArgumentTypes from '../types-arguments/my_psp34';
 import type BN from 'bn.js';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import type { EventRecord } from '@polkadot/types/interfaces';
-import { decodeEvents } from '../shared/utils';
+import type { SignerOptions } from '@polkadot/api/submittable/types';
+import { decodeEvents, decodeEventsLegacy } from '../shared/utils';
 import EVENT_DATA_TYPE_DESCRIPTIONS from '../event-data/my_psp34.json';
 
-export default class Methods {
+export default class MyPsp34Methods {
   readonly __nativeContract: ContractPromise;
   readonly __keyringPair: KeyringPair;
   readonly __apiPromise: ApiPromise;
@@ -29,17 +32,18 @@ export default class Methods {
    *
    * @param { ArgumentTypes.AccountId } owner,
    */
-  balanceOf(owner: ArgumentTypes.AccountId, __options?: GasLimit) {
+  balanceOf(owner: ArgumentTypes.AccountId, contractOptions?: ContractOptions, signerOptions?: Partial<SignerOptions>) {
     return txSignAndSend(
       this.__apiPromise,
       this.__nativeContract,
       this.__keyringPair,
       'psp34::balanceOf',
       (events: EventRecord[]) => {
-        return decodeEvents(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
+        return decodeEventsLegacy(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
       },
       [owner],
-      __options,
+      contractOptions,
+      signerOptions,
     );
   }
 
@@ -50,17 +54,24 @@ export default class Methods {
    * @param { ArgumentTypes.AccountId } operator,
    * @param { ArgumentTypes.Id | null } id,
    */
-  allowance(owner: ArgumentTypes.AccountId, operator: ArgumentTypes.AccountId, id: ArgumentTypes.Id | null, __options?: GasLimit) {
+  allowance(
+    owner: ArgumentTypes.AccountId,
+    operator: ArgumentTypes.AccountId,
+    id: ArgumentTypes.Id | null,
+    contractOptions?: ContractOptions,
+    signerOptions?: Partial<SignerOptions>,
+  ) {
     return txSignAndSend(
       this.__apiPromise,
       this.__nativeContract,
       this.__keyringPair,
       'psp34::allowance',
       (events: EventRecord[]) => {
-        return decodeEvents(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
+        return decodeEventsLegacy(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
       },
       [owner, operator, id],
-      __options,
+      contractOptions,
+      signerOptions,
     );
   }
 
@@ -71,17 +82,24 @@ export default class Methods {
    * @param { ArgumentTypes.Id } id,
    * @param { Array<(number | string | BN)> } data,
    */
-  transfer(to: ArgumentTypes.AccountId, id: ArgumentTypes.Id, data: Array<number | string | BN>, __options?: GasLimit) {
+  transfer(
+    to: ArgumentTypes.AccountId,
+    id: ArgumentTypes.Id,
+    data: Array<number | string | BN>,
+    contractOptions?: ContractOptions,
+    signerOptions?: Partial<SignerOptions>,
+  ) {
     return txSignAndSend(
       this.__apiPromise,
       this.__nativeContract,
       this.__keyringPair,
       'psp34::transfer',
       (events: EventRecord[]) => {
-        return decodeEvents(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
+        return decodeEventsLegacy(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
       },
       [to, id, data],
-      __options,
+      contractOptions,
+      signerOptions,
     );
   }
 
@@ -89,17 +107,18 @@ export default class Methods {
    * collectionId
    *
    */
-  collectionId(__options?: GasLimit) {
+  collectionId(contractOptions?: ContractOptions, signerOptions?: Partial<SignerOptions>) {
     return txSignAndSend(
       this.__apiPromise,
       this.__nativeContract,
       this.__keyringPair,
       'psp34::collectionId',
       (events: EventRecord[]) => {
-        return decodeEvents(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
+        return decodeEventsLegacy(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
       },
       [],
-      __options,
+      contractOptions,
+      signerOptions,
     );
   }
 
@@ -110,17 +129,24 @@ export default class Methods {
    * @param { ArgumentTypes.Id | null } id,
    * @param { boolean } approved,
    */
-  approve(operator: ArgumentTypes.AccountId, id: ArgumentTypes.Id | null, approved: boolean, __options?: GasLimit) {
+  approve(
+    operator: ArgumentTypes.AccountId,
+    id: ArgumentTypes.Id | null,
+    approved: boolean,
+    contractOptions?: ContractOptions,
+    signerOptions?: Partial<SignerOptions>,
+  ) {
     return txSignAndSend(
       this.__apiPromise,
       this.__nativeContract,
       this.__keyringPair,
       'psp34::approve',
       (events: EventRecord[]) => {
-        return decodeEvents(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
+        return decodeEventsLegacy(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
       },
       [operator, id, approved],
-      __options,
+      contractOptions,
+      signerOptions,
     );
   }
 
@@ -129,17 +155,18 @@ export default class Methods {
    *
    * @param { ArgumentTypes.Id } id,
    */
-  ownerOf(id: ArgumentTypes.Id, __options?: GasLimit) {
+  ownerOf(id: ArgumentTypes.Id, contractOptions?: ContractOptions, signerOptions?: Partial<SignerOptions>) {
     return txSignAndSend(
       this.__apiPromise,
       this.__nativeContract,
       this.__keyringPair,
       'psp34::ownerOf',
       (events: EventRecord[]) => {
-        return decodeEvents(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
+        return decodeEventsLegacy(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
       },
       [id],
-      __options,
+      contractOptions,
+      signerOptions,
     );
   }
 
@@ -147,17 +174,18 @@ export default class Methods {
    * totalSupply
    *
    */
-  totalSupply(__options?: GasLimit) {
+  totalSupply(contractOptions?: ContractOptions, signerOptions?: Partial<SignerOptions>) {
     return txSignAndSend(
       this.__apiPromise,
       this.__nativeContract,
       this.__keyringPair,
       'psp34::totalSupply',
       (events: EventRecord[]) => {
-        return decodeEvents(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
+        return decodeEventsLegacy(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
       },
       [],
-      __options,
+      contractOptions,
+      signerOptions,
     );
   }
 
@@ -167,17 +195,18 @@ export default class Methods {
    * @param { ArgumentTypes.AccountId } account,
    * @param { ArgumentTypes.Id } id,
    */
-  mint(account: ArgumentTypes.AccountId, id: ArgumentTypes.Id, __options?: GasLimit) {
+  mint(account: ArgumentTypes.AccountId, id: ArgumentTypes.Id, contractOptions?: ContractOptions, signerOptions?: Partial<SignerOptions>) {
     return txSignAndSend(
       this.__apiPromise,
       this.__nativeContract,
       this.__keyringPair,
       'psp34Mintable::mint',
       (events: EventRecord[]) => {
-        return decodeEvents(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
+        return decodeEventsLegacy(events, this.__nativeContract, EVENT_DATA_TYPE_DESCRIPTIONS);
       },
       [account, id],
-      __options,
+      contractOptions,
+      signerOptions,
     );
   }
 }

@@ -133,11 +133,11 @@ async function main() {
 
   // path to artifacts
   if (shouldRunTypechain) {
-    logger.log(chalk.magenta(`======== Compiling Typechain' code ========`));
+    logger.log(chalk.magenta(`======== Emitting Typechain' code ========`));
 
     runTypechain(config.artifactsPath, config.typechainGeneratedPath);
 
-    logger.log(chalk.greenBright(`======== Compiled Typechain' code ========`));
+    logger.log(chalk.greenBright(`======== Emitted Typechain' code ========`));
   }
 }
 

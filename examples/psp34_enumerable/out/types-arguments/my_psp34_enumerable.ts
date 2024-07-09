@@ -1,41 +1,41 @@
 import type BN from 'bn.js';
 
 export interface Id {
-  u8?: number | string | BN;
-  u16?: number | string | BN;
-  u32?: number | string | BN;
-  u64?: number | string | BN;
-  u128?: string | number | BN;
-  bytes?: Array<number | string | BN>;
+  u8?: BN;
+  u16?: BN;
+  u32?: BN;
+  u64?: BN;
+  u128?: BN;
+  bytes?: Array<BN>;
 }
 
 export class IdBuilder {
-  static U8(value: number | string | BN): Id {
+  static U8(value: BN): Id {
     return {
       u8: value,
     };
   }
-  static U16(value: number | string | BN): Id {
+  static U16(value: BN): Id {
     return {
       u16: value,
     };
   }
-  static U32(value: number | string | BN): Id {
+  static U32(value: BN): Id {
     return {
       u32: value,
     };
   }
-  static U64(value: number | string | BN): Id {
+  static U64(value: BN): Id {
     return {
       u64: value,
     };
   }
-  static U128(value: string | number | BN): Id {
+  static U128(value: BN): Id {
     return {
       u128: value,
     };
   }
-  static Bytes(value: Array<number | string | BN>): Id {
+  static Bytes(value: Array<BN>): Id {
     return {
       bytes: value,
     };

@@ -1,6 +1,6 @@
 {
   "name": "@c-forge/typechain-types",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publishConfig": {
     "access": "public"
   },
@@ -41,8 +41,8 @@
   "types": "dist/index.d.ts",
   "homepage": "https://github.com/c-forge/typechain-polkadot#readme",
   "dependencies": {
-    "@polkadot/api": "^10.12.2",
-    "@polkadot/api-contract": "^10.12.2",
+    "@polkadot/api": "^10.12.4",
+    "@polkadot/api-contract": "^10.12.4",
     "@polkadot/keyring": "^12.6.2",
     "@polkadot/types": "^10.12.4",
     "@polkadot/types-codec": "^10.12.4",

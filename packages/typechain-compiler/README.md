@@ -9,7 +9,7 @@ Utility package for compiling smart contracts, and generating TypeScript definit
 In your project install this package:
 
 ```bash
-npm i -D @c-forge/typechain-compiler
+pnpm i -D @c-forge/typechain-compiler
 ```
 
 Now you can use it to compile smart contracts, and generate TS definitions & runtime code for them. To use typechain-compiler you need to create a config file, and pass it to the compiler.
@@ -44,7 +44,7 @@ Also you can provide additional arguments to the compiler:
 Options:
       --version            Show version number                         [boolean]
   -c, --config             Config file path
-                                  [string] [required] [default: "./config.json"]
+                                  [string] [default: "./config.json"]
   -r, --release            Compile with release
                                            [boolean] [required] [default: false]
       --noCompile, --nc    Compile         [boolean] [required] [default: false]

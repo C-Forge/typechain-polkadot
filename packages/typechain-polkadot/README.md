@@ -11,7 +11,7 @@ Package for generating TypeScript definitions & runtime code for Polkadot smart 
 In your project install this package:
 
 ```bash
-npm i -D @c-forge/typechain-polkadot
+pnpm i -D @c-forge/typechain-polkadot
 ```
 
 Now you can use it to generate TS definitions & runtime code for Polkadot smart contracts. To use typechain-polkadot.

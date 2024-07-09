@@ -1,5 +1,4 @@
 import type BN from 'bn.js';
-import type { ReturnNumber } from '@c-forge/typechain-types';
 
 export type AccountId = string | number[];
 

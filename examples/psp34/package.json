@@ -5,16 +5,17 @@
   "main": "index.js",
   "scripts": {
     "generate": "npx @c-forge/typechain-polkadot --in ./artifacts --out ./out",
-    "start": "ts-node index.ts"
+    "start": "tsx index.ts"
   },
   "dependencies": {
     "@c-forge/typechain-polkadot": "../../packages/typechain-polkadot",
     "@c-forge/typechain-types": "../../packages/typechain-types",
     "@types/node": "^18.8.0",
-    "ts-node": "^10.7.0",
+    "tsx": "^4.7.1",
     "typescript": "^5.2.2",
-    "@polkadot/api": "10.11.1",
-    "@polkadot/api-contract": "10.11.1",
+    "@polkadot/api": "^10.12.4",
+    "@polkadot/api-contract": "^10.12.4",
+    "@polkadot/util": "^12.6.2",
     "@types/bn.js": "^5.1.1"
   },
   "author": "Supercolony-net",

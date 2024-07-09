@@ -10,6 +10,7 @@ import { getContractObjectWrapper } from "../shared/utils";
 import type BN from 'bn.js';
 import FsAPI from 'fs';
 import PathAPI from 'path';
+import { u8aToHex } from '@polkadot/util';
 
 
 const fileName = '{{{fileName}}}';
@@ -54,7 +55,7 @@ export default class {{{toPascalCase fileName}}}Deployer {
 	) {
    		const codePromise = this.createCodePromise();
 
-		const tx = this.nativeAPI.tx.contracts!.uploadCode!(codePromise.code, storageDepositLimit, determinism);
+		const tx = this.nativeAPI.tx.contracts!.uploadCode!(u8aToHex(codePromise.code), storageDepositLimit, determinism);
 		let response;
 
 		try {
@@ -64,7 +65,10 @@ export default class {{{toPascalCase fileName}}}Deployer {
 			console.log(error);
 		}
 
-		return response as SignAndSendSuccessResponse;
+		return { 
+			response: response as SignAndSendSuccessResponse, 
+			codeHash: u8aToHex(codePromise.abi.info.source.wasmHash)
+		};
 	}
 
 {{#each methods}}

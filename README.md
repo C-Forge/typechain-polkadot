@@ -4,10 +4,16 @@ This library generates TypeScript types from an `ink!`-based smart contract.
 
 ### Installation & import
 
+Note: This repository & the following commands use `pnpm`. If you don't have it, you can install it via `npm`:
+
+```bash
+npm i -g pnpm
+```
+
 Install the package as dependency:
 
 ```bash
-npm i @c-forge/typechain-polkadot
+pnpm i @c-forge/typechain-polkadot
 ```
 
 Pass the folder with artifacts(in the example it is `artifacts`) as input argument
@@ -17,7 +23,7 @@ and the output folder(in the example it is `typed_contracts`):
 npx @c-forge/typechain-polkadot --in artifacts --out typed_contracts
 ```
 
-Import the contract what you want to use(in the example it is [`my_psp22`](https://github.com/727-Ventures/openbrush-contracts/tree/main/examples/psp22)):
+Import the contract what you want to use(in the example it is [`my_psp22`](https://github.com/Pendzl/pendzl/tree/main/examples/psp22)):
 
 ```typescript
 import MyPSP22 from '../typed_contracts/contracts/my_psp22';

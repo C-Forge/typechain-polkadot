@@ -1,6 +1,6 @@
 {
   "name": "@c-forge/typechain-polkadot",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publishConfig": {
     "access": "public"
   },
@@ -25,8 +25,8 @@
   "dependencies": {
     "@c-forge/typechain-polkadot-parser": "workspace:^",
     "@c-forge/typechain-types": "workspace:^",
-    "@polkadot/api": "^10.12.2",
-    "@polkadot/api-contract": "^10.12.2",
+    "@polkadot/api": "^10.12.4",
+    "@polkadot/api-contract": "^10.12.4",
     "@polkadot/keyring": "^12.6.2",
     "@polkadot/util": "^12.6.2",
     "@types/fs-extra": "^9.0.13",

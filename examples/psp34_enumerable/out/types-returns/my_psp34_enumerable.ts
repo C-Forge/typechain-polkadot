@@ -1,42 +1,41 @@
 import type BN from 'bn.js';
-import type { ReturnNumber } from '@c-forge/typechain-types';
 
 export interface Id {
-  u8?: ReturnNumber;
-  u16?: ReturnNumber;
-  u32?: ReturnNumber;
-  u64?: ReturnNumber;
-  u128?: ReturnNumber;
-  bytes?: Array<ReturnNumber>;
+  u8?: BN;
+  u16?: BN;
+  u32?: BN;
+  u64?: BN;
+  u128?: BN;
+  bytes?: Array<BN>;
 }
 
 export class IdBuilder {
-  static U8(value: ReturnNumber): Id {
+  static U8(value: BN): Id {
     return {
       u8: value,
     };
   }
-  static U16(value: ReturnNumber): Id {
+  static U16(value: BN): Id {
     return {
       u16: value,
     };
   }
-  static U32(value: ReturnNumber): Id {
+  static U32(value: BN): Id {
     return {
       u32: value,
     };
   }
-  static U64(value: ReturnNumber): Id {
+  static U64(value: BN): Id {
     return {
       u64: value,
     };
   }
-  static U128(value: ReturnNumber): Id {
+  static U128(value: BN): Id {
     return {
       u128: value,
     };
   }
-  static Bytes(value: Array<ReturnNumber>): Id {
+  static Bytes(value: Array<BN>): Id {
     return {
       bytes: value,
     };

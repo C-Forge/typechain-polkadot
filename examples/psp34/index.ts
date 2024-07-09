@@ -1,8 +1,9 @@
 // In this example we will deploy & interact with psp22 token to mint some tokens to the owner and get total supply.
 import Contract from './out/contracts/my_psp34';
 import { ApiPromise, Keyring } from '@polkadot/api';
-import Constructors from './out/constructors/my_psp34';
+import Constructors from './out/deployers/my_psp34';
 import { IdBuilder } from './out/types-arguments/my_psp34';
+import { BN } from 'bn.js';
 
 async function main() {
   const api = await ApiPromise.create();
@@ -13,7 +14,9 @@ async function main() {
 
   const constructors = new Constructors(api, aliceKeyringPair);
 
-  const { address: TOKEN_ADDRESS } = await constructors.new();
+  const {
+    contract: { address: TOKEN_ADDRESS },
+  } = await constructors.new();
 
   console.log('Contract deployed at:', TOKEN_ADDRESS);
 
@@ -25,7 +28,7 @@ async function main() {
   console.log(`%c Total supply before minting: ${totalSupply.value.toNumber()}`, 'color: green');
   console.log(`%c Balance of Alice before minting: ${balance.value}`, 'color: green');
 
-  const mintTx = await contract.tx.mint(aliceKeyringPair.address, IdBuilder.U8(1));
+  const mintTx = await contract.tx.mint(aliceKeyringPair.address, IdBuilder.U8(new BN(1)));
 
   const totalSupplyAfterMint = await contract.query.totalSupply();
   const balanceAfterMint = await contract.query.balanceOf(aliceKeyringPair.address);
@@ -38,4 +41,5 @@ async function main() {
 
 main().then(() => {
   console.log('done');
+  process.exit(0);
 });
