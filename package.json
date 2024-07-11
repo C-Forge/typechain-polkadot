@@ -1,7 +1,7 @@
 {
   "name": "typechain-workspace",
   "scripts": {
-    "start-typechain": "npx tsx packages/typechain-polkadot/index.ts --in ../dao-contracts/artifacts --out ../dao-contracts/typechain",
+    "start-typechain": "npx tsx packages/typechain-polkadot/index.ts --in ./artifacts --out ./out",
     "build:all": "pnpm run -r --if-present build",
     "publish:dry-run": "pnpm -r publish --dry-run",
     "publish:all": "pnpm -r publish --access=public",

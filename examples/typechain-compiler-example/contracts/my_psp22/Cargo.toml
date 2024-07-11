@@ -1,0 +1,45 @@
+[package]
+name = "my_psp22"
+version = "0.1.0"
+previous-authors = ["Brushfam <green@727.ventures>"]
+authors = [
+    "Konrad Wierzbik <konrad.wierzbik@gmail.com",
+    "Łukasz Łakomy <wookie.xp.07@gmail.com>",
+]
+edition = "2021"
+
+[dependencies]
+ink = { version = "5.0.0", default-features = false }
+
+scale = { package = "parity-scale-codec", version = "3.6.9", default-features = false, features = [
+    "derive",
+] }
+scale-info = { version = "2.11", default-features = false, features = [
+    "derive",
+], optional = true }
+
+# These dependencies
+pendzl = { version = "0.2.4-v1calls2", default-features = false, features = ["psp22_impl"] }
+
+[dev-dependencies]
+ink_e2e = "5.0.0"
+
+[lib]
+name = "my_psp22"
+path = "lib.rs"
+
+
+[features]
+default = ["std"]
+std = [
+    "ink/std",
+    "scale/std",
+    "scale-info/std",
+    # These dependencies
+    "pendzl/std",
+]
+ink-as-dependency = []
+e2e-tests = []
+
+[profile.dev]
+codegen-units = 16

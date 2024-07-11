@@ -15,7 +15,7 @@ export const compileContract = async (contractPath: string, buildParams: BuildPa
     ...(buildParams.toolchain ? [`+${buildParams.toolchain}`] : []),
     'build',
     ...(process.env.BUILD_PROD || buildParams.isRelease ? ['--release'] : []),
-    ...(buildParams.skipLinting ? ['--skip-linting'] : []),
+    ...(buildParams.lint ? [] : ['--lint']),
   ];
   logger.log(getLineSeparator());
   logger.log(chalk.bgGreen(`running ${command} ${args.join(' ')} in ${contractPath}...`));
@@ -77,7 +77,7 @@ export const copyArtifacts = (artifactsOutputPath: string, fullPath: string, con
 type BuildParams = {
   toolchain?: string;
   isRelease: boolean;
-  skipLinting: boolean;
+  lint: boolean;
 };
 export const compileContractByNameAndCopyArtifacts = async (
   artifactsOutputPath: string,

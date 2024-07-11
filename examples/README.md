@@ -10,8 +10,8 @@ This directory contains examples of parsed contracts and pieces of advice how to
 
 ```json
 "dependencies": {
-	"@c-forge/typechain-polkadot": "0.2.1",
-	"@c-forge/typechain-types": "0.2.1",
+	"@c-forge/typechain-polkadot": "0.2.2",
+	"@c-forge/typechain-types": "0.2.2",
 	"@types/node": "^17.0.34",
 	"typescript": "^4.6.4",
 	"@polkadot/api": "10.9.1",

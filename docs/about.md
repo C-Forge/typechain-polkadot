@@ -34,7 +34,7 @@ So let's create a simple project, which will contain 2 contracts, and we will us
 ```bash
 $ mkdir typechain-compiler-example
 $ cd typechain-compiler-example
-$ pnpm init -y
+$ npm init -y
 ```
 
 And add typescript config:
@@ -65,17 +65,16 @@ $ mkdir contracts
 ```bash
 $ cd contracts
 $ cargo contract new flipper
-$ cargo contract new psp22
 ```
 
-4. Let's let flipper be flipper, and add some code to psp22. For this, let's copy folder with psp22 code.
+4. Let's let flipper be flipper, and use psp22. For this, let's copy folder with psp22 code.
    Here we'll use the code from https://github.com/Pendzl/pendzl/tree/main/examples/psp22.
 
 ```toml
-# psp22/Cargo.toml
+# my_psp22/Cargo.toml
 [package]
 name = "my_psp22"
-version = "0.2.4-v1calls2"
+version = "0.1.1"
 previous-authors = ["Brushfam <green@727.ventures>"]
 authors = [
     "Konrad Wierzbik <konrad.wierzbik@gmail.com",
@@ -94,11 +93,10 @@ scale-info = { version = "2.11", default-features = false, features = [
 ], optional = true }
 
 # These dependencies
-pendzl = { path = "../..", default-features = false, features = ["psp22_impl"] }
+pendzl = { version = "0.2.4-v1calls2", default-features = false, features = ["psp22_impl"] }
 
 [dev-dependencies]
 ink_e2e = "5.0.0"
-test_helpers = { path = "../test_helpers", default-features = false }
 
 [lib]
 name = "my_psp22"
@@ -122,7 +120,7 @@ codegen-units = 16
 ```
 
 ```rust
-// psp22/lib.rs
+// my_psp22/lib.rs
 // SPDX-License-Identifier: MIT
 #![cfg_attr(not(feature = "std"), no_std, no_main)]
 
@@ -213,8 +211,8 @@ To dive deeper into configuration, you can check [typechain-compiler documentati
 
 ```json
 "dependencies": {
-	"@c-forge/typechain-compiler": "^0.2.1",
-	"@c-forge/typechain-types": "^0.2.1",
+	"@c-forge/typechain-compiler": "^0.2.2",
+	"@c-forge/typechain-types": "^0.2.2",
 	"@types/node": "^17.0.34",
 	"typescript": "^5.2.2",
 	"@polkadot/api": "10.9.1",
@@ -237,7 +235,7 @@ $ npx @c-forge/typechain-compiler --config typechain.config.json
 8. And now, you can use generated code in your project. For example, you can create a file `index.ts`:
 
 ```typescript
-// In this example we will deploy & interact with psp22 token to transfer some tokens to the owner and get total supply.
+// In this example we will deploy & interact with my_psp22 token to transfer some tokens to the owner and get total supply.
 import { ApiPromise, Keyring } from '@polkadot/api';
 import Deployer from './typechain-generated/deployers/my_psp22';
 import Contract from './typechain-generated/contracts/my_psp22';
@@ -303,7 +301,7 @@ $ npx tsx index.ts
 
 Whoa! We've just deployed and interacted with our contract! 🎉
 
-> Link to the full example: [typechain-compiler-example](https://github.com/varex83/typechain-compiler-example/tree/main)
+> Link to the full example: [typechain-compiler-example](https://github.com/C-Forge/typechain-polkadot/tree/main/examples/typechain-compiler-example)
 
 ### Events
 
@@ -312,7 +310,7 @@ In this section we will handle smart contract events!
 1. Let's add `event` to our contract, so the final code will look like this:
 
 ```rust
-// psp22/lib.rs
+// my_psp22/lib.rs
 // SPDX-License-Identifier: MIT
 #![cfg_attr(not(feature = "std"), no_std, no_main)]
 
@@ -351,11 +349,14 @@ pub mod my_psp22 {
         pendzl::contracts::psp22::PSP22InternalDefaultImpl::_update_default_impl(
             self, from, to, amount,
         )
-        Self::env().emit_event(CustomTransferEvent {
-            from: from.and_then(|v| Some(*v)),
-            to: to.and_then(|v| Some(*v)),
-            value: *amount,
-        });
+        ink::env::emit_event::<ink::env::DefaultEnvironment, CustomTransferEvent>(
+            CustomTransferEvent {
+                from: from.and_then(|v| Some(*v)),
+                to: to.and_then(|v| Some(*v)),
+                value: *amount,
+            },
+        );
+        Ok(())
     }
 
     #[ink::event]
@@ -404,7 +405,7 @@ $ npx @c-forge/typechain-compiler --config typechain.config.json
 
 ```typescript
 // index.ts
-// In this example we will deploy & interact with psp22 token to mint some tokens to the owner and get total supply.
+// In this example we will deploy & interact with my_psp22 token to mint some tokens to the owner and get total supply.
 import { ApiPromise, Keyring } from '@polkadot/api';
 import Deployer from './typechain-generated/deployers/my_psp22';
 import Contract from './typechain-generated/contracts/my_psp22';
@@ -490,7 +491,7 @@ Let's use previous example, but instead of using `typechain-compiler`, we will u
 1. We need to compile our contracts:
 
 ```bash
-cd ./contracts/psp22
+cd ./contracts/my_psp22
 cargo contract build
 cd ../flipper
 cargo contract build
@@ -511,15 +512,8 @@ $ mkdir artifacts
 4. And now, let's copy our artifacts to the `artifacts` directory:
 
 ```bash
-$ cp ./contracts/psp22/target/ink/psp22.contract artifacts
-$ cp ./contracts/flipper/target/ink/flipper.contract artifacts
-```
-
-And metadata, but you should rename `metadata.json` to `<contract-name>.json`:
-
-```bash
-$ cp ./contracts/flipper/target/ink/metadata.json artifacts/flipper.json
-$ cp ./contracts/psp22/target/ink/metadata.json artifacts/psp22.json
+$ cp ./contracts/my_psp22/target/ink/my_psp22.* artifacts
+$ cp ./contracts/flipper/target/ink/flipper.* artifacts
 ```
 
 5. Let's run `typechain-polkadot`:

@@ -54,7 +54,7 @@ Config interface will be something like this:
 ```typescript
 export interface Config {
   projectFiles: string[]; // Path to all project files, everystring in glob format
-  skipLinting: boolean; // Skip linting of project files
+  lint: boolean; // Enable cargo contract linting
   artifactsPath: string; // Path to artifacts folder, where artifacts will be stored it will save both .contract and .json (contract ABI)
   typechainGeneratedPath: string; // Path to typechain generated folder
 }

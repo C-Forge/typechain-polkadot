@@ -2,7 +2,7 @@
     "projectFiles": [
         "./**/Cargo.toml"
     ],
-    "skipLinting": false,
+    "lint": false,
     "artifactsPath": "./artifacts",
     "typechainGeneratedPath": "./typechain"
 }

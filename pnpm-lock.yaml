@@ -187,6 +187,36 @@ importers:
         specifier: ^5.2.2
         version: 5.4.3
 
+  examples/typechain-compiler-example:
+    dependencies:
+      '@c-forge/typechain-compiler':
+        specifier: ^0.2.2
+        version: link:../../packages/typechain-compiler
+      '@c-forge/typechain-polkadot':
+        specifier: link:../../packages/typechain-polkadot
+        version: link:../../packages/typechain-polkadot
+      '@c-forge/typechain-types':
+        specifier: ^0.2.2
+        version: link:../../packages/typechain-types
+      '@polkadot/api':
+        specifier: ^10.12.4
+        version: 10.12.4
+      '@polkadot/api-contract':
+        specifier: ^10.12.4
+        version: 10.12.4
+      '@polkadot/util':
+        specifier: ^12.6.2
+        version: 12.6.2
+      '@types/bn.js':
+        specifier: ^5.1.0
+        version: 5.1.5
+      '@types/node':
+        specifier: ^17.0.34
+        version: 17.0.45
+      typescript:
+        specifier: ^5.2.2
+        version: 5.4.3
+
   packages/typechain-compiler:
     dependencies:
       '@types/fs-extra':

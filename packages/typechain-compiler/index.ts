@@ -57,8 +57,8 @@ async function main() {
     })
     .array('files')
     .describe('files', 'Files to compile')
-    .boolean('skipLinting')
-    .describe('skipLinting', 'Skip linting')
+    .boolean('lint')
+    .describe('lint', 'Skip linting')
     .string('artifactsPath')
     .describe('artifactsPath', 'Artifacts path')
     .string('typechainGeneratedPath')
@@ -86,10 +86,10 @@ async function main() {
     // @ts-ignore
     config.projectFiles = argv.files;
   }
-  if (argv.skipLinting !== undefined) {
+  if (argv.lint !== undefined) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    config.skipLinting = argv.skipLinting;
+    config.lint = argv.lint;
   }
   if (argv.artifactsPath !== undefined) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -123,7 +123,7 @@ async function main() {
         await compileContractByNameAndCopyArtifacts(outputPath, fullPath, name, {
           isRelease,
           toolchain,
-          skipLinting: config.skipLinting,
+          lint: config.lint,
         });
       }
     }

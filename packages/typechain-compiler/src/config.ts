@@ -4,7 +4,7 @@ import logger from './logger';
 import chalk from 'chalk';
 export interface Config {
   projectFiles: string[];
-  skipLinting: boolean;
+  lint: boolean;
   artifactsPath: string;
   typechainGeneratedPath: string;
   contractsRootPath?: string;
@@ -12,7 +12,7 @@ export interface Config {
 
 const getDefaultConfig = (): Config => ({
   projectFiles: ['./**/Cargo.toml'],
-  skipLinting: false,
+  lint: true,
   artifactsPath: './artifacts',
   typechainGeneratedPath: './typechain-generated',
 });
@@ -28,8 +28,8 @@ export function readConfigOrDefault(relativeCfgPath: string): Config {
       config.projectFiles = getDefaultConfig().projectFiles;
     }
 
-    if (config.skipLinting === undefined) {
-      config.skipLinting = getDefaultConfig().artifactsPath;
+    if (config.lint === undefined) {
+      config.lint = getDefaultConfig().artifactsPath;
     }
 
     if (config.artifactsPath === undefined) {

@@ -22,7 +22,7 @@ Config file should be in `.json` format, and should contain the following fields
 ```typescript
 export interface Config {
   projectFiles: string[];
-  skipLinting: boolean;
+  lint: boolean;
   artifactsPath: string;
   typechainGeneratedPath: string;
 }
@@ -53,7 +53,7 @@ Options:
       --toolchain          Force toolchain you want to use (nightly, stable)
                                                            [string] [default: ""]
       --files              Files to compile                            [array]
-      --skipLinting        Skip linting                               [boolean]
+      --lint       Enable cargo contract linting                               [boolean]
       --artifactsPath      Artifacts path                             [string]
       --typechainGeneratedPath  Typechain generated path               [string]
       --contractsRoot      Contracts root path                         [string]
