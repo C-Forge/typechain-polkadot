@@ -49,10 +49,11 @@
     "@polkadot/util": "^12.6.2",
     "@types/bn.js": "^5.1.0",
     "@types/node": "^18.0.3",
-    "tslib": "^2.6.2"
+    "tslib": "^2.6.2",
+    "ts-node": "^10.9.2"
   },
   "peerDependencies": {
-    "ts-node": "10.9.2"
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "rimraf": "^3.0.2",

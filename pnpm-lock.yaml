@@ -375,7 +375,7 @@ importers:
         specifier: ^18.0.3
         version: 18.19.26
       ts-node:
-        specifier: 10.9.2
+        specifier: ^10.9.2
         version: 10.9.2(@types/node@18.19.26)(typescript@5.4.3)
       tslib:
         specifier: ^2.6.2
