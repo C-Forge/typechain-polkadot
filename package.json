@@ -1,5 +1,9 @@
 {
   "name": "typechain-workspace",
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
   "scripts": {
     "start-typechain": "npx tsx packages/typechain-polkadot/index.ts --in ./artifacts --out ./out",
     "build:all": "pnpm run -r --if-present build",
@@ -16,7 +20,7 @@
     "postinstall": "husky install"
   },
   "dependencies": {
-    "@c-forge/typechain-types": "workspace:^",
+    "@c-forge/typechain-types": "0.2.2",
     "@polkadot/api": "^10.12.4",
     "@polkadot/api-contract": "^10.12.4",
     "@polkadot/util": "^12.6.2",

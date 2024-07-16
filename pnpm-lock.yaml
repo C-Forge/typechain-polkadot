@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       '@c-forge/typechain-types':
-        specifier: workspace:^
+        specifier: 0.2.2
         version: link:packages/typechain-types
       '@polkadot/api':
         specifier: ^10.12.4
@@ -196,7 +196,7 @@ importers:
         specifier: ^0.2.2
         version: link:../../packages/typechain-compiler
       '@c-forge/typechain-polkadot':
-        specifier: link:../../packages/typechain-polkadot
+        specifier: ^0.2.2
         version: link:../../packages/typechain-polkadot
       '@c-forge/typechain-types':
         specifier: ^0.2.2
@@ -269,10 +269,10 @@ importers:
   packages/typechain-polkadot:
     dependencies:
       '@c-forge/typechain-polkadot-parser':
-        specifier: workspace:^
+        specifier: 0.2.2
         version: link:../typechain-polkadot-parser
       '@c-forge/typechain-types':
-        specifier: workspace:^
+        specifier: 0.2.2
         version: link:../typechain-types
       '@polkadot/api':
         specifier: ^10.12.4
