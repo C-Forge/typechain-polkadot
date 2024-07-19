@@ -16,6 +16,7 @@ export const compileContract = async (contractPath: string, buildParams: BuildPa
     'build',
     ...(process.env.BUILD_PROD || buildParams.isRelease ? ['--release'] : []),
     ...(buildParams.lint ? [] : ['--lint']),
+    ...(buildParams.verifiable ? ['--verifiable'] : []),
   ];
   logger.log(getLineSeparator());
   logger.log(chalk.bgGreen(`running ${command} ${args.join(' ')} in ${contractPath}...`));
@@ -78,6 +79,7 @@ type BuildParams = {
   toolchain?: string;
   isRelease: boolean;
   lint: boolean;
+  verifiable: boolean;
 };
 export const compileContractByNameAndCopyArtifacts = async (
   artifactsOutputPath: string,

@@ -8,6 +8,7 @@ export interface Config {
   artifactsPath: string;
   typechainGeneratedPath: string;
   contractsRootPath?: string;
+  verifiable: boolean;
 }
 
 const getDefaultConfig = (): Config => ({
@@ -15,6 +16,7 @@ const getDefaultConfig = (): Config => ({
   lint: true,
   artifactsPath: './artifacts',
   typechainGeneratedPath: './typechain-generated',
+  verifiable: false,
 });
 
 export function readConfigOrDefault(relativeCfgPath: string): Config {
@@ -38,6 +40,9 @@ export function readConfigOrDefault(relativeCfgPath: string): Config {
 
     if (config.typechainGeneratedPath === undefined) {
       config.typechainGeneratedPath = getDefaultConfig().typechainGeneratedPath;
+    }
+    if (config.verifiable === undefined) {
+      config.verifiable = getDefaultConfig().verifiable;
     }
 
     return config;

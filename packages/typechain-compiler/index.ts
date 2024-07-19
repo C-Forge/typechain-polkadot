@@ -36,6 +36,12 @@ async function main() {
       type: 'boolean',
       default: false,
     })
+    .option('verifiable', {
+      demandOption: 'Please, specify, if you want to compile with verifiable',
+      description: 'Compile with verifiable',
+      type: 'boolean',
+      default: false,
+    })
     .option('noCompile', {
       alias: ['nc'],
       demandOption: 'Please, specify, if you want to compile',
@@ -78,6 +84,7 @@ async function main() {
   const shouldRunTypechain = !argv.noTypechain;
   const toolchain = argv.toolchain;
   const regex = argv.regex;
+  const verifiableArg = argv.verifiable;
 
   const config = readConfigOrDefault(argv.config);
 
@@ -124,6 +131,7 @@ async function main() {
           isRelease,
           toolchain,
           lint: config.lint,
+          verifiable: verifiableArg ? verifiableArg : config.verifiable,
         });
       }
     }

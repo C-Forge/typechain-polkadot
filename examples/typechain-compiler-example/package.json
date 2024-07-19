@@ -10,9 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@c-forge/typechain-compiler": "^0.2.2",
-    "@c-forge/typechain-polkadot": "^0.2.2",
-    "@c-forge/typechain-types": "^0.2.2",
+    "@c-forge/typechain-compiler": "^0.2.3",
+    "@c-forge/typechain-polkadot": "^0.2.3",
+    "@c-forge/typechain-types": "^0.2.3",
     "@polkadot/api": "^10.12.4",
     "@polkadot/api-contract": "^10.12.4",
     "@polkadot/util": "^12.6.2",
