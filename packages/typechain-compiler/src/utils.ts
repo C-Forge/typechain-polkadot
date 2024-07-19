@@ -14,7 +14,7 @@ export const compileContract = async (contractPath: string, buildParams: BuildPa
     'contract',
     ...(buildParams.toolchain ? [`+${buildParams.toolchain}`] : []),
     'build',
-    ...(process.env.BUILD_PROD || buildParams.isRelease ? ['--release'] : []),
+    ...((process.env.BUILD_PROD || buildParams.isRelease) && !buildParams.verifiable ? ['--release'] : []),
     ...(buildParams.lint ? [] : ['--lint']),
     ...(buildParams.verifiable ? ['--verifiable'] : []),
   ];
