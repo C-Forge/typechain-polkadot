@@ -27,7 +27,7 @@ import type { KeyringPair } from '@polkadot/keyring/types';
 import type { Registry } from '@polkadot/types-codec/types';
 import { genValidContractOptionsWithValue } from './query';
 import type { MethodDoesntExistError, RequestArgumentType } from './types';
-import type { EventRecord } from '@polkadot/types/interfaces';
+import type { DispatchError, EventRecord } from '@polkadot/types/interfaces';
 import { BN_ZERO } from '@polkadot/util';
 import { ContractOptions } from '@polkadot/api-contract/types';
 
@@ -58,7 +58,7 @@ export async function txSignAndSend(
   signerOptions?: Partial<SignerOptions>,
 ) {
   const signerAddress = typeof signer === 'string' ? signer : signer.address;
-  const _gasLimitAndValue = await genValidContractOptionsWithValue(nativeAPI, contractOptions);
+  const _gasLimitAndValue = genValidContractOptionsWithValue(nativeAPI, contractOptions);
 
   // estimate gas limit
 
@@ -134,16 +134,22 @@ export async function _signAndSend(
               } = event;
 
               if (method === 'ExtrinsicFailed') {
-                const [dispatchError] = data;
-                let message = dispatchError.type;
+                const dispatchError = data[0] as DispatchError;
+                let message = dispatchError.type as typeof dispatchError.type | string;
 
                 if (dispatchError.isModule) {
                   try {
                     const mod = dispatchError.asModule;
-                    const error = registry.findMetaError(new Uint8Array([mod.index.toNumber(), parseInt(mod.error.toString())]));
+                    const error = registry.findMetaError(mod);
                     message = `${error.section}.${error.name}${Array.isArray(error.docs) ? `(${error.docs.join('')})` : error.docs || ''}`;
                   } catch (error) {
-                    // swallow
+                    actionStatus.error = {
+                      message:
+                        'Failed to decode error. Error:' +
+                        JSON.stringify(error) +
+                        `. DispatchError (${dispatchError.type}): ` +
+                        JSON.stringify(dispatchError),
+                    };
                   }
                 }
 

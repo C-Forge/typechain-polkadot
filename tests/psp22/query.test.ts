@@ -5,6 +5,7 @@ import type { KeyringPair } from '@polkadot/keyring/types';
 import { GetAccounts } from '../config';
 import { expect } from 'chai';
 import BN from 'bn.js';
+import { nobody } from '@polkadot/keyring/pair/nobody';
 
 describe("Correctness of the PSP22 contract' methods types query", () => {
   let api: ApiPromise;
@@ -81,6 +82,21 @@ describe("Correctness of the PSP22 contract' methods types query", () => {
 
     const { value } = await contract.query.transfer(UserBob.address, '10', []);
     expect(value.unwrapRecursively() === null).to.equal(true);
+  });
+
+  it('mint_to throws correct, readable error', async () => {
+    try {
+      await contract.withAddress(nobody().address).tx.mint(UserAlice.address, '1000000');
+
+      throw new Error('Should not pass with an invalid contract address');
+    } catch (e: any) {
+      expect(e.blockHash).to.be.a('string');
+      expect(e.error.message).to.be.eq('contracts.ContractNotFound(No contract was found at the specified address.)');
+      expect(e.events).to.be.an('array');
+      expect(e.events).to.be.empty;
+      expect(e.from).to.be.a('string');
+      expect(e.txHash).to.be.a('string');
+    }
   });
 });
 

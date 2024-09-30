@@ -66,7 +66,7 @@ describe('Events', () => {
     expect(eventsCount).to.equal(eventsToBeSent.length);
   });
 
-  it('Test events on submittables', async () => {
+  it('Test events on submittables U32', async () => {
     const result = await contract.tx.mint(UserAlice.address, IdBuilderArgs.U32(new BN(1)));
 
     expect(result.events!.length).to.equal(1);
@@ -81,7 +81,7 @@ describe('Events', () => {
     });
   });
 
-  it('Test events on submittables with ReturnNumber', async () => {
+  it('Test events on submittables U128', async () => {
     const result2 = await contract.tx.mint(UserAlice.address, IdBuilderArgs.U128(new BN(1)));
 
     expect(result2.events!.length).to.equal(1);

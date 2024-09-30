@@ -4,6 +4,8 @@ import { expect } from 'chai';
 import { GetAccounts } from '../config';
 import Contract from '../generated/contracts/my_psp22';
 import Constructors from '../generated/deployers/my_psp22';
+import { readFileSync } from 'fs';
+import path from 'path';
 
 describe("Correctness of the PSP22 contract' methods types", () => {
   let api: ApiPromise;
@@ -89,7 +91,7 @@ describe("Correctness of the PSP22 contract' methods types", () => {
 
       throw new Error('Should not be able to transfer more than the balance');
     } catch (e) {
-      expect(e.error.message).to.include('contracts.InvalidSchedule');
+      expect(e.error.message).to.include('contracts.ContractReverted(The contract ran to completion but decided to revert its storage changes');
     }
     expect((await contract.query.balanceOf(UserAlice.address)).value.unwrapRecursively().toNumber()).to.equal(20);
     expect((await contract.query.balanceOf(UserBob.address)).value.unwrapRecursively().toNumber()).to.equal(20);
@@ -123,7 +125,7 @@ describe("Correctness of the PSP22 contract' methods types", () => {
 
       throw new Error('Should not be able to transfer without approval');
     } catch (e) {
-      expect(e.error.message).to.include('contracts.InvalidSchedule');
+      expect(e.error.message).to.include('contracts.ContractReverted(The contract ran to completion but decided to revert its storage changes');
     }
 
     expect((await contract.query.balanceOf(UserAlice.address)).value.unwrapRecursively().toNumber()).to.equal(20);
@@ -140,5 +142,30 @@ describe("Correctness of the PSP22 contract' methods types", () => {
 
   it('PSP22', async () => {
     await contract.tx.mint(UserAlice.address, '1000000000000000000000000');
+  });
+});
+
+describe('methods should have docs', () => {
+  ['query', 'tx-sign-and-send', 'mixed-methods'].map((folder) => {
+    it('should have exact docs for transferFrom' + `[${folder}]`, async () => {
+      const file = readFileSync(path.join(__dirname, `../generated/${folder}/my_psp22.ts`), 'utf-8');
+
+      const expectedDocs = `/**
+	* mintTo
+	*
+	*  Minting \`amount\` tokens to the account.
+	* 
+	*  See [\`PSP22::_mint_to\`].
+	*
+	* @param`;
+
+      const mintToRegex = /\/\*\*[\s\S]*?\*\s+mintTo[\s\S]*?@param\s/;
+      const match = file.match(mintToRegex);
+
+      expect(match).not.to.eq(null);
+      expect(match).not.to.eq(undefined);
+      const actualDocs = match![0].trim();
+      expect(actualDocs).to.eq(expectedDocs.trim(), 'The documentation for mintTo is incorrect for ' + folder);
+    });
   });
 });

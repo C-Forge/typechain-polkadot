@@ -58,6 +58,12 @@ Options:
       --typechainGeneratedPath  Typechain generated path               [string]
       --contractsRoot      Contracts root path                         [string]
       --regex              Regex to filter contract names             [string]
+      --verifiable        Use verifiable (docker) build              [boolean]
 
   -h, --help               Show help                                   [boolean]
 ```
+
+### Note about verifiable builds
+
+1. If you want to use verifiable builds, you need to have Docker installed on your machine. To use verifiable builds, you need to pass `--verifiable` flag to the compiler or set `verifiable` field in the config file to `true`. Note, that `verifiable` flag overrides `release` flag as verifiable builds are always compiled in release mode.
+2. The image's version is determined by `cargo contract` - should correlate with its version.

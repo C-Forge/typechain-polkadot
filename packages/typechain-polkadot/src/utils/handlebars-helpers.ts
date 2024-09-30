@@ -116,3 +116,10 @@ Handlebars.registerHelper('coalesce', (...args) => args.find((i) => !!i));
 Handlebars.registerHelper('ternary', function (test, yes, no) {
   return test ? yes : no;
 });
+
+Handlebars.registerHelper('prettyDocs', function (docs: string[]) {
+  if (docs.length > 0) {
+    return docs.map((doc) => `	* ${doc}`).join('\n');
+  }
+  return '';
+});

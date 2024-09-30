@@ -2,6 +2,10 @@
 
 This library generates TypeScript types from an `ink!`-based smart contract.
 
+###
+
+Dive into the latest updates and features of Typechain-Polkadot in our [What's new article!](docs/whats_new.md).
+
 ### Installation & import
 
 Note: This repository & the following commands use `pnpm`. If you don't have it, you can install it via `npm`:

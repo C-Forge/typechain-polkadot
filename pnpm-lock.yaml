@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       '@c-forge/typechain-types':
-        specifier: 0.2.2
+        specifier: 0.2.9
         version: link:packages/typechain-types
       '@polkadot/api':
         specifier: ^10.12.4
@@ -193,13 +193,13 @@ importers:
   examples/typechain-compiler-example:
     dependencies:
       '@c-forge/typechain-compiler':
-        specifier: ^0.2.2
+        specifier: ^0.2.4
         version: link:../../packages/typechain-compiler
       '@c-forge/typechain-polkadot':
-        specifier: ^0.2.2
+        specifier: ^0.2.4
         version: link:../../packages/typechain-polkadot
       '@c-forge/typechain-types':
-        specifier: ^0.2.2
+        specifier: ^0.2.4
         version: link:../../packages/typechain-types
       '@polkadot/api':
         specifier: ^10.12.4
@@ -269,11 +269,11 @@ importers:
   packages/typechain-polkadot:
     dependencies:
       '@c-forge/typechain-polkadot-parser':
-        specifier: 0.2.2
+        specifier: 0.2.4
         version: link:../typechain-polkadot-parser
       '@c-forge/typechain-types':
-        specifier: 0.2.2
-        version: link:../typechain-types
+        specifier: 0.2.5
+        version: 0.2.5(@polkadot/util-crypto@12.6.2)
       '@polkadot/api':
         specifier: ^10.12.4
         version: 10.12.4
@@ -430,6 +430,25 @@ packages:
   /@aashutoshrathi/word-wrap@1.2.6:
     resolution: {integrity: sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==}
     engines: {node: '>=0.10.0'}
+
+  /@c-forge/typechain-types@0.2.5(@polkadot/util-crypto@12.6.2):
+    resolution: {integrity: sha512-oj6mdzBV2pzjCicrLpMp2Dz+Kz75K1D7S68kU8aE0UzFMX0+nMcYPGkUrPLpJgEpC+zOI1RHZdABoCuo3oSgjw==}
+    dependencies:
+      '@polkadot/api': 10.12.4
+      '@polkadot/api-contract': 10.12.4
+      '@polkadot/keyring': 12.6.2(@polkadot/util-crypto@12.6.2)(@polkadot/util@12.6.2)
+      '@polkadot/types': 10.12.4
+      '@polkadot/types-codec': 10.12.4
+      '@polkadot/util': 12.6.2
+      '@types/bn.js': 5.1.5
+      '@types/node': 18.19.26
+      tslib: 2.6.2
+    transitivePeerDependencies:
+      - '@polkadot/util-crypto'
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+    dev: false
 
   /@cspotcode/source-map-support@0.8.1:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -1225,6 +1244,7 @@ packages:
 
   /@substrate/connect@0.8.8:
     resolution: {integrity: sha512-zwaxuNEVI9bGt0rT8PEJiXOyebLIo6QN1SyiAHRPBOl6g3Sy0KKdSN8Jmyn++oXhVRD8aIe75/V8ZkS81T+BPQ==}
+    deprecated: versions below 1.x are no longer maintained
     requiresBuild: true
     dependencies:
       '@substrate/connect-extension-protocol': 2.0.0

@@ -137,7 +137,7 @@ export async function queryOutput(
   }
 
   const _args = args || [];
-  const _contractOptions = await genValidContractOptionsWithValue(api, contractOptions);
+  const _contractOptions = genValidContractOptionsWithValue(api, contractOptions);
 
   let response: ContractCallOutcome;
   let error: QueryCallError | undefined;
@@ -182,10 +182,7 @@ export async function queryOutput(
   };
 }
 
-export async function genValidContractOptionsWithValue(
-  api: ApiPromise,
-  contractOptions?: ContractOptions,
-): Promise<{ gasLimit: WeightV2; value: BN }> {
+export function genValidContractOptionsWithValue(api: ApiPromise, contractOptions?: ContractOptions): { gasLimit: WeightV2; value: BN } {
   if (contractOptions === null || contractOptions === undefined) {
     return {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment

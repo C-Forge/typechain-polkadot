@@ -94,6 +94,7 @@ function generate(abi: Abi, fileName: string, absPathToOutput: string) {
       methods.push({
         name: _methodName.cut,
         originalName: _methodName.original,
+        docs: __message.docs,
         args: __message.args.map((__a) => ({
           name: __a.name,
           type: _argsTypes.find((_a) => _a.id === __a.type.lookupIndex)!,
@@ -109,6 +110,7 @@ function generate(abi: Abi, fileName: string, absPathToOutput: string) {
           name: __a.name,
           type: _argsTypes.find((_a) => _a.id === __a.type.lookupIndex)!,
         })),
+        docs: __message.docs,
         returnType: __message.returnType && {
           tsStr: parser.getType(__message.returnType!.lookupIndex as number).tsReturnTypePrefixed,
           id: __message.returnType!.lookupIndex!,

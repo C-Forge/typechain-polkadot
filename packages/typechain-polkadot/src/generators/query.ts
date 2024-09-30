@@ -93,6 +93,7 @@ function generate(abi: Abi, fileName: string, absPathToOutput: string) {
     methods.push({
       name: _methodName.cut,
       originalName: _methodName.original,
+      docs: __message.docs,
       args: __message.args.map((__a) => ({
         name: __a.name,
         type: _argsTypes.find((_a) => _a.id === __a.type.lookupIndex)!,

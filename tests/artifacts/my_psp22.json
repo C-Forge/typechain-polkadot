@@ -64,7 +64,7 @@
             }
           }
         ],
-        "docs": [],
+        "docs": [" Minting `amount` tokens to the account.", "", " See [`PSP22::_mint_to`]."],
         "label": "mint_to",
         "mutates": true,
         "payable": false,
