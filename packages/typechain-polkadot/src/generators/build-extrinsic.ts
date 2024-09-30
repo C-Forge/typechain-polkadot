@@ -85,6 +85,7 @@ function generate(abi: Abi, fileName: string, absPathToOutput: string) {
   for (const __message of abi.messages) {
     const _methodName = _methodsNames.find((__m) => __m.original === __message.identifier)!;
     methods.push({
+      docs: __message.docs,
       name: _methodName.cut,
       originalName: _methodName.original,
       args: __message.args.map((__a) => ({
